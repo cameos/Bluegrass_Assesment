@@ -54,15 +54,19 @@
     <Compile Include="Abstract\IProvince.cs" />
     <Compile Include="Abstract\IUser.cs" />
     <Compile Include="Abstract\IUserAddress.cs" />
+    <Compile Include="Concrete\AddressConcrete.cs" />
+    <Compile Include="Concrete\CityConcrete.cs" />
+    <Compile Include="Concrete\CountryConcrete.cs" />
+    <Compile Include="Concrete\ProvinceConcrete.cs" />
+    <Compile Include="Concrete\UserAddressConcrete.cs" />
+    <Compile Include="Concrete\UserConcrete.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Concrete\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\DataAccess\DataAccess.csproj">
       <Project>{504a4625-fba9-4aae-a141-c01e2e14eb04}</Project>
