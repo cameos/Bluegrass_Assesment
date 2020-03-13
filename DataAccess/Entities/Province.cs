@@ -13,6 +13,7 @@ namespace DataAccess.Entities
         public Province()
         {
             this.Cities = new HashSet<City>();
+            this.Addresses = new HashSet<Address>();
         }
 
 
@@ -21,11 +22,13 @@ namespace DataAccess.Entities
         public string ProvinceName { get; set; }
         public string Description { get; set; }
 
+
         //navigation properties
         public Guid CountryId { get; set; }
         public Country Country { get; set; }
 
 
         public ICollection<City> Cities { get; set; }
+        public ICollection<Address> Addresses { get; set; }
     }
 }

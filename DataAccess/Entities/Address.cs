@@ -9,6 +9,12 @@ namespace DataAccess.Entities
     public class Address
     {
 
+
+        public Address()
+        {
+            this.UserAddresses = new HashSet<UserAddress>();
+        }
+
         public Guid AddressId { get; set; }
         public string AddressNumber { get; set; }
         public string StreetName { get; set; }
@@ -23,6 +29,8 @@ namespace DataAccess.Entities
         public City City { get; set; }
         public Province Province { get; set; }
         public Guid ProvinceId { get; set; }
+
+        public ICollection<UserAddress>UserAddresses { get; set; }
 
     }
 }

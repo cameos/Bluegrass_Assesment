@@ -14,5 +14,13 @@ namespace DataAccess.EntityConfiguration
 {
     public class ProvinceConfiguration:EntityTypeConfiguration<Province>
     {
+        public ProvinceConfiguration()
+        {
+            this.HasKey<Guid>(c => c.ProvinceId).Property(c => c.ProvinceId).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity).HasColumnType("uniqueidentifier").IsRequired();
+            this.Property(c => c.ProvinceName).HasColumnType("nvarchar").HasMaxLength(150).IsFixedLength().IsRequired();
+            this.Property(c => c.Description).HasColumnType("nvarchar").HasMaxLength(550).IsFixedLength().IsOptional();
+
+            this.HasRequired<Country>(c => c.Country).WithMany(c => c.Provinces).HasForeignKey<Guid>(c => c.ProvinceId).WillCascadeOnDelete();
+        }
     }
 }

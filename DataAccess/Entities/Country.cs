@@ -12,6 +12,7 @@ namespace DataAccess.Entities
         {
             this.Provinces = new HashSet<Province>();
             this.Cities = new HashSet<City>();
+            this.Addresses = new HashSet<Address>();
         }
 
         public Guid CountryId { get; set; }
@@ -21,5 +22,6 @@ namespace DataAccess.Entities
 
         public ICollection<Province> Provinces { get; set; }
         public ICollection<City> Cities { get; set; }
+        public ICollection<Address> Addresses { get; set; }
     }
 }

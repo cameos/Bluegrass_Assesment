@@ -14,5 +14,13 @@ namespace DataAccess.EntityConfiguration
 {
     public class UserAddressConfiguration:EntityTypeConfiguration<UserAddress>
     {
+        public UserAddressConfiguration()
+        {
+            this.HasKey<Guid>(c => c.UserAddressId).Property(c => c.UserAddressId).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity).HasColumnType("uniqueidentifier").IsRequired();
+
+
+            this.HasRequired<User>(c => c.User).WithMany(c => c.UserAddresses).HasForeignKey<Guid>(c => c.UserId).WillCascadeOnDelete();
+            this.HasRequired<Address>(c => c.Address).WithMany(c => c.UserAddresses).HasForeignKey<Guid>(c => c.UserAddressId).WillCascadeOnDelete();
+        }
     }
 }
