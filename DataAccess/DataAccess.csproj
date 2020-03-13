@@ -48,18 +48,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Context\BlueContext.cs" />
     <Compile Include="Entities\Address.cs" />
+    <Compile Include="Entities\Admin.cs" />
     <Compile Include="Entities\City.cs" />
     <Compile Include="Entities\Country.cs" />
     <Compile Include="Entities\Province.cs" />
     <Compile Include="Entities\User.cs" />
     <Compile Include="Entities\UserAddress.cs" />
     <Compile Include="EntityConfiguration\AddressConfiguration.cs" />
+    <Compile Include="EntityConfiguration\AdminConfiguration.cs" />
     <Compile Include="EntityConfiguration\CityConfiguration.cs" />
     <Compile Include="EntityConfiguration\CountryConfiguration.cs" />
     <Compile Include="EntityConfiguration\ProvinceConfiguration.cs" />
     <Compile Include="EntityConfiguration\UserAddressConfiguration.cs" />
     <Compile Include="EntityConfiguration\UserConfiguration.cs" />
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

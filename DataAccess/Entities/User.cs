@@ -22,6 +22,7 @@ namespace DataAccess.Entities
         public string Email { get; set; }
         public byte[] Avatar { get; set; }
         public string Gender { get; set; }
+        public string Status { get; set; }
 
         public ICollection<UserAddress> UserAddresses { get; set; }
     }

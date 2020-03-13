@@ -23,6 +23,7 @@ namespace DataAccess.EntityConfiguration
             this.Property(c=>c.Phone).HasColumnType("nvarchar").HasMaxLength(30).IsFixedLength().IsRequired();
             this.Property(c=>c.Email).HasColumnType("nvarchar").HasMaxLength(300).IsFixedLength().IsRequired();
             this.Property(c=>c.Gender).HasColumnType("nvarchar").HasMaxLength(10).IsFixedLength().IsRequired();
+            this.Property(c => c.Status).HasColumnType("nvarchar").HasMaxLength(10).IsFixedLength().IsRequired();
             this.Property(c => c.Avatar).HasColumnType("image").IsOptional();
 
 
