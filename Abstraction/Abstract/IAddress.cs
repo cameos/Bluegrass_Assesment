@@ -9,12 +9,12 @@ namespace Abstraction.Abstract
 {
     public interface IAddress
     {
-        bool insert(Address ad);
+        //bool insert(Address ad);
         bool update(Address ad);
-        bool remove(Address ad);
-        bool remove_by_id(Guid id);
-        List<Address> all();
-        Address show(Address ad);
-        Address show_by_id(Guid id);
+        //bool remove(Address ad);
+        //bool remove_by_id(Guid id);
+        //List<Address> all();
+        //Address show(Address ad);
+        //Address show_by_id(Guid id);
     }
 }

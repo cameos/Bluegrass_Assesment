@@ -103,6 +103,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\AddressController.cs" />
+    <Compile Include="Controllers\CityController.cs" />
+    <Compile Include="Controllers\CountryController.cs" />
+    <Compile Include="Controllers\ProvinceController.cs" />
+    <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Custom\CustomDependency.cs" />
     <Compile Include="Custom\CustomJsonFormatter.cs" />
     <Compile Include="Global.asax.cs">
@@ -121,7 +126,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Controllers\" />
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>

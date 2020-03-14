@@ -9,7 +9,7 @@ namespace Abstraction.Abstract
 {
     public interface IUser
     {
-        bool insert(User user);
+        bool insert(User user, Address address);
         bool update(User user);
         bool remove(User user);
         bool remove_by_id(Guid id);

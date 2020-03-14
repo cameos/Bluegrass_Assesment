@@ -26,7 +26,7 @@ namespace Abstraction.Concrete
                     try
                     {
                         users = (from u in _context.User
-                                     select u).ToList<User>();
+                                 select u).ToList<User>();
                         if (users.Count() == 0)
                             return users;
                         else
@@ -46,10 +46,10 @@ namespace Abstraction.Concrete
             return users;
         }
 
-        public bool insert(User user)
+        public bool insert(User user, Address address)
         {
             bool flag = false;
-            if (string.IsNullOrWhiteSpace(user.FirstName))
+            if (string.IsNullOrWhiteSpace(user.FirstName) || string.IsNullOrWhiteSpace(user.LastName) || string.IsNullOrWhiteSpace(address.AddressNumber))
                 return (flag = false);
             using (_context = new BlueContext())
             {
@@ -57,8 +57,37 @@ namespace Abstraction.Concrete
                 {
                     try
                     {
+                        //add user first
                         _context.User.Add(user);
                         _context.SaveChanges();
+                        var user_id = user.UserId;
+
+                        if(user_id == null)
+                        {
+                            _transaction.Rollback();
+                            return (flag = false);
+                        }
+
+                        //add address for the user
+                        _context.Address.Add(address);
+                        _context.SaveChanges();
+                        var addr_id = address.AddressId;
+
+                        if(addr_id == null)
+                        {
+                            _transaction.Rollback();
+                            return (flag = false);
+                        }
+
+                        //add user_adress
+                        UserAddress userAddress = new UserAddress
+                        {
+                            AddressId = addr_id,
+                            UserId = user_id,
+                        };
+                        _context.UserAddress.Add(userAddress);
+                        _context.SaveChanges();
+
                         _transaction.Commit();
                         flag = true;
                     }
