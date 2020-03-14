@@ -1,0 +1,513 @@
+﻿* {
+    box-sizing: border-box;
+}
+
+html, body {
+    /*background-color:#020F1D;*/
+    /*background-color: #f7f7f7;*/
+    /*background-color: #f6f8f9;*/
+    /*background-color: #181e30;*/
+    /*color: #0074ff;*/
+    background-color: #ffffff;
+    color: #000;
+    height: 100%;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    margin: 0;
+}
+
+.body-wrap {
+    width: 100%;
+    height: 100%;
+}
+
+.page-wrap {
+    min-height: 100%;
+    /*height: 100%;*/
+    width: 100%;
+    overflow: hidden;
+    margin-top: 50px;
+    /*margin-bottom: -100px;*/
+}
+
+    .page-wrap:after {
+        content: "";
+        display: block;
+        height: 50px;
+        /*border-bottom: 1px solid #e1e4e8;*/
+    }
+
+.footertext {
+    text-decoration: none;
+    display: block;
+    padding: 1%;
+    font-weight: bold;
+    color: #1f81ff;
+}
+
+    .footertext:hover {
+        text-decoration: none;
+        display: block;
+        padding: 1%;
+        font-weight: bold;
+        color: #1f81ff;
+    }
+
+.site-footer {
+    width: 100%;
+    background-color: #1D1F27;
+    height: auto;
+    padding: 5px;
+    color: #fff;
+    text-align: center;
+}
+
+.navbrand_color {
+    color: #fff;
+    font-weight: bold;
+    margin-top: 15%;
+    font-size: 1.5em;
+    text-decoration: none;
+}
+
+    .navbrand_color:hover {
+        color: #fff;
+        font-weight: bold;
+        margin-top: 15%;
+        font-size: 1.5em;
+        text-decoration: none;
+    }
+
+#top_nav2 > li > a {
+    color: #fff;
+    font-weight: bold;
+}
+
+.main_btn {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 15px;
+    background-color: #cc0000;
+    border: 1px solid #cc0000;
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 1px;
+    font-weight: bold;
+    width: 75%;
+}
+
+    .main_btn:hover {
+        margin-left: 15px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        background-color: #cc0000;
+        border: 1px solid #cc0000;
+        color: #ffffff;
+        text-decoration: none;
+        font-weight: bold;
+        border-radius: 1px;
+        font-weight: bold;
+    }
+
+.text_blue {
+    color: #cc0000;
+    font-weight: bold;
+    margin-bottom: 2%;
+}
+
+.text_blue_small {
+    color: #171945;
+    margin-bottom: 2%;
+    font-size: 1.2em;
+}
+
+.text_blue2 {
+    color: #cc0000;
+    font-weight: bold;
+    font-size: 1.5em;
+    margin-bottom: 3%;
+}
+
+.text_blue3 {
+    color: #cc0000;
+    font-weight: bold;
+    font-size: 2.0em;
+    margin-bottom: 3%;
+}
+
+
+.about_image {
+    position: relative;
+    width: 100%;
+    max-width: 100%;
+    height: 521px;
+}
+
+    .about_image img {
+        vertical-align: middle;
+        max-width: 100%;
+        max-height: 100%;
+    }
+
+    .about_image .about_content {
+        position: absolute;
+        top: 0;
+        height: 100%;
+        background: rgb(0,0,0);
+        background: rgba(0,0,0,0.4);
+        padding: 20px;
+        width: 100%;
+    }
+
+.img_fit {
+    width: 100%;
+    max-width: 100%;
+    max-height: 100%;
+    -moz-border-radius-topleft: 2%;
+    border-top-left-radius: 2%;
+    border-top-right-radius: 2%;
+    margin-bottom: 2%;
+}
+
+#type {
+    color: #cc0000;
+}
+
+.img_whole {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+#social_links {
+    list-style: none;
+    padding: 0;
+    margin: 2%;
+}
+
+    #social_links > li {
+        display: inline-block;
+        margin-top: 2%;
+    }
+
+        #social_links > li > a {
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+            #social_links > li > a:hover {
+                text-decoration: none;
+                cursor: pointer;
+            }
+
+.img_other {
+    max-width: 100%;
+    max-height: 100%;
+    -moz-border-radius-topleft: 2%;
+    border-top-left-radius: 2%;
+    border-top-right-radius: 2%;
+    border-bottom-right-radius: 2%;
+    border-bottom-left-radius: 2%;
+    margin-bottom: 2%;
+}
+
+.row_1 {
+    /*position: relative;
+    top: 0;*/
+    height: 75%;
+    width: 100%;
+    border: 1px solid #ff006e;
+    margin-left: 50%;
+    margin-right: auto;
+}
+
+.row_2 {
+    /*position:relative;
+    bottom:0;*/
+    height: 25%;
+    width: 100%;
+    border: 1px solid #0074dd;
+}
+
+.information_container {
+    border-radius: 2%;
+    border: 1px solid #f4f4f4;
+}
+
+.processing_hide {
+    color: #ff006e;
+    display: none;
+}
+
+.processing_show {
+    color: #ff006e;
+    display: block;
+}
+
+.login-container {
+    margin-top: 10%;
+    margin-right: auto;
+    margin-left: auto;
+    align-content: center;
+    border-top: 5px solid #ff006e;
+    width: 60%;
+    background-color: #fff;
+    padding: 2%;
+}
+
+
+/*images* try working with the carousel*/
+.home_news_title {
+    border-bottom: 2px solid #ff006e;
+}
+
+    .home_news_title > span {
+        padding: 5px;
+        background-color: #ff006e;
+        color: #fff;
+        font-weight: bold;
+        border-radius: 2px;
+    }
+
+.home_news_editor {
+    border-bottom: 2px solid #ff006e;
+}
+
+    .home_news_editor > span {
+        padding: 5px;
+        background-color: #ff006e;
+        color: #fff;
+        font-weight: bold;
+        border-radius: 2px;
+    }
+
+.home_container {
+    padding: 5px;
+}
+
+.home_margin_top {
+    margin-top: 10px;
+}
+
+.rasse {
+    position: relative;
+}
+
+.home_relative {
+    position: relative;
+}
+
+.full-screen {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-image: url("Image/download-rate-card.jpg");
+}
+
+
+/********************************************* Simple groupings ***********************/
+.text-input {
+    width: 85%;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-radius: 0;
+    box-shadow: none;
+    border-bottom-color: #1074e7;
+}
+
+    .text-input:focus {
+        border-radius: 2px;
+        box-shadow: none;
+        /*shadow styles*/
+        border-top: none;
+        border-left: none;
+        border-right: none;
+        border-bottom-width: thick;
+        border-bottom-color: #1074e7;
+    }
+
+
+.radio-input-error {
+    border: 1px solid #cc0000;
+    border-radius: 2px;
+    box-shadow: none;
+}
+
+.radio-login-btn {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 15px;
+    background-color: #0074dd;
+    border: 1px solid #0074dd;
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 1px;
+}
+
+    .radio-login-btn:hover {
+        margin-top: 10px;
+        margin-bottom: 10px;
+        margin-left: 15px;
+        background-color: #0074dd;
+        border: 1px solid #0074dd;
+        color: #fff;
+        text-decoration: none;
+        font-weight: bold;
+        border-radius: 1px;
+    }
+
+.radio-login-btn-cancel {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 15px;
+    background-color: #ff006e;
+    border: 1px solid #ff006e;
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 1px;
+}
+
+    .radio-login-btn-cancel:hover {
+        margin-left: 15px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        background-color: #ff006e;
+        border: 1px solid #ff006e;
+        color: #fff;
+        text-decoration: none;
+        font-weight: bold;
+        border-radius: 1px;
+    }
+
+    .radio-login-btn-cancel:active {
+        margin-left: 15px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        background-color: #ff006e;
+        border: 1px solid #ff006e;
+        color: #fff;
+        text-decoration: none;
+        font-weight: bold;
+        border-radius: 1px;
+    }
+
+.admin_login_container {
+    width: 70%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 5%;
+    padding: 5px;
+    background-color: #fff;
+    border: 1px solid #e9e9e9;
+}
+
+.admin_login_header {
+    width: 100%;
+    text-align: center;
+    color: #cc0000;
+    font-weight: bold;
+    text-transform: capitalize;
+    padding: 10px;
+    border-bottom: 1px solid #cc0000;
+}
+
+.admin_login_body {
+    width: 100%;
+    height: auto;
+    color: #1074e7;
+    padding: 10px;
+}
+
+.radio-site-modal {
+    border-radius: 2px;
+    color: #2e3c54;
+    min-width: 100%;
+}
+
+.news-background {
+    background: url(Image/pixels/news.jpeg) center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    /*padding: 5%;*/
+    color: #ff006e;
+    width: 100%;
+    height: 400px;
+}
+
+.news-background-write {
+    position: absolute; /* Position the background text */
+    bottom: 0; /* At the bottom. Use top:0 to append it to the top */
+    left: 0;
+    background: rgb(0, 0, 0); /* Fallback color */
+    background: rgba(0, 0, 0, 0.5); /* Black background with 0.5 opacity */
+    color: #fff; /* Grey text */
+    width: 100%; /* Full width */
+    padding: 20px; /* Some padding */
+    height: 100%;
+}
+
+.news-back-imge {
+    height: 500px;
+    width: 100%;
+    max-width: 100%;
+    max-height: 100%;
+    display: block; /* remove extra space below image */
+}
+
+.news-background-write > .text-opacity {
+    opacity: 1;
+}
+
+.article_container_news {
+    border: 1px solid #d5d5d5;
+}
+
+.article-image {
+    height: 250px;
+    width: 100%;
+    max-width: 100%;
+    max-height: 100%;
+    display: block; /* remove extra space below image */
+}
+
+.article-image2 {
+    height: 350px;
+    width: 100%;
+    max-width: 100%;
+    max-height: 100%;
+    display: block; /* remove extra space below image */
+}
+
+.article_container_content {
+    padding: 3%;
+}
+
+.article_container_content2 {
+    padding: 3%;
+    background-color: #fff;
+    border-top: 2px solid #d5d5d5;
+}
+
+.span-article {
+    background-color: #ff006e;
+    color: #fff;
+    padding: 1%;
+    border: 1px solid #ff006e;
+    font-weight: bold;
+    margin: 1%;
+    border-radius: 2px;
+}
+
+.span-article2 {
+    background-color: #d5d5d5;
+    color: #000;
+    padding: 1%;
+    border: 1px solid #d5d5d5;
+    font-weight: bold;
+    margin: 1%;
+    border-radius: 2px;
+}
