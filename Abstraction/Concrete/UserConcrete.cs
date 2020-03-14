@@ -169,6 +169,73 @@ namespace Abstraction.Concrete
             return flag;
         }
 
+        public List<User> search_first(string name)
+        {
+            List<User> users = new List<User>();
+            if (string.IsNullOrWhiteSpace(name))
+                return users;
+            using(_context = new BlueContext())
+            {
+                using(var _transaction = _context.Database.BeginTransaction(IsolationLevel.Serializable))
+                {
+                    try
+                    {
+                        users = (from u in _context.User
+                                 where (u.FirstName.Contains(name))
+                                 select u).ToList<User>();
+                        _context.SaveChanges();
+                        
+                        if(users.Count() == 0)
+                        {
+                            _transaction.Rollback();
+                            return users;
+                        }
+
+                        _transaction.Commit();
+
+                    }
+                    catch(Exception e)
+                    {
+                        _transaction.Rollback();
+                        throw new Exception(e.Message);
+                    }
+                }
+            }
+            return users;
+        }
+
+        public List<User> search_surname(string surname)
+        {
+            List<User> users = new List<User>();
+            if (string.IsNullOrWhiteSpace(surname))
+                return users;
+            using(_context = new BlueContext())
+            {
+                using(var _transaction = _context.Database.BeginTransaction(IsolationLevel.Serializable))
+                {
+                    try
+                    {
+                        users = (from u in _context.User
+                                 where (u.LastName.Contains(surname))
+                                 select u).ToList<User>();
+                        _context.SaveChanges();
+                        if(users.Count() == 0)
+                        {
+                            _transaction.Rollback();
+                            return users;
+                        }
+                        _transaction.Commit();
+                    }
+                    catch(Exception e)
+                    {
+                        _transaction.Rollback();
+                        throw new Exception(e.Message);
+                    }
+                }
+            }
+            return users;
+        }
+
         public User show(User user)
         {
             User show = new User();
