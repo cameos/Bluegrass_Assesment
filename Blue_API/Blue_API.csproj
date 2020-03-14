@@ -104,6 +104,7 @@
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AddressController.cs" />
+    <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\CityController.cs" />
     <Compile Include="Controllers\CountryController.cs" />
     <Compile Include="Controllers\ProvinceController.cs" />

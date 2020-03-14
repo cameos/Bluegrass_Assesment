@@ -49,12 +49,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Abstract\IAddress.cs" />
+    <Compile Include="Abstract\IAdmin.cs" />
     <Compile Include="Abstract\ICity.cs" />
     <Compile Include="Abstract\ICountry.cs" />
     <Compile Include="Abstract\IProvince.cs" />
     <Compile Include="Abstract\IUser.cs" />
     <Compile Include="Abstract\IUserAddress.cs" />
     <Compile Include="Concrete\AddressConcrete.cs" />
+    <Compile Include="Concrete\AdminConcrete.cs" />
     <Compile Include="Concrete\CityConcrete.cs" />
     <Compile Include="Concrete\CountryConcrete.cs" />
     <Compile Include="Concrete\ProvinceConcrete.cs" />
