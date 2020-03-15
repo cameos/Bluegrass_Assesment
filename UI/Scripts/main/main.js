@@ -29,7 +29,7 @@ $(document).ready(function () {
             url: "https://localhost:44331/login/new",
             dataType: "json",
             data: form,
-            contentType: "application/json; charset=utf-8",
+            contentType: false,
             processData: false,
             cache: false,
             success: function (error_message) {
