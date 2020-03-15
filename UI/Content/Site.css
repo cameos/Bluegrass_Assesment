@@ -60,6 +60,19 @@ html, body {
     border-radius:1px;
     font-weight:bold;
 }
+.hideError {
+    display: none;
+    visibility:hidden;
+    
+}
+.showError {
+    display: block;
+    visibility:visible;
+    border: 1px solid #ff0000;
+    padding: 5%;
+    color: #ff0000;
+    border-radius: 2%;
+}
 
 .footertext {
     text-decoration: none;

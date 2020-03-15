@@ -22,6 +22,29 @@ $(document).ready(function () {
         e.preventDefault();
         e.stopImmediatePropagation();
 
-
+        check_admin_registration();
+        var form = new FormData(document.getElementById("adminRegister"));
+        $.ajax({
+            method: "POST",
+            url: "https://localhost:44331/login/new",
+            dataType: "json",
+            data: form,
+            contentType: "application/json; charset=utf-8",
+            processData: false,
+            cache: false,
+            success: function (error_message) {
+                if (typeof error_message == 'string' || error_message instanceof String) {
+                    if (error_message.indexOf("error") !== -1) {
+                        $("#registerError").removeClass("hideError").addClass("showError");
+                    }
+                    else {
+                        var target = $("#registerError");
+                        target.empty().html();
+                        target.append(error_message);
+                        $("#registerError").removeClass("hideError").addClass("showError");
+                    }
+                }
+            }
+        });
     });
 });
