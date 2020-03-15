@@ -5,53 +5,55 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - My ASP.NET Application</title>
 
-    <link href="~/Content/fontawesome/css/all.css" rel="stylesheet" type="text/css" />
-    <link href="~/Content/OwlCarousel/docs/assets/owlcarousel/assets/owl.carousel.css" rel="stylesheet" type="text/css" />
-    <link href="~/Content/OwlCarousel/docs/assets/owlcarousel/assets/owl.theme.default.css" rel="stylesheet" type="text/css" />
-    <script src="~/Scripts/modernizr-2.8.3.js"></script>
     <link href="~/Content/Site.css" rel="stylesheet" type="text/css" />
     <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <script src="~/Scripts/modernizr-2.8.3.js"></script>
+    <link href="~/Content/fontawesome/css/all.css" />
 
 </head>
 <body>
     <!--navigation for the site-->
-    <div class="navbar navbar-inverse navbar-fixed-top" style="background-color:#cc0000; color:#fff; border-bottom:#cc0000;">
-        <div class="container">
-            <div class="navbar-header">
-                @Html.ActionLink("application name", "", "", new { area = "" }, new { @class = "navbar-navbrand navbrand_color" })
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul style="margin-top:2%;" id="top_nav2" class="nav navbar-nav pull-right">
-                    <li>
-                        @Html.ActionLink("Services", "services", "Default", new { area = "" }, new { @class = "top_nav" })
-                    </li>
-                    @*<li>
-                            @Html.ActionLink("Extension Services", "extension", "Default", new { area = "" }, new { @class = "top_nav" })
-                        </li>*@
-                    <li>
-                        @Html.ActionLink("about", "about", "Default", new { area = "" }, new { @class = "top_nav" })
-                    </li>
-                    <li>
-                        @Html.ActionLink("Contact Us", "help", "Default", new { area = "" }, new { @class = "top_nav" })
-                    </li>
-                </ul>
-            </div>
+    <nav class="navbar navbar-expand-lg navbar-light bg-dark">
+
+        <a href="#" class="navbar-brand" style="color:#fff;">
+            sample name
+        </a>
+
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#hel_collapse" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse float-right" id="hel_collapse">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    @*<a class="nav-link">
+                            <img src="~/Content/Icons/082-search-2.png" style="border-radius:50%;" height="30" width="30" />
+                        </a>*@
+                </li>
+                <li class="nav-item">
+                    @*<a class="nav-link">
+                            <img src="~/Content/Icons/013-lifeline-1.png" style="display:inline-block; border-radius:50%;" height="30" width="30" />
+                        </a>*@
+                </li>
+                <li class="nav-item">
+                    @*<a class="nav-link">
+                            <img src="~/Content/Icons/064-medical-2.png" style="display:inline-block; border-radius:50%;" height="30" width="30" />
+                        </a>*@
+                </li>
+            </ul>
         </div>
-    </div>
+
+    </nav>
 
     <!--layout for all pages-->
-    <div class="page-wrap container-fluid">
-
+    <div class="page-wrap container">
         <div class="row">
-            <div class="col-sm-12">
+            <div class="col-12">
                 @RenderBody()
             </div>
         </div>
         <div class="push"></div>
     </div>
-
-    <script src="https://apps.elfsight.com/p/platform.js" defer></script>
-    <div class="elfsight-app-a7d280a3-b566-4382-a91f-9d4ecc933087"></div>
 
     <!--layout footer for the site-->
     <div class="site-footer">
@@ -60,7 +62,7 @@
                 <div class="text-justify" style="padding:5%;">
                     <span style="font-weight:bold;">ABOUT US</span><br />
                     Best internet cafe to discover<br />
-                    local points of interest.
+                    local points of interest. Map where your photos.
                     <br /><br />
                     Location: Shop NO 6A JUNXION Mall<br />
                     E-mail: FIRSTINKPHILLPI@gmail.com<br />
@@ -68,48 +70,14 @@
                     Open Hour:09:00 - 18:00
                 </div>
             </div>
-            <div class="col-sm-4">
-                <div class="text-justify" style="padding:5%;">
-                    <ul style="list-style:none;">
-                        <li style="font-weight:bold">Inside</li>
-                        <li>
-                            @Html.ActionLink("about", "about", "Default", new { area = "" }, new { @class = "top_nav" })
-                        </li>
-                        <li>
-                            @Html.ActionLink("Services", "services", "Default", new { area = "" }, new { @class = "top_nav" })
-                        </li>
-                        <li>
-                            @Html.ActionLink("Contact us", "help", "Default", new { area = "" }, new { @class = "top_nav" })
-                        </li>
-
-                    </ul>
-                </div>
-            </div>
-            <div class="col-sm-4">
-                <div class="text-justify" style="padding:5%;">
-                    <ul style="list-style:none;">
-                        <li style="font-weight:bold">Resources</li>
-                        <li>
-                            @Html.ActionLink("Rules and Guidelines", "terms", "Default", new { area = "" }, new { @class = "top_nav" })
-                        </li>
-                        @*<li>
-                            </li>*@
-                    </ul>
-                </div>
-            </div>
         </div>
-        <p>&copy; @DateTime.Now.Year - Bongani Qunta Production</p>
+        <p class="text-center">&copy; @DateTime.Now.Year - Bongani Qunta Production</p>
     </div>
 
-    <script src="~/Scripts/jquery-3.4.1.js"></script>
-    <script src="~/Scripts/bootstrap.js"></script>
-    <script src="~/Content/OwlCarousel/docs/assets/owlcarousel/owl.carousel.js"></script>
 
-    <script src="~/Scripts/site/main.js"></script>
-    <script src="~/Scripts/moment.js"></script>
-    <script src="~/Scripts/moment-with-locales.js"></script>
+    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
     <script src="~/Content/fontawesome/js/all.js"></script>
-    <script src="~/Content/fontawesome/js/fontawesome.js"></script>
-   
+
 </body>
 </html>

@@ -1,0 +1,61 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+
+    <link href="~/Content/Site.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <script src="~/Scripts/modernizr-2.8.3.js"></script>
+    <link href="~/Content/fontawesome/css/all.css" />
+
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="login-container">
+                    <div class="login-title">
+                        login admin or user
+                    </div>
+                    <div class="login-body">
+                        <div class="row w-100">
+                            <div class="col-6" style="border-right:1px solid #ff006e;">
+                                <form enctype="multipart/form-data" name="admin_login" id="admin_login">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">Email address</label>
+                                        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                                        <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="exampleInputPassword1">Password</label>
+                                        <input type="password" class="form-control" id="exampleInputPassword1">
+                                    </div>
+                                    
+                                    <button type="submit" class="btn btn-primary" style="border-radius:1px; margin-left:auto; margin-right:auto; font-weight:bold;">Submit</button>  OR  
+                                    @Html.ActionLink("Register as main admin", "register", "login")
+                                </form>
+                                <div class="row" style="margin-top:2%;">
+                                    <div class="col-11" style="border:1px solid #ff0000; padding:5%; color:#ff0000; border-radius:2%;">
+                                        Please register or enter valid admin details
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <button class="btn btn-primary justify-content-center" style="margin-top:35%; border-radius:1px; margin-left:auto; margin-right:auto; font-weight:bold;">Click as user to log in</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
