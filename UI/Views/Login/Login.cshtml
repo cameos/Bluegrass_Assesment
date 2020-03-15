@@ -30,21 +30,23 @@
                             <div class="col-6" style="border-right:1px solid #ff006e;">
                                 <form enctype="multipart/form-data" name="admin_login" id="admin_login">
                                     <div class="form-group">
-                                        <label for="exampleInputEmail1">Email address</label>
-                                        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                                        <label for="adminLoginEmail">Email address</label>
+                                        <input type="email" class="form-control" id="adminLoginEmail" name="adminLoginEmail" aria-describedby="emailHelp" placeholder="enter email">
                                         <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
                                     </div>
                                     <div class="form-group">
-                                        <label for="exampleInputPassword1">Password</label>
-                                        <input type="password" class="form-control" id="exampleInputPassword1">
+                                        <label for="adminLoginPassword">Password</label>
+                                        <input type="password" class="form-control" id="adminLoginPassword" name="adminLoginPassword" placeholder="enter password">
                                     </div>
                                     
-                                    <button type="submit" class="btn btn-primary" style="border-radius:1px; margin-left:auto; margin-right:auto; font-weight:bold;">Submit</button>  OR  
+                                    <input type="submit" value="login as admin" class="btn btn-primary" style="border-radius:1px; margin-left:auto; margin-right:auto; font-weight:bold;">  OR  
                                     @Html.ActionLink("Register as main admin", "register", "login")
                                 </form>
                                 <div class="row" style="margin-top:2%;">
-                                    <div class="col-11 hideError">
-                                        Please register or enter valid admin details
+                                    <div class="col-11">
+                                        <div id="loginError" class="hideError">
+                                            Please register or enter valid admin details
+                                        </div>
                                     </div>
                                 </div>
                             </div>

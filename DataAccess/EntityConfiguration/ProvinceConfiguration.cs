@@ -20,7 +20,7 @@ namespace DataAccess.EntityConfiguration
             this.Property(c => c.ProvinceName).HasColumnType("nvarchar").HasMaxLength(150).IsFixedLength().IsRequired();
             this.Property(c => c.Description).HasColumnType("nvarchar").HasMaxLength(550).IsFixedLength().IsOptional();
 
-            this.HasRequired<Country>(c => c.Country).WithMany(c => c.Provinces).HasForeignKey<Guid>(c => c.ProvinceId).WillCascadeOnDelete();
+            this.HasRequired<Country>(c => c.Country).WithMany(c => c.Provinces).HasForeignKey<Guid>(c => c.CountryId).WillCascadeOnDelete(true);
         }
     }
 }

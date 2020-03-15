@@ -231,6 +231,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\AdminLogin.cs" />
     <Compile Include="Models\adminModel.cs" />
     <Compile Include="Models\EncryptionVerifiers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -245,6 +246,7 @@
     <Content Include="Scripts\jquery-3.4.1.min.map" />
     <Content Include="Views\Login\Login.cshtml" />
     <Content Include="Views\Login\register.cshtml" />
+    <Content Include="Views\Login\adminHome.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

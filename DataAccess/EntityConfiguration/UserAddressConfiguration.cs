@@ -19,8 +19,8 @@ namespace DataAccess.EntityConfiguration
             this.HasKey<Guid>(c => c.UserAddressId).Property(c => c.UserAddressId).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity).HasColumnType("uniqueidentifier").IsRequired();
 
 
-            this.HasRequired<User>(c => c.User).WithMany(c => c.UserAddresses).HasForeignKey<Guid>(c => c.UserId).WillCascadeOnDelete();
-            this.HasRequired<Address>(c => c.Address).WithMany(c => c.UserAddresses).HasForeignKey<Guid>(c => c.UserAddressId).WillCascadeOnDelete();
+            this.HasRequired<User>(c => c.User).WithMany(c => c.UserAddresses).HasForeignKey<Guid>(c => c.UserId).WillCascadeOnDelete(true);
+            this.HasRequired<Address>(c => c.Address).WithMany(c => c.UserAddresses).HasForeignKey<Guid>(c => c.AddressId).WillCascadeOnDelete(true);
         }
     }
 }

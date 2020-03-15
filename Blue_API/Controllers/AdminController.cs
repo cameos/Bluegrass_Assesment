@@ -158,5 +158,42 @@ namespace Blue_API.Controllers
             return message;
         }
 
+        [Route("search/email")]
+        [HttpPost]
+        public HttpResponseMessage email_search([FromBody]string email)
+        {
+            HttpResponseMessage message = null;
+            var error_message = string.Empty;
+
+
+            if (string.IsNullOrWhiteSpace(email)|| !(email.Contains("@")))
+            {
+                error_message = "error, could not be processed further bad request";
+                message = Request.CreateResponse(HttpStatusCode.BadRequest, error_message);
+                message.Headers.Date = DateTime.Now;
+                return message;
+            }
+
+            Admin admin = _admin.show_by_email(email);
+            if (admin == null)
+            {
+                message = Request.CreateResponse(HttpStatusCode.NotFound, admin);
+                message.Headers.Date = DateTime.Now;
+            }
+            else if (admin != null)
+            {
+                message = Request.CreateResponse(HttpStatusCode.OK, admin);
+                message.Headers.Date = DateTime.Now;
+            }
+            else
+            {
+                error_message = "error, internal server error could not be processed further";
+                message = Request.CreateResponse(HttpStatusCode.InternalServerError, error_message);
+                message.Headers.Date = DateTime.Now;
+                return message;
+            }
+            return message;
+        }
+
     }
 }

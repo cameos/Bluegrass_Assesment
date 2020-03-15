@@ -31,6 +31,14 @@ namespace UI.Controllers
             return View();
         }
 
+        [Route("admin")]
+        [HttpGet]
+        public ActionResult adminHome()
+        {
+            return View();
+        }
+
+
         [Route("new")]
         [HttpPost]
         public ActionResult register_new(adminModel adminModel)
@@ -89,11 +97,68 @@ namespace UI.Controllers
             }
             else
             {
-                //var data = Url.Action("index", "home");
-                FormsAuthentication.SetAuthCookie(admin.Email, false);
-                return RedirectToActionPermanent("Login", "home");
+                
+                //FormsAuthentication.SetAuthCookie(admin.Email, false);
+                error_message = Url.Action("Login", "login");
+                return Json(error_message, "application/json; charset=utf-8", Encoding.UTF8, JsonRequestBehavior.DenyGet);
             }
         }
 
+        [Route("signin")]
+        [HttpPost]
+        public ActionResult sign_in(AdminLogin adminlog)
+        {
+            var error_message = new object();
+            if(string.IsNullOrWhiteSpace(adminlog.adminLoginEmail) || string.IsNullOrWhiteSpace(adminlog.adminLoginPassword))
+            {
+                error_message = "error, bad request could not be processed further";
+                return Json(error_message, "application/json; charset=utf-8", Encoding.UTF8, JsonRequestBehavior.DenyGet);
+            }
+
+            //call admin object and verify
+            Admin admin = new Admin();
+            using(var api = new HttpClient())
+            {
+                api.BaseAddress = new Uri("https://localhost:44343/api/admin/");
+                api.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                var post = api.PostAsJsonAsync<string>("search/email", adminlog.adminLoginEmail);
+                post.Wait();
+                var result = post.Result;
+                if (result.StatusCode == HttpStatusCode.Created)
+                {
+                    var s = result.Content.ReadAsAsync<Admin>();
+                    s.Wait();
+                    admin = s.Result;
+                }
+                else if (result.StatusCode == HttpStatusCode.NotFound)
+                {
+                    var s = result.Content.ReadAsAsync<Admin>();
+                    s.Wait();
+                    admin = s.Result;
+                }
+                else
+                {
+                    error_message = "error, internal server error please try again later";
+                    return Json(error_message, "application/json; charset=utf-8", Encoding.UTF8, JsonRequestBehavior.DenyGet);
+                }
+            }
+
+
+            var pass = EncryptionVerifiers.encrypt_value(admin.Salt, adminlog.adminLoginPassword);
+            if(pass == admin.Password)
+            {
+                FormsAuthentication.SetAuthCookie(admin.Email, false);
+                error_message = Url.Action("admin", "login");
+                return Json(error_message, "application/json; charset=utf-8", Encoding.UTF8, JsonRequestBehavior.DenyGet);
+            }
+            else
+            {
+                error_message = "error, bad credentials";
+                return Json(error_message, "application/json; charset=utf-8", Encoding.UTF8, JsonRequestBehavior.DenyGet);
+            }
+
+            
+        }
     }
 }

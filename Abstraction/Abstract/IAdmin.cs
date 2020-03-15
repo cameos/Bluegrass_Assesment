@@ -13,5 +13,6 @@ namespace Abstraction.Abstract
         bool update_admin(Admin admin);
         List<Admin> all_admin();
         Admin show_admin(Guid id);
+        Admin show_by_email(string email);
     }
 }

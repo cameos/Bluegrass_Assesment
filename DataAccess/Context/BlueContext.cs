@@ -18,7 +18,7 @@ namespace DataAccess.Context
 {
     public class BlueContext:DbContext
     {
-        public BlueContext() : base("Name=bluegrass")
+        public BlueContext() : base("Name=blue")
         {
             Database.SetInitializer<BlueContext>(new MigrateDatabaseToLatestVersion<BlueContext, Configuration>(useSuppliedContext: true));
         }

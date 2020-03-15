@@ -38,10 +38,33 @@ $(document).ready(function () {
                         $("#registerError").removeClass("hideError").addClass("showError");
                     }
                     else {
-                        var target = $("#registerError");
-                        target.empty().html();
-                        target.append(error_message);
-                        $("#registerError").removeClass("hideError").addClass("showError");
+                        window.location.href = "https://localhost:44331" + error_message;
+                    }
+                }
+            }
+        });
+    });
+
+    $(document).on("submit", "#admin_login", function (e) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+
+        var form = new FormData(document.getElementById("admin_login"));
+        $.ajax({
+            method: "POST",
+            url: "https://localhost:44331/login/signin",
+            dataType: "json",
+            data: form,
+            contentType: false,
+            processData: false,
+            cache: false,
+            success: function (error_message) {
+                if (typeof error_message == 'string' || error_message instanceof String) {
+                    if (error_message.indexOf("error") !== -1) {
+                        $("#loginError").removeClass("hideError").addClass("showError");
+                    }
+                    else {
+                        window.location.href = "https://localhost:44331" + error_message;
                     }
                 }
             }

@@ -121,6 +121,44 @@ namespace Abstraction.Concrete
             return admin;
         }
 
+        public Admin show_by_email(string email)
+        {
+            Admin admin = new Admin();
+            if (string.IsNullOrWhiteSpace(email) || !(email.Contains("@")))
+                return admin;
+            using(_context = new BlueContext())
+            {
+                using(var _transaction = _context.Database.BeginTransaction(IsolationLevel.Serializable))
+                {
+                    try
+                    {
+                        if (_context.Database.Connection.State == ConnectionState.Closed || _context.Database.Connection.State == ConnectionState.Broken)
+                            _context.Database.Connection.Open();
+
+                        admin = (from a in _context.Admin
+                                 where (a.Email == email)
+                                 select a).FirstOrDefault<Admin>();
+                        _context.SaveChanges();
+                        if(admin == null)
+                        {
+                            _transaction.Rollback();
+                            return admin;
+                        }
+                        else
+                        {
+                            _transaction.Commit();
+                        }
+                    }
+                    catch(Exception e)
+                    {
+                        _transaction.Rollback();
+                        throw new Exception(e.Message);
+                    }
+                }
+            }
+            return admin;
+        }
+
         public bool update_admin(Admin admin)
         {
             bool flag = false;

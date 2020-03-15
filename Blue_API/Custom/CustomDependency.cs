@@ -55,6 +55,7 @@ namespace Blue_API.Custom
             kernel.Bind<ICity>().To<CityConcrete>();
             kernel.Bind<IAddress>().To<AddressConcrete>();
             kernel.Bind<IUser>().To<UserConcrete>();
+            kernel.Bind<IAdmin>().To<AdminConcrete>();
         }
 
         private IKernel AddRequestBindings(IKernel kernel)
@@ -64,6 +65,7 @@ namespace Blue_API.Custom
             kernel.Bind<ICity>().To<CityConcrete>();
             kernel.Bind<IAddress>().To<AddressConcrete>();
             kernel.Bind<IUser>().To<UserConcrete>();
+            kernel.Bind<IAdmin>().To<AdminConcrete>();
 
             return kernel;
         }

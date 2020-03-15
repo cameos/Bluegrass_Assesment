@@ -24,9 +24,9 @@ namespace DataAccess.EntityConfiguration
             this.Property(c=>c.PostalCode).HasColumnType("nvarchar").HasMaxLength(30).IsFixedLength().IsRequired();
 
 
-            this.HasRequired<City>(c => c.City).WithMany(c => c.Addresses).HasForeignKey<Guid>(c => c.CityId).WillCascadeOnDelete();
-            this.HasRequired<Province>(c => c.Province).WithMany(c => c.Addresses).HasForeignKey<Guid>(c => c.ProvinceId).WillCascadeOnDelete();
-            this.HasRequired<Country>(c => c.Country).WithMany(c => c.Addresses).HasForeignKey<Guid>(c => c.CountryId).WillCascadeOnDelete();
+            this.HasRequired<City>(c => c.City).WithMany(c => c.Addresses).HasForeignKey<Guid>(c => c.CityId).WillCascadeOnDelete(true);
+            this.HasRequired<Province>(c => c.Province).WithMany(c => c.Addresses).HasForeignKey<Guid>(c => c.ProvinceId).WillCascadeOnDelete(false);
+            this.HasRequired<Country>(c => c.Country).WithMany(c => c.Addresses).HasForeignKey<Guid>(c => c.CountryId).WillCascadeOnDelete(false);
 
         }
     }
