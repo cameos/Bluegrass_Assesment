@@ -79,10 +79,10 @@ $(document).ready(function () {
         e.preventDefault();
         e.stopImmediatePropagation();
 
-        var form = new FormData(document.getElementById("formCountry");
+        var form = new FormData(document.getElementById("formCountry"));
         $.ajax({
             method: "POST",
-            url: "https://localhost:44331/login/signin",
+            url: "https://localhost:44331/admin/country",
             dataType: "json",
             data: form,
             contentType: false,
@@ -91,7 +91,7 @@ $(document).ready(function () {
             success: function (error_message) {
                 if (typeof error_message == 'string' || error_message instanceof String) {
                     if (error_message.indexOf("error") !== -1) {
-                        $("#loginError").removeClass("hideError").addClass("showError");
+                        $("#countryError").removeClass("hideError").addClass("showError");
                     }
                     else {
                         window.location.href = "https://localhost:44331" + error_message;
@@ -101,7 +101,26 @@ $(document).ready(function () {
         });
     });
 
+    $(document).on('click', '#nav-tab a[href="#nav-province"]', function (e) {
+        e.preventDefault();
 
+        $.ajax({
+            method: "GET",
+            url: "https://localhost:44331/admin/countries",
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            cache: false,
+            success: function (countries) {
+                console.log(countries);
+                var cs = '';
+                $.each(countries, function (key, value) {
+                    cs += '<option value="' + value.CountryId + '">' + value.CountryName + '</option>';
+                });
+                var target = $("#adminCSelect");
+                target.append(cs);
+            }
+        });
+    });
 
 
 });

@@ -26,13 +26,20 @@ namespace Abstraction.Concrete
                 {
                     try
                     {
+
+                        if (_context.Database.Connection.State == ConnectionState.Closed || _context.Database.Connection.State == ConnectionState.Broken)
+                            _context.Database.Connection.Open();
+
                         countries = (from c in _context.Country
                                      select c).ToList<Country>();
+                        _context.SaveChanges();
                         if (countries.Count() == 0)
+                        {
+                            _context.Database.Connection.Close();
                             return countries;
+                        }
                         else
                         {
-                            _context.SaveChanges();
                             _transaction.Commit();
 
                         }
@@ -44,6 +51,7 @@ namespace Abstraction.Concrete
                     }
                 }
             }
+           
             return countries;
         }
 

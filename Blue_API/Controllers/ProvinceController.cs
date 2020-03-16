@@ -186,5 +186,44 @@ namespace Blue_API.Controllers
             return message;
         }
 
+        [Route("search/name")]
+        [HttpPost]
+        public HttpResponseMessage show_name([FromBody]string name)
+        {
+            HttpResponseMessage message = null;
+            var error_message = string.Empty;
+
+
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                error_message = "error, could not be processed further";
+                message = Request.CreateResponse(HttpStatusCode.BadRequest, error_message);
+                message.Headers.Date = DateTime.Now;
+                return message;
+            }
+
+            Province province = _prov.search_by_name(name);
+
+            if (province == null)
+            {
+                message = Request.CreateResponse(HttpStatusCode.NotFound, province);
+                message.Headers.Date = DateTime.Now;
+            }
+            else if (province != null)
+            {
+                message = Request.CreateResponse(HttpStatusCode.OK, province);
+                message.Headers.Date = DateTime.Now;
+            }
+            else
+            {
+                error_message = "error, internal server error could not be processed further";
+                message = Request.CreateResponse(HttpStatusCode.InternalServerError, error_message);
+                message.Headers.Date = DateTime.Now;
+                return message;
+            }
+            return message;
+        }
+
+
     }
 }

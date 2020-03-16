@@ -25,7 +25,7 @@ namespace Abstraction.Concrete
                 {
                     try
                     {
-                       provinces = (from p in _context.Province
+                        provinces = (from p in _context.Province
                                      select p).ToList<Province>();
                         if (provinces.Count() == 0)
                             return provinces;
@@ -84,8 +84,8 @@ namespace Abstraction.Concrete
                     try
                     {
                         var province = (from p in _context.Province
-                                       where (p.ProvinceId == pr.ProvinceId)
-                                       select p).FirstOrDefault<Province>();
+                                        where (p.ProvinceId == pr.ProvinceId)
+                                        select p).FirstOrDefault<Province>();
                         if (province == null)
                             return (flag = false);
                         else
@@ -118,8 +118,8 @@ namespace Abstraction.Concrete
                     try
                     {
                         var province = (from c in _context.Province
-                                       where (c.ProvinceId == id)
-                                       select c).FirstOrDefault<Province>();
+                                        where (c.ProvinceId == id)
+                                        select c).FirstOrDefault<Province>();
                         if (province == null)
                             return (flag = false);
                         else
@@ -140,6 +140,45 @@ namespace Abstraction.Concrete
             return flag;
         }
 
+        public Province search_by_name(string name)
+        {
+            Province province = new Province();
+            if (string.IsNullOrWhiteSpace(name))
+                return province;
+            using (_context = new BlueContext())
+            {
+                using (var _transaction = _context.Database.BeginTransaction(IsolationLevel.Serializable))
+                {
+                    try
+                    {
+                        if (_context.Database.Connection.State == ConnectionState.Closed || _context.Database.Connection.State == ConnectionState.Broken)
+                            _context.Database.Connection.Open();
+                        province = (from p in _context.Province
+                                    where
+                                    (p.ProvinceName == name)
+                                    select p).FirstOrDefault<Province>();
+                        _context.SaveChanges();
+                        if (province == null)
+                        {
+                            _transaction.Rollback();
+                            return province;
+                        }
+                        else
+                        {
+                            _transaction.Commit();
+                        }
+
+                    }
+                    catch (Exception e)
+                    {
+                        _transaction.Rollback();
+                        throw new Exception(e.Message);
+                    }
+                }
+            }
+            return province;
+        }
+
         public Province show(Province pr)
         {
             Province province = new Province();
@@ -152,8 +191,8 @@ namespace Abstraction.Concrete
                     try
                     {
                         province = (from p in _context.Province
-                                   where (p.ProvinceId == pr.ProvinceId)
-                                   select p).FirstOrDefault<Province>();
+                                    where (p.ProvinceId == pr.ProvinceId)
+                                    select p).FirstOrDefault<Province>();
                         if (province == null)
                             return province;
                         else
@@ -184,8 +223,8 @@ namespace Abstraction.Concrete
                     try
                     {
                         province = (from p in _context.Province
-                                   where (p.ProvinceId == id)
-                                   select p).FirstOrDefault<Province>();
+                                    where (p.ProvinceId == id)
+                                    select p).FirstOrDefault<Province>();
                         if (province == null)
                             return province;
                         else
