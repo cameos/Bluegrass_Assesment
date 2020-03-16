@@ -16,5 +16,6 @@ namespace Abstraction.Abstract
         List<Country> all();
         Country show(Country cou);
         Country show_by_id(Guid id);
+        Country search_by_name(string name);
     }
 }

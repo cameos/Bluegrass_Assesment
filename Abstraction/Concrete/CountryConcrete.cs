@@ -58,6 +58,10 @@ namespace Abstraction.Concrete
                 {
                     try
                     {
+                        if (_context.Database.Connection.State == ConnectionState.Closed || _context.Database.Connection.State == ConnectionState.Broken)
+                            _context.Database.Connection.Open();
+
+
                         _context.Country.Add(cou);
                         _context.SaveChanges();
                         _transaction.Commit();
@@ -139,6 +143,45 @@ namespace Abstraction.Concrete
                 }
             }
             return flag;
+        }
+
+        public Country search_by_name(string name)
+        {
+            Country country = new Country();
+            if (string.IsNullOrWhiteSpace(name))
+                return country;
+            using(_context = new BlueContext())
+            {
+                using(var _transaction = _context.Database.BeginTransaction(IsolationLevel.Serializable))
+                {
+                    try
+                    {
+                        if (_context.Database.Connection.State == ConnectionState.Closed || _context.Database.Connection.State == ConnectionState.Broken)
+                            _context.Database.Connection.Open();
+                        country = (from c in _context.Country
+                                   where
+                                   (c.CountryName == name)
+                                   select c).FirstOrDefault<Country>();
+                        _context.SaveChanges();
+                        if(country == null)
+                        {
+                            _transaction.Rollback();
+                            return country;
+                        }
+                        else
+                        {
+                            _transaction.Commit();
+                        }
+
+                    }
+                    catch(Exception e)
+                    {
+                        _transaction.Rollback();
+                        throw new Exception(e.Message);
+                    }
+                }
+            }
+            return country;
         }
 
         public Country show(Country cou)

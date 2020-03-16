@@ -74,5 +74,34 @@ $(document).ready(function () {
         });
     });
 
+    //add country from the admin controller
+    $(document).on("submit", "#formCountry", function (e) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+
+        var form = new FormData(document.getElementById("formCountry");
+        $.ajax({
+            method: "POST",
+            url: "https://localhost:44331/login/signin",
+            dataType: "json",
+            data: form,
+            contentType: false,
+            processData: false,
+            cache: false,
+            success: function (error_message) {
+                if (typeof error_message == 'string' || error_message instanceof String) {
+                    if (error_message.indexOf("error") !== -1) {
+                        $("#loginError").removeClass("hideError").addClass("showError");
+                    }
+                    else {
+                        window.location.href = "https://localhost:44331" + error_message;
+                    }
+                }
+            }
+        });
+    });
+
+
+
 
 });

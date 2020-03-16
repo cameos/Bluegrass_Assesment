@@ -3,5 +3,78 @@
     ViewBag.Title = "home";
 }
 
-<h2>home</h2>
+
+
+
+
+    <div class="row">
+
+        <!--error modal (for all error this will be called-->
+        <div class="modal fade" id="new-contact-modal" tabindex="-1" role="dialog" aria-labelledby="contact-modal-title" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-scrollable" role="document">
+                <div class="modal-content" style="border-radius:0;border:1px solid #e8e5e5;">
+                    <div class="modal-header">
+                        <h3 class="modal-title" id="contact-modal-title">
+                            <img src="~/Content/icons/088-user.png" height="30" width="30" class="rounded" style="display:inline-block;" />  <span style="">New Contact</span>                         
+                        </h3>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-12">
+                                <span>form will go here</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        @Html.ActionLink("Go to login page", "index", "home", new { @class = "btn btn_primary radio-login-btn" })
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12">
+            <nav>
+                <div class="nav nav-tabs nav-justified" id="nav-tab" role="tablist">
+                    <a class="nav-item nav-link active" id="nav-contactlist" data-toggle="tab" href="#nav-list" role="tab" aria-controls="nav-list" aria-selected="true" style="color:#ff2d6d;font-size:0.8em; font-weight:bold;">Contact list</a>
+                    <a class="nav-item nav-link" id="nav-disabled" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false" style="color:#ff2d6d;font-size:0.8em; font-weight:bold;">Disabled contacts</a>
+                    <a class="nav-item nav-link" id="nav-request-disabled" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false" style="color:#ff2d6d;font-size:0.8em; font-weight:bold;">Request to be disabled</a>
+                    <a class="nav-item nav-link" id="nav-country-manage" data-toggle="tab" href="#nav-country" role="tab" aria-controls="nav-country" aria-selected="false" style="color:#ff2d6d;font-size:0.8em; font-weight:bold;">Country management</a>
+                    <a class="nav-item nav-link" id="nav-prov-manage" data-toggle="tab" href="#nav-province" role="tab" aria-controls="nav-province" aria-selected="false" style="color:#ff2d6d;font-size:0.8em; font-weight:bold;">Province management</a>
+                    <a class="nav-item nav-link" id="nav-city-manage" data-toggle="tab" href="#nav-city" role="tab" aria-controls="nav-city" aria-selected="false" style="color:#ff2d6d;font-size:0.8em; font-weight:bold;">City management</a>
+                </div>
+            </nav>
+            <div class="tab-content" id="nav-tabContent" style="padding:2%;">
+                <div class="tab-pane fade show active" id="nav-list" role="tabpanel" aria-labelledby="nav-home-tab">
+                    <button class="btn btn-primary" style="border-radius:1px; margin-left:auto; margin-right:auto; font-weight:bold;" data-toggle="modal" data-target="#new-contact-modal">add new contact</button>
+                </div>
+                <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">...</div>
+                <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">...</div>
+                <!--add country-->
+                <div class="tab-pane fade" id="nav-country" role="tabpanel" aria-labelledby="nav-country-manage">
+                    <form enctype="multipart/form-data" name="formCountry" id="formCountry">
+                        <div class="form-group">
+                            <label for="adminCountry">Add country</label>
+                            <input type="text" class="form-control" id="countryAdd" name="countryAdd" aria-describedby="countryHelp" placeholder="enter country">
+                            <small id="countryHelp" class="form-text text-muted">Add country to the list of countries</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="adminCountryDesc">Add Description (optional)</label>
+                            <textarea class="form-control" id="adminCountryDesc" name="adminCountryDesc" placeholder="add description for this country"></textarea>
+                        </div>
+                        <input type="submit" value="Add country" class="btn btn-primary" style="border-radius:1px; margin-left:auto; margin-right:auto; font-weight:bold;">
+                    </form>
+                    <div class="row" style="margin-top:5%;">
+                        <div class="col-11">
+                            <div id="loginError" class="hideError">
+                                The country added its either it exists or double check any errors
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--add province-->
+                <div class="tab-pane fade" id="nav-province" role="tabpanel" aria-labelledby="nav-prov-manage">...</div>
+                <div class="tab-pane fade" id="nav-city" role="tabpanel" aria-labelledby="nav-city-manage">...</div>
+            </div>
+        </div>
+    </div>
 
