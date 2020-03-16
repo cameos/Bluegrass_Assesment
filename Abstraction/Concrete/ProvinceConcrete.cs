@@ -72,6 +72,43 @@ namespace Abstraction.Concrete
             return flag;
         }
 
+        public List<Province> provinces_by_country(Guid id)
+        {
+            List<Province> provinces = new List<Province>();
+            if (id == null)
+                return provinces;
+            using(_context = new BlueContext())
+            {
+                using(var _transaction = _context.Database.BeginTransaction((IsolationLevel.Serializable)))
+                {
+                    try
+                    {
+                        if (_context.Database.Connection.State == ConnectionState.Closed || _context.Database.Connection.State == ConnectionState.Broken)
+                            _context.Database.Connection.Open();
+                        provinces = (from p in _context.Province
+                                     where (p.CountryId == id)
+                                     select p).ToList<Province>();
+                        _context.SaveChanges();
+                        if(provinces.Count() == 0)
+                        {
+                            _transaction.Rollback();
+                            return provinces;
+                        }
+                        else
+                        {
+                            _transaction.Commit();
+                        }
+                    }
+                    catch(Exception e)
+                    {
+                        _transaction.Rollback();
+                        throw new Exception(e.Message);
+                    }
+                }
+            }
+            return provinces;
+        }
+
         public bool remove(Province pr)
         {
             bool flag = false;

@@ -224,6 +224,41 @@ namespace Blue_API.Controllers
             return message;
         }
 
+        [Route("search/country")]
+        [HttpPost]
+        public HttpResponseMessage all_by_country([FromBody] Guid id)
+        {
+            List<Province> provinces = new List<Province>();
+            HttpResponseMessage message = null;
+            if (id == null)
+            {
+                message = Request.CreateResponse(HttpStatusCode.BadRequest, provinces);
+                message.Headers.Date = DateTime.Now;
+                return message;
+            }
+
+            provinces = _prov.provinces_by_country(id).ToList<Province>();
+            if (provinces.Count() == 0)
+            {
+                message = Request.CreateResponse(HttpStatusCode.NotFound, provinces);
+                message.Headers.Date = DateTime.Now;
+            }
+            else if (provinces.Count() > 0)
+            {
+                message = Request.CreateResponse(HttpStatusCode.OK, provinces);
+                message.Headers.Date = DateTime.Now;
+            }
+            else
+            {
+                
+                message = Request.CreateResponse(HttpStatusCode.InternalServerError, provinces);
+                message.Headers.Date = DateTime.Now;
+                return message;
+            }
+            return message;
+        }
+
+
 
     }
 }

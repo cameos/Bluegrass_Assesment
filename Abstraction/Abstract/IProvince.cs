@@ -17,5 +17,6 @@ namespace Abstraction.Abstract
         Province show(Province pr);
         Province show_by_id(Guid id);
         Province search_by_name(string name);
+        List<Province> provinces_by_country(Guid id);
     }
 }

@@ -58,7 +58,7 @@ namespace Blue_API.Controllers
             HttpResponseMessage message = null;
             var error_message = string.Empty;
 
-            if (string.IsNullOrWhiteSpace(city.CityName))
+            if (string.IsNullOrWhiteSpace(city.CityName)|| city.CountryId == null || city.ProvinceId == null)
             {
                 error_message = "error, please supply the city name";
                 message = Request.CreateResponse(HttpStatusCode.BadRequest, error_message);

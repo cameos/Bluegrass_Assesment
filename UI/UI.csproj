@@ -2176,6 +2176,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\AddCity.cs" />
     <Compile Include="Models\AddProvince.cs" />
     <Compile Include="Models\AdminLogin.cs" />
     <Compile Include="Models\adminModel.cs" />

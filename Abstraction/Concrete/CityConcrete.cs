@@ -49,7 +49,7 @@ namespace Abstraction.Concrete
         public bool insert(City city)
         {
             bool flag = false;
-            if (string.IsNullOrWhiteSpace(city.CityName))
+            if (string.IsNullOrWhiteSpace(city.CityName) || city.CountryId == null || city.ProvinceId ==null)
                 return (flag = false);
             using (_context = new BlueContext())
             {
@@ -57,10 +57,16 @@ namespace Abstraction.Concrete
                 {
                     try
                     {
+                        if (_context.Database.Connection.State == ConnectionState.Closed || _context.Database.Connection.State == ConnectionState.Broken)
+                            _context.Database.Connection.Open();
+
+
                         _context.City.Add(city);
                         _context.SaveChanges();
+
                         _transaction.Commit();
                         flag = true;
+
                     }
                     catch (Exception e)
                     {

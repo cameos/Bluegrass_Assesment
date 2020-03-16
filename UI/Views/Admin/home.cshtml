@@ -54,6 +54,7 @@
             <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">...</div>
             <!--add country-->
             <div class="tab-pane fade" id="nav-country" role="tabpanel" aria-labelledby="nav-country-manage">
+                <h4>Country management</h4>
                 <form enctype="multipart/form-data" name="formCountry" id="formCountry" style="margin-left:auto; margin-right:auto; width:70%;">
                     <div class="form-group">
                         <label for="adminCountry">Add country</label>
@@ -93,7 +94,7 @@
                                         </div>
                                         <div class="form-group">
                                             <label for="adminProvince">Enter Province</label>
-                                            <input type="text" class="form-control" id="adminProvince" name="adminProvince" aria-describedby="prvHelp" placeholder="enter country" style="border-radius:unset;">
+                                            <input type="text" class="form-control" id="adminProvince" name="adminProvince" aria-describedby="prvHelp" placeholder="enter province" style="border-radius:unset;">
                                             <small id="prvHelp" class="form-text text-muted">enter Province name</small>
                                         </div>
                                         <div class="form-group">
@@ -102,6 +103,13 @@
                                         </div>
                                         <input type="submit" value="Add Province" class="btn btn-primary" style="border-radius:1px; margin-left:auto; margin-right:auto; font-weight:bold;">
                                     </form>
+                                    <div class="row" style="margin-top:5%;">
+                                        <div class="col-11">
+                                            <div id="provinceError" class="hideError">
+                                                The province added its either it exists or double check any input added
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -110,7 +118,58 @@
             </div>
             <!--add city-->
             <div class="tab-pane fade" id="nav-city" role="tabpanel" aria-labelledby="nav-city-manage">
+                <div class="row">
+                    <div class="col-12">
+                        <div style="width:80%; margin-left:auto; margin-right:auto;">
+                            <h4>City management</h4>
+                            <div class="row">
+                                <div class="col-12">
 
+                                    <!--city form-->
+                                    <form enctype="multipart/form-data" name="formCity" id="formCity" style="margin-left:auto; margin-right:auto;">
+                                        <div class="form-group">
+                                            <label for="adminCoSelect">choose country</label>
+                                            <select class="form-control" id="adminCoSelect" name="adminCoSelect" aria-describedby="coSelect" style="border-radius:1px; margin-left:auto; margin-right:auto; font-weight:bold;">
+                                                <option value="">Select country</option>
+                                            </select>
+                                            <small id="coSelect" class="form-text text-muted">choose country from the list of countries</small>
+                                        </div>
+
+                                        <!--province choose-->
+                                        <div class="form-group">
+                                            <label for="adminPrSelect">choose province</label>
+                                            <select class="form-control" id="adminPrSelect" name="adminPrSelect" aria-describedby="proSelect" style="border-radius:1px; margin-left:auto; margin-right:auto; font-weight:bold;">
+                                                <option value="">Select province</option>
+                                            </select>
+                                            <small id="proSelect" class="form-text text-muted">choose province from the list of provinces</small>
+                                        </div>
+
+                                        <!--enter city-->
+                                        <div class="form-group">
+                                            <label for="adminCity">Enter City</label>
+                                            <input type="text" class="form-control" id="adminCity" name="adminCity" aria-describedby="prvHelp" placeholder="enter city" style="border-radius:unset;">
+                                            <small id="prvHelp" class="form-text text-muted">enter city name</small>
+                                        </div>
+
+                                        <!--description enter-->
+                                        <div class="form-group">
+                                            <label for="adminCityDesc">Add Description (optional)</label>
+                                            <textarea class="form-control" id="adminCityDesc" name="adminCityDesc" placeholder="add description for this City" style="border-radius:unset;"></textarea>
+                                        </div>
+                                        <input type="submit" value="Add City" class="btn btn-primary" style="border-radius:1px; margin-left:auto; margin-right:auto; font-weight:bold;">
+                                    </form>
+                                    <div class="row" style="margin-top:5%;">
+                                        <div class="col-11">
+                                            <div id="cityError" class="hideError">
+                                                The city added its either it exists or double check any input added
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

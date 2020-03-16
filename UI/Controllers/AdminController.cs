@@ -29,9 +29,9 @@ namespace UI.Controllers
         [HttpGet]
         public ActionResult get_all_countries()
         {
-            List<Country> countries= new List<Country>();
+            List<Country> countries = new List<Country>();
 
-            using(var api = new HttpClient())
+            using (var api = new HttpClient())
             {
                 api.BaseAddress = new Uri("https://localhost:44343/api/country/");
                 api.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -39,13 +39,13 @@ namespace UI.Controllers
                 var get_countries = api.GetAsync("all");
                 get_countries.Wait();
                 var result = get_countries.Result;
-                if(result.StatusCode == HttpStatusCode.OK)
+                if (result.StatusCode == HttpStatusCode.OK)
                 {
                     var s = result.Content.ReadAsAsync<List<Country>>();
                     s.Wait();
                     countries = s.Result;
                 }
-                else if(result.StatusCode == HttpStatusCode.NotFound)
+                else if (result.StatusCode == HttpStatusCode.NotFound)
                 {
                     var s = result.Content.ReadAsAsync<List<Country>>();
                     s.Wait();
@@ -172,7 +172,7 @@ namespace UI.Controllers
             };
 
             Province temp = new Province();
-            using(var api = new HttpClient())
+            using (var api = new HttpClient())
             {
                 api.BaseAddress = new Uri("https://localhost:44343/api/province/");
                 api.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -207,7 +207,7 @@ namespace UI.Controllers
 
             //add new province
             bool flag = false;
-            using(var api = new HttpClient())
+            using (var api = new HttpClient())
             {
                 api.BaseAddress = new Uri("https://localhost:44343/api/province/");
                 api.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -247,6 +247,100 @@ namespace UI.Controllers
         }
 
 
+        [Route("provinces")]
+        [HttpPost]
+        public ActionResult get_provinces(string CountryId)
+        {
+            List<Province> provinces = new List<Province>();
+            var id = Guid.Parse(CountryId);
+
+            using (var api = new HttpClient())
+            {
+                api.BaseAddress = new Uri("https://localhost:44343/api/province/");
+                api.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                var get_provinces = api.PostAsJsonAsync<Guid>("search/country", id);
+                get_provinces.Wait();
+                var result = get_provinces.Result;
+                if (result.StatusCode == HttpStatusCode.OK)
+                {
+                    var s = result.Content.ReadAsAsync<List<Province>>();
+                    s.Wait();
+                    provinces = s.Result;
+                }
+                else if (result.StatusCode == HttpStatusCode.NotFound)
+                {
+                    var s = result.Content.ReadAsAsync<List<Province>>();
+                    s.Wait();
+                    provinces = s.Result;
+                }
+            }
+            return Json(provinces, "application/json; charset=utf-8", Encoding.UTF8, JsonRequestBehavior.AllowGet);
+
+        }
+
+        [Route("city")]
+        [HttpPost]
+        public ActionResult add_city(AddCity AddCity)
+        {
+
+            var error_message = new object();
+            if(string.IsNullOrWhiteSpace(AddCity.adminCoSelect) || string.IsNullOrWhiteSpace(AddCity.adminPrSelect) || string.IsNullOrWhiteSpace(AddCity.adminCity))
+            {
+                error_message = "error, bad request please check inputs";
+                return Json(error_message, "application/json; charset=utf-8", Encoding.UTF8, JsonRequestBehavior.DenyGet);
+            }
+
+            var countryId = Guid.Parse(AddCity.adminCoSelect);
+            var provinceId = Guid.Parse(AddCity.adminPrSelect);
+            City city = new City
+            {
+                CityName = AddCity.adminCity,
+                CountryId = countryId,
+                ProvinceId = provinceId,
+                Description = AddCity.adminCityDesc
+            };
+
+            //add new city
+            bool flag = false;
+            using (var api = new HttpClient())
+            {
+                api.BaseAddress = new Uri("https://localhost:44343/api/city/");
+                api.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                var post = api.PostAsJsonAsync<City>("new", city);
+                post.Wait();
+                var result = post.Result;
+                if (result.StatusCode == HttpStatusCode.Created)
+                {
+                    var s = result.Content.ReadAsAsync<bool>();
+                    s.Wait();
+                    flag = s.Result;
+                }
+                else if (result.StatusCode == HttpStatusCode.NotFound)
+                {
+                    var s = result.Content.ReadAsAsync<bool>();
+                    s.Wait();
+                    flag = s.Result;
+                }
+                else
+                {
+                    error_message = "error, internal server error please try again later";
+                    return Json(error_message, "application/json; charset=utf-8", Encoding.UTF8, JsonRequestBehavior.DenyGet);
+                }
+            }
+
+            if (!flag)
+            {
+                error_message = "error, internal server error please try again later";
+                return Json(error_message, "application/json; charset=utf-8", Encoding.UTF8, JsonRequestBehavior.DenyGet);
+            }
+            else
+            {
+                error_message = Url.Action("home", "admin");
+                return Json(error_message, "application/json; charset=utf-8", Encoding.UTF8, JsonRequestBehavior.DenyGet);
+            }
+        }
 
 
 
