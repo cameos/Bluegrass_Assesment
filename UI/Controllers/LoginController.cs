@@ -59,7 +59,7 @@ namespace UI.Controllers
                 Email = adminModel.adminEmail,
                 FirstName = adminModel.adminName,
                 LastName = adminModel.adminLastName,
-                Password = adminModel.adminPassword,
+                Password = real_password,
                 Salt = salt
             };
 
@@ -125,7 +125,7 @@ namespace UI.Controllers
                 var post = api.PostAsJsonAsync<string>("search/email", adminlog.adminLoginEmail);
                 post.Wait();
                 var result = post.Result;
-                if (result.StatusCode == HttpStatusCode.Created)
+                if (result.StatusCode == HttpStatusCode.OK)
                 {
                     var s = result.Content.ReadAsAsync<Admin>();
                     s.Wait();
@@ -144,12 +144,20 @@ namespace UI.Controllers
                 }
             }
 
+            //if not admin exist please return the admin error view
+            if(admin == null)
+            {
+                error_message = "error, admin does not exists";
+                return Json(error_message, "application/json; charset=utf-8", Encoding.UTF8, JsonRequestBehavior.DenyGet);
+            }
+
+
 
             var pass = EncryptionVerifiers.encrypt_value(admin.Salt, adminlog.adminLoginPassword);
             if(pass == admin.Password)
             {
                 FormsAuthentication.SetAuthCookie(admin.Email, false);
-                error_message = Url.Action("admin", "login");
+                error_message = Url.Action("home", "admin");
                 return Json(error_message, "application/json; charset=utf-8", Encoding.UTF8, JsonRequestBehavior.DenyGet);
             }
             else

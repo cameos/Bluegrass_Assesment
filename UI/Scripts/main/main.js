@@ -45,11 +45,14 @@ $(document).ready(function () {
         });
     });
 
-    $(document).on("submit", "#admin_login", function (e) {
+    $(document).on("submit", "#adlogin", function (e) {
         e.preventDefault();
         e.stopImmediatePropagation();
 
-        var form = new FormData(document.getElementById("admin_login"));
+
+        console.log("inside the login ajax");
+
+        var form = new FormData(document.getElementById("adlogin"));
         $.ajax({
             method: "POST",
             url: "https://localhost:44331/login/signin",
@@ -70,4 +73,6 @@ $(document).ready(function () {
             }
         });
     });
+
+
 });
