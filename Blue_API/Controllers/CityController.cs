@@ -191,5 +191,40 @@ namespace Blue_API.Controllers
             return message;
         }
 
+        [Route("seach/province")]
+        [HttpPost]
+        public HttpResponseMessage get_cities_by_province([FromBody]Guid id)
+        {
+            List<City> cities = new List<City>();
+            HttpResponseMessage message = null;
+            var error_message = string.Empty;
+
+            if (id == null)
+            {
+                error_message = "error, bad request could not be processed further";
+                message = Request.CreateResponse(HttpStatusCode.BadRequest, error_message);
+                message.Headers.Date = DateTime.Now;
+                return message;
+            }
+
+            cities = _city.cities_by_province(id);
+            if (cities.Count() == 0)
+            {
+                message = Request.CreateResponse(HttpStatusCode.NotFound, cities);
+                message.Headers.Date = DateTime.Now;
+            }
+            else if (cities.Count() > 0)
+            {
+                message = Request.CreateResponse(HttpStatusCode.OK, cities);
+                message.Headers.Date = DateTime.Now;
+            }
+            else
+            {
+                error_message = "error, internal server error could not be processed further";
+                message = Request.CreateResponse(HttpStatusCode.InternalServerError, error_message);
+                message.Headers.Date = DateTime.Now;
+            }
+            return message;
+        }
     }
 }

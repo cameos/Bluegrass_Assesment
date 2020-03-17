@@ -1,4 +1,4 @@
-﻿
+﻿@model List<DataAccess.Entities.User>
 @{
     ViewBag.Title = "home";
 }
@@ -25,7 +25,7 @@
                             <form enctype="multipart/form-data" name="newContactForm" id="newContactForm" style="padding:2%;">
                                 <div class="row" style="padding:3%; border-bottom:1px solid #ff2d6d; border-radius:2%;">
                                     <div class="col-12">
-                                        <h4 class="text-muted" style="font-family:'Comic Sans MS';font-weight:bold;">Personal information</h4>
+                                        <img src="~/Content/icons/038-contact book.png" height="30" width="30" class="rounded" style="display:inline-block;" /><span class="h4 text-muted" style="font-family:'Comic Sans MS';font-weight:bold;">  Personal information</span>
                                     </div>
                                     <div class="col-12">
                                         <div class="row" style="margin-top:5%;">
@@ -109,9 +109,9 @@
                                 <!--address information-->
                                 <div class="row" style="margin-top:4%;  border-top:1px solid #ff2d6d; padding:3%;  border-radius:2%;">
                                     <div class="col-12">
-                                        <h4 class="text-muted" style="font-family:'Comic Sans MS';font-weight:bold;">Personal information</h4>
+                                        <img src="~/Content/icons/036-form.png" height="30" width="30" class="rounded" style="display:inline-block;" />  <span class="h4 text-muted" style="font-family:'Comic Sans MS';font-weight:bold;">  Address information</span>
                                     </div>
-                                    <div class="col-12">
+                                    <div class="col-12" style="margin-top:5%;">
                                         <!--addresss number and address street name-->
                                         <div class="form-row">
                                             <div class="form-group col-md-6">
@@ -173,7 +173,7 @@
                             <div class="row" style="margin-top:5%;">
                                 <div class="col-11">
                                     <div id="contactError" class="hideError">
-                                       Make sure all fields are entered, user image is optional
+                                        Make sure all fields are entered, user image is optional
                                     </div>
                                 </div>
                             </div>
@@ -181,17 +181,43 @@
                     </div>
                 </div>
                 @*<div class="modal-footer">
-                    @Html.ActionLink("Go to login page", "index", "home", new { @class = "btn btn_primary radio-login-btn" })
-                </div>*@
+                        @Html.ActionLink("Go to login page", "index", "home", new { @class = "btn btn_primary radio-login-btn" })
+                    </div>*@
             </div>
         </div>
     </div>
 
+    <!--Success modal (for all sucess this will be called-->
+    <div class="modal fade" id="new-contact-modal" tabindex="-1" role="dialog" aria-labelledby="contact-modal-title" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content" style="border-radius:unset;border:1px solid #e8e5e5;">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="contact-modal-title">
+                        <img src="~/Content/icons/088-user.png" height="30" width="30" class="rounded" style="display:inline-block;" />  <span style="">New Contact</span>
+                    </h3>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-12">
+
+                        </div>
+                    </div>
+                </div>
+                @*<div class="modal-footer">
+                        @Html.ActionLink("Go to login page", "index", "home", new { @class = "btn btn_primary radio-login-btn" })
+                    </div>*@
+            </div>
+        </div>
+    </div>
+
+
     <div class="col-12">
         <nav>
             <div class="nav nav-tabs nav-justified" id="nav-tab" role="tablist">
+                <!--list of contacts-->
                 <a class="nav-item nav-link active" id="nav-contactlist" data-toggle="tab" href="#nav-list" role="tab" aria-controls="nav-list" aria-selected="true" style="color:#ff2d6d;font-size:0.8em; font-weight:bold;">Contact list</a>
-                <a class="nav-item nav-link" id="nav-disabled" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false" style="color:#ff2d6d;font-size:0.8em; font-weight:bold;">Disabled contacts</a>
+                <!--disabled-->
+                <a class="nav-item nav-link" id="nav-disabled" data-toggle="tab" href="#nav-list-disabled" role="tab" aria-controls="nav-list-disabled" aria-selected="false" style="color:#ff2d6d;font-size:0.8em; font-weight:bold;">Disabled contacts</a>
                 <a class="nav-item nav-link" id="nav-request-disabled" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false" style="color:#ff2d6d;font-size:0.8em; font-weight:bold;">Request to be disabled</a>
                 <!--country tab-->
                 <a class="nav-item nav-link" id="nav-country-manage" data-toggle="tab" href="#nav-country" role="tab" aria-controls="nav-country" aria-selected="false" style="color:#ff2d6d;font-size:0.8em; font-weight:bold;">Country management</a>
@@ -204,8 +230,75 @@
         <div class="tab-content" id="nav-tabContent" style="padding:2%;">
             <div class="tab-pane fade show active" id="nav-list" role="tabpanel" aria-labelledby="nav-home-tab">
                 <button id="conNew" class="btn btn-primary" style="border-radius:1px; margin-left:auto; margin-right:auto; font-weight:bold;" data-toggle="modal" data-target="#new-contact-modal">add new contact</button>
+
+                <div class="row" style="margin-top:10%; margin-left:auto; margin-right:auto;">
+                    <div class="col-12">
+                        <div class="h5 text-muted">List of contacts</div>
+                        <div class="row">
+                            <div class="col-12">
+                                <div id="insert_list">
+                                    @if (Model.Count() == 0)
+                                    {
+                                        <img src="~/Content/images/emptyquarter.png" class="img-fluid" />
+                                    }
+                                    else
+                                    {
+                                        <table class="table table-borderless table-hover">
+                                            <thead>
+                                                <tr>
+
+                                                    <th scope="col">full name information</th>
+                                                    <th scope="col">email</th>
+                                                    <th scope="col">phone</th>
+                                                    <th scope="col">Status</th>
+                                                    <th scope="col">ID</th>
+                                                    <th scope="col">Gender</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+
+                                                @foreach (var m in Model)
+                                                {
+                                                <tr>
+                                                    <td>
+                                                        @*@if (m.Avatar != null)
+                                                        {
+                                                            <img class="img-fluid" height="50" width="50" src="@Url.Action("file", "admin", new { userId = m.UserId })" style="display:inline-block;" />
+                                                        }*@
+                                                        @m.FirstName @m.LastName
+                                                    </td>
+                                                    <td>@m.Email</td>
+                                                    <td>@m.Phone</td>
+                                                    <td>@m.Status</td>
+                                                    <td>@m.ID</td>
+                                                    <td>@m.Gender</td>
+                                                    <td>
+                                                        <form enctype="multipart/form-data" name="contactUpdate" id="contactUpdate">
+                                                            <input type="hidden" value="@m.UserId" id="contactUpdateHidden" name="contactUpdateHidden" />
+                                                            <input type="submit" value="update" class="btn btn-primary" style="border-radius:1px; margin-left:auto; margin-right:auto; font-weight:bold;">
+                                                        </form>
+                                                    </td>
+                                                    <td>
+                                                        <form enctype="multipart/form-data" name="contactDelete" id="contactDelete">
+                                                            <input type="hidden" value="@m.UserId" id="contactDeleteHidden" name="contactDeleteHidden" />
+                                                            <input type="submit" value="delete" class="btn btn-primary" style="border-radius:1px; margin-left:auto; margin-right:auto; font-weight:bold;">
+                                                        </form>
+                                                    </td>
+                                                </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
-            <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">...</div>
+            <div class="tab-pane fade" id="nav-list-disabled" role="tabpanel" aria-labelledby="nav-disabled">
+
+            </div>
             <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">...</div>
             <!--add country-->
             <div class="tab-pane fade" id="nav-country" role="tabpanel" aria-labelledby="nav-country-manage">

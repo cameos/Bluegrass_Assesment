@@ -2,6 +2,29 @@
 $(document).ready(function () {
 
 
+    $(document).on("load", "#insert_list", function (e) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+
+        $.ajax({
+            method: "GET",
+            url: "https://localhost:44331/admin/contacts",
+            dataType: "json",
+            data: form,
+            contentType: false,
+            processData: false,
+            cache: false,
+            success: function (users) {
+                console.log("this is users: " + users);
+                var target = $("#insert_list");
+                target.empty().html();
+                target.append(users);
+            }
+        });
+
+    });
+
+
     function check_admin_registration() {
         if ($("#adminName").length === 0 || $("#adminName").val() === "") {
             return;
@@ -287,7 +310,33 @@ $(document).ready(function () {
         });
 
     });
+    $(document).on('change', '#contactProv', function (e) {
+        e.preventDefault();
 
+        var target = $("#contactCiti");
+        target.empty().html();
+
+
+        $.ajax({
+            method: "POST",
+            url: "https://localhost:44331/admin/cities",
+            dataType: "json",
+            data: JSON.stringify({ ProvinceId: $(this).val() }),
+            contentType: "application/json; charset=utf-8",
+            processData: false,
+            cache: false,
+            success: function (cities) {
+                
+                var ps = '<option value="">Select City</option>';
+                $.each(cities, function (key, value) {
+                    ps += '<option value="' + value.CityId + '">' + value.CityName + '</option>';
+                });
+
+                target.append(ps);
+            }
+        });
+
+    });
 
     $(document).on('submit', '#newContactForm', function (e) {
         e.preventDefault();
@@ -315,7 +364,36 @@ $(document).ready(function () {
         });
 
     });
+    
+    $(document).on('submit', '#contactDelete', function (e) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
 
+        
+
+
+        var form = new FormData(document.getElementById("newContactForm"));
+        $.ajax({
+            method: "POST",
+            url: "https://localhost:44331/admin/contact",
+            dataType: "json",
+            data: form,
+            contentType: false,
+            processData: false,
+            cache: false,
+            success: function (error_message) {
+                if (typeof error_message == 'string' || error_message instanceof String) {
+                    if (error_message.indexOf("error") !== -1) {
+                        $("#contactError").removeClass("hideError").addClass("showError");
+                    }
+                    else {
+                        window.location.href = "https://localhost:44331" + error_message;
+                    }
+                }
+            }
+        });
+
+    });
 
 
 });

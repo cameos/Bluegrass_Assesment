@@ -46,6 +46,43 @@ namespace Abstraction.Concrete
             return cities;
         }
 
+        public List<City> cities_by_province(Guid id)
+        {
+            List<City> cities = new List<City>();
+            if (id == null)
+                return cities;
+            using(_context = new BlueContext())
+            {
+                using(var _transaction = _context.Database.BeginTransaction(IsolationLevel.Serializable))
+                {
+                    try
+                    {
+                        if (_context.Database.Connection.State == ConnectionState.Closed || _context.Database.Connection.State == ConnectionState.Broken)
+                            _context.Database.Connection.Open();
+                        cities = (from c in _context.City
+                                  where (c.ProvinceId == id)
+                                  select c).ToList<City>();
+                        _context.SaveChanges();
+                        if(cities.Count() == 0)
+                        {
+                            _transaction.Rollback();
+                            return cities;
+                        }
+                        else
+                        {
+                            _transaction.Commit();
+                        }
+                    }
+                    catch(Exception e)
+                    {
+                        _transaction.Rollback();
+                        throw new Exception(e.Message);
+                    }
+                }
+            }
+            return cities;
+        }
+
         public bool insert(City city)
         {
             bool flag = false;

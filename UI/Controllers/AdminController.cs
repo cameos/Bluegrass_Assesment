@@ -22,7 +22,29 @@ namespace UI.Controllers
         [HttpGet]
         public ActionResult home()
         {
-            return View();
+            List<User> users = new List<User>();
+            using (var api = new HttpClient())
+            {
+                api.BaseAddress = new Uri("https://localhost:44343/api/user/");
+                api.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                var get_users = api.GetAsync("all");
+                get_users.Wait();
+                var result = get_users.Result;
+                if (result.StatusCode == HttpStatusCode.OK)
+                {
+                    var s = result.Content.ReadAsAsync<List<User>>();
+                    s.Wait();
+                    users = s.Result;
+                }
+                else if (result.StatusCode == HttpStatusCode.NotFound)
+                {
+                    var s = result.Content.ReadAsAsync<List<User>>();
+                    s.Wait();
+                    users = s.Result;
+                }
+            }
+            return View(users);
         }
 
         [Route("countries")]
@@ -346,6 +368,40 @@ namespace UI.Controllers
             }
         }
 
+        [Route("cities")]
+        [HttpPost]
+        public ActionResult get_cities_by_province(string ProvinceId)
+        {
+            List<City> cities = new List<City>();
+            var id = Guid.Parse(ProvinceId);
+            if (ProvinceId == null)
+            {
+                return Json(cities, "application/json; charset=utf-8", Encoding.UTF8, JsonRequestBehavior.AllowGet);
+            }
+
+            using (var api = new HttpClient())
+            {
+                api.BaseAddress = new Uri("https://localhost:44343/api/city/");
+                api.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                var get_cities = api.PostAsJsonAsync<Guid>("seach/province", id);
+                get_cities.Wait();
+                var result = get_cities.Result;
+                if (result.StatusCode == HttpStatusCode.OK)
+                {
+                    var s = result.Content.ReadAsAsync<List<City>>();
+                    s.Wait();
+                    cities = s.Result;
+                }
+                else if (result.StatusCode == HttpStatusCode.NotFound)
+                {
+                    var s = result.Content.ReadAsAsync<List<City>>();
+                    s.Wait();
+                    cities = s.Result;
+                }
+            }
+            return Json(cities, "application/json; charset=utf-8", Encoding.UTF8, JsonRequestBehavior.AllowGet);
+        }
 
 
         [Route("contact")]
@@ -442,6 +498,124 @@ namespace UI.Controllers
             }
 
 
+        }
+
+        [Route("contacts")]
+        [HttpPost]
+        public ActionResult all_contacts()
+        {
+            List<User> users = new List<User>();
+            using (var api = new HttpClient())
+            {
+                api.BaseAddress = new Uri("https://localhost:44343/api/user/");
+                api.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                var get_users = api.GetAsync("all");
+                get_users.Wait();
+                var result = get_users.Result;
+                if (result.StatusCode == HttpStatusCode.OK)
+                {
+                    var s = result.Content.ReadAsAsync<List<User>>();
+                    s.Wait();
+                    users = s.Result;
+                }
+                else if (result.StatusCode == HttpStatusCode.NotFound)
+                {
+                    var s = result.Content.ReadAsAsync<List<User>>();
+                    s.Wait();
+                    users = s.Result;
+                }
+            }
+            return Json(users, "application/json; charset=utf-8", Encoding.UTF8, JsonRequestBehavior.AllowGet);
+        }
+
+        [Route("file")]
+        [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
+        public FileContentResult get_image(Guid userId)
+        {
+            //get content from the web service
+            List<User> users = new List<User>();
+            using (var api = new HttpClient())
+            {
+                api.BaseAddress = new Uri("https://localhost:44381/api/user/");
+                api.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                var all = api.GetAsync("all");
+                all.Wait();
+                var result = all.Result;
+                if (result.StatusCode == HttpStatusCode.OK)
+                {
+                    var s = result.Content.ReadAsAsync<List<User>>();
+                    s.Wait();
+                   users = s.Result;
+                }
+            }
+
+            User user = users.FirstOrDefault(x => x.UserId == userId);
+
+            if (user != null)
+            {
+                return File(user.Avatar, user.MimeType);
+            }
+            else
+            {
+                return null;
+            }
+
+        }
+
+        [Route("remove")]
+        [HttpPost]
+        public ActionResult delete_user(ContactDelete del)
+        {
+            var error_message = new object();
+            if (string.IsNullOrWhiteSpace(del.contactDeleteHidden))
+            {
+                error_message = "error, empty request";
+                return Json(error_message, "application/json; charset=utf-8", Encoding.UTF8, JsonRequestBehavior.DenyGet);
+            }
+            var id = Guid.Parse(del.contactDeleteHidden);
+
+            bool flag = false;
+            using (var api = new HttpClient())
+            {
+                api.BaseAddress = new Uri("https://localhost:44343/api/user/");
+                api.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                var post = api.PostAsJsonAsync<Guid>("remove/id", id);
+                post.Wait();
+                var result = post.Result;
+                if (result.StatusCode == HttpStatusCode.Created)
+                {
+                    var s = result.Content.ReadAsAsync<bool>();
+                    s.Wait();
+                    flag = s.Result;
+                }
+                else if (result.StatusCode == HttpStatusCode.NotFound)
+                {
+                    var s = result.Content.ReadAsAsync<bool>();
+                    s.Wait();
+                    flag = s.Result;
+                }
+                else
+                {
+                    error_message = "error, internal server error please try again later";
+                    return Json(error_message, "application/json; charset=utf-8", Encoding.UTF8, JsonRequestBehavior.DenyGet);
+                }
+            }
+
+            if (!flag)
+            {
+                error_message = "error, internal server error please try again later";
+                return Json(error_message, "application/json; charset=utf-8", Encoding.UTF8, JsonRequestBehavior.DenyGet);
+            }
+            else
+            {
+                error_message = Url.Action("home", "admin");
+                return Json(error_message, "application/json; charset=utf-8", Encoding.UTF8, JsonRequestBehavior.DenyGet);
+            }
+
+           
         }
 
 

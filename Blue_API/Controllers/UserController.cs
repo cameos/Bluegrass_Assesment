@@ -253,5 +253,42 @@ namespace Blue_API.Controllers
             return message;
         }
 
+        [Route("remove/id")]
+        [HttpPost]
+        public HttpResponseMessage remove_by_id([FromBody]Guid id)
+        {
+            var error_message = string.Empty;
+            HttpResponseMessage message = null;
+
+            if(id== null)
+            {
+                error_message = "error, bad request could not bee processed further";
+                message = Request.CreateResponse(HttpStatusCode.BadRequest, error_message);
+                message.Headers.Date = DateTime.Now;
+                return message;
+            }
+
+            bool flag = _usr.remove_by_id(id);
+            if (!flag)
+            {
+                message = Request.CreateResponse(HttpStatusCode.BadRequest, flag);
+                message.Headers.Date = DateTime.Now;
+            }
+            else if (flag)
+            {
+                message = Request.CreateResponse(HttpStatusCode.OK, flag);
+                message.Headers.Date = DateTime.Now;
+            }
+            else
+            {
+                error_message = "error, internal server error could not be processed further";
+                message = Request.CreateResponse(HttpStatusCode.InternalServerError, error_message);
+                message.Headers.Date = DateTime.Now;
+                return message;
+            }
+            return message;
+
+        }
+
     }
 }

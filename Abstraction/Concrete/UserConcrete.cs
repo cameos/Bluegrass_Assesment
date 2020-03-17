@@ -150,11 +150,33 @@ namespace Abstraction.Concrete
                 {
                     try
                     {
+                        if (_context.Database.Connection.State == ConnectionState.Closed || _context.Database.Connection.State == ConnectionState.Broken)
+                            _context.Database.Connection.Open();
+
+                        //find addresses and delete
+                        var addressId = (from a in _context.UserAddress
+                                         where (a.UserId == id)
+                                         select a).ToList<UserAddress>();
+                        List<Address> addresses = new List<Address>();
+                        foreach(var ads in addressId)
+                        {
+                            var adss = (from ad in _context.Address
+                                        where (ad.AddressId == ads.AddressId)
+                                        select ad).FirstOrDefault<Address>();
+                            addresses.Add(adss);
+                        }
+                        _context.Address.RemoveRange(addresses);
+                        _context.SaveChanges();
+
+                        //remove user
                         var user = (from u in _context.User
-                                       where (u.UserId == id)
-                                       select u).FirstOrDefault<User>();
+                                    where (u.UserId == id)
+                                    select u).FirstOrDefault<User>();
                         if (user == null)
+                        {
+                            _transaction.Rollback();
                             return (flag = false);
+                        }
                         else
                         {
                             _context.User.Remove(user);

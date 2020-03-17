@@ -16,5 +16,6 @@ namespace Abstraction.Abstract
         List<City> all();
         City show(City city);
         City show_by_id(Guid id);
+        List<City> cities_by_province(Guid id);
     }
 }

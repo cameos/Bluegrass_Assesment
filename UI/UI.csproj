@@ -1808,6 +1808,7 @@
     <Content Include="Content\icons\102-growth.png" />
     <Content Include="Content\icons\103-arrow.png" />
     <Content Include="Content\icons\104-loupe.png" />
+    <Content Include="Content\images\emptyquarter.png" />
     <Content Include="Content\OwlCarousel\.gitattributes" />
     <Content Include="Content\OwlCarousel\.gitignore" />
     <Content Include="Content\OwlCarousel\dist\assets\ajax-loader.gif" />
@@ -2180,6 +2181,8 @@
     <Compile Include="Models\AddProvince.cs" />
     <Compile Include="Models\AdminLogin.cs" />
     <Compile Include="Models\adminModel.cs" />
+    <Compile Include="Models\ContactDelete.cs" />
+    <Compile Include="Models\ContactUpdate.cs" />
     <Compile Include="Models\CountryAdd.cs" />
     <Compile Include="Models\EncryptionVerifiers.cs" />
     <Compile Include="Models\NewContact.cs" />
