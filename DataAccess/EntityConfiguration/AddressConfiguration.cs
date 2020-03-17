@@ -19,7 +19,7 @@ namespace DataAccess.EntityConfiguration
             this.HasKey<Guid>(c => c.AddressId).Property(c => c.AddressId).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity).HasColumnType("uniqueidentifier").IsRequired();
             this.Property(c => c.AddressNumber).HasColumnType("nvarchar").HasMaxLength(30).IsFixedLength().IsRequired();
             this.Property(c=>c.StreetName).HasColumnType("nvarchar").HasMaxLength(150).IsFixedLength().IsRequired();
-            this.Property(c=>c.CityName).HasColumnType("nvarchar").HasMaxLength(150).IsFixedLength().IsRequired();
+            //this.Property(c=>c.CityName).HasColumnType("nvarchar").HasMaxLength(150).IsFixedLength().IsRequired();
             this.Property(c=>c.Surburb).HasColumnType("nvarchar").HasMaxLength(150).IsFixedLength().IsRequired();
             this.Property(c=>c.PostalCode).HasColumnType("nvarchar").HasMaxLength(30).IsFixedLength().IsRequired();
 

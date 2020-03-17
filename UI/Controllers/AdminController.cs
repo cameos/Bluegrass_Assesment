@@ -346,6 +346,8 @@ namespace UI.Controllers
             }
         }
 
+
+
         [Route("contact")]
         [HttpPost]
         public ActionResult add_contact(NewContact contact)
@@ -358,9 +360,88 @@ namespace UI.Controllers
             }
 
 
+            var countryId = Guid.Parse(contact.contactCountry);
+            var provinceId = Guid.Parse(contact.contactProv);
+            var cityId = Guid.Parse(contact.contactCiti);
+
+            User user = new User
+            {
+                FirstName = contact.contactFirstName,
+                LastName = contact.contactLastName,
+                Gender = contact.contactGender,
+                ID = contact.contactIdNumber,
+                Phone = contact.contactPhone,
+                Email = contact.contactEmail,
+                Status = contact.contactStatus,
+
+            };
+            if (contact.contactImage != null)
+            {
+                user.MimeType = contact.contactImage.ContentType;
+                user.Avatar = new byte[contact.contactImage.ContentLength];
+                contact.contactImage.InputStream.Read(user.Avatar, 0, contact.contactImage.ContentLength);
+            }
+            Address address = new Address
+            {
+                AddressNumber = contact.addressNumber,
+                StreetName = contact.addressName,
+                CountryId = countryId,
+                ProvinceId = provinceId,
+                CityId = cityId,
+                Surburb = contact.addressSuburb,
+                PostalCode = contact.addressPostalCode
+            };
 
 
-            return View();
+            ContactInformation information = new ContactInformation
+            {
+                Address = address,
+                User = user
+            };
+
+
+
+            //add new city
+            bool flag = false;
+            using (var api = new HttpClient())
+            {
+                api.BaseAddress = new Uri("https://localhost:44343/api/user/");
+                api.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                var post = api.PostAsJsonAsync<ContactInformation>("new", information);
+                post.Wait();
+                var result = post.Result;
+                if (result.StatusCode == HttpStatusCode.Created)
+                {
+                    var s = result.Content.ReadAsAsync<bool>();
+                    s.Wait();
+                    flag = s.Result;
+                }
+                else if (result.StatusCode == HttpStatusCode.NotFound)
+                {
+                    var s = result.Content.ReadAsAsync<bool>();
+                    s.Wait();
+                    flag = s.Result;
+                }
+                else
+                {
+                    error_message = "error, internal server error please try again later";
+                    return Json(error_message, "application/json; charset=utf-8", Encoding.UTF8, JsonRequestBehavior.DenyGet);
+                }
+            }
+
+            if (!flag)
+            {
+                error_message = "error, internal server error please try again later";
+                return Json(error_message, "application/json; charset=utf-8", Encoding.UTF8, JsonRequestBehavior.DenyGet);
+            }
+            else
+            {
+                error_message = Url.Action("home", "admin");
+                return Json(error_message, "application/json; charset=utf-8", Encoding.UTF8, JsonRequestBehavior.DenyGet);
+            }
+
+
         }
 
 

@@ -25,6 +25,7 @@ namespace DataAccess.EntityConfiguration
             this.Property(c=>c.Gender).HasColumnType("nvarchar").HasMaxLength(10).IsFixedLength().IsRequired();
             this.Property(c => c.Status).HasColumnType("nvarchar").HasMaxLength(10).IsFixedLength().IsRequired();
             this.Property(c => c.Avatar).HasColumnType("image").IsOptional();
+            this.Property(c => c.MimeType).HasColumnType("nvarchar").HasMaxLength(300).IsFixedLength().IsOptional();
 
 
         }

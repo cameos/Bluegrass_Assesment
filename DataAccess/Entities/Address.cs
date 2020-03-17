@@ -18,7 +18,7 @@ namespace DataAccess.Entities
         public Guid AddressId { get; set; }
         public string AddressNumber { get; set; }
         public string StreetName { get; set; }
-        public string CityName { get; set; }
+        //public string CityName { get; set; }
         public string Surburb { get; set; }
         public string PostalCode { get; set; }
 

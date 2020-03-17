@@ -23,18 +23,43 @@ namespace Blue_API.Controllers
 
         [Route("new")]
         [HttpPost]
-        public HttpResponseMessage new_user(User user, Address address)
+        public HttpResponseMessage new_user(ContactInformation information)
         {
             HttpResponseMessage message = null;
             var error_message = string.Empty;
 
-            if (string.IsNullOrWhiteSpace(user.FirstName) || string.IsNullOrWhiteSpace(user.LastName) || string.IsNullOrWhiteSpace(user.Email) || string.IsNullOrWhiteSpace(address.AddressNumber))
+            if (string.IsNullOrWhiteSpace(information.User.FirstName) || string.IsNullOrWhiteSpace(information.User.LastName) || string.IsNullOrWhiteSpace(information.User.Email) || string.IsNullOrWhiteSpace(information.Address.AddressNumber))
             {
                 error_message = "error, bad request could not be processed further";
                 message = Request.CreateResponse(HttpStatusCode.BadRequest, error_message);
                 message.Headers.Date = DateTime.Now;
                 return message;
             }
+
+            User user = new User
+            {
+                Email = information.User.Email,
+                FirstName = information.User.FirstName,
+                Gender = information.User.Gender,
+                Avatar = information.User.Avatar,
+                ID = information.User.ID,
+                LastName = information.User.LastName,
+                Phone = information.User.Phone,
+                Status = information.User.Status,
+                MimeType = information.User.MimeType
+
+            };
+            Address address = new Address
+            {
+                AddressNumber = information.Address.AddressNumber,
+                CityId = information.Address.CityId,
+                CountryId = information.Address.CountryId,
+                ProvinceId = information.Address.ProvinceId,
+                PostalCode = information.Address.PostalCode,
+                StreetName = information.Address.StreetName,
+                Surburb = information.Address.Surburb
+            };
+
             bool flag = _usr.insert(user, address);
             if (!flag)
             {

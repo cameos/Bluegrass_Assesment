@@ -52,6 +52,7 @@
     <Compile Include="Entities\Address.cs" />
     <Compile Include="Entities\Admin.cs" />
     <Compile Include="Entities\City.cs" />
+    <Compile Include="Entities\ContactInformation.cs" />
     <Compile Include="Entities\Country.cs" />
     <Compile Include="Entities\Province.cs" />
     <Compile Include="Entities\User.cs" />

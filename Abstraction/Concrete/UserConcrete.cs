@@ -57,6 +57,10 @@ namespace Abstraction.Concrete
                 {
                     try
                     {
+                        if (_context.Database.Connection.State == ConnectionState.Closed || _context.Database.Connection.State == ConnectionState.Broken)
+                            _context.Database.Connection.Open();
+
+
                         //add user first
                         _context.User.Add(user);
                         _context.SaveChanges();
