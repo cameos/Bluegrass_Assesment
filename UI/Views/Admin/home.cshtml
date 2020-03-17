@@ -11,8 +11,8 @@
 
     <!--error modal (for all error this will be called-->
     <div class="modal fade" id="new-contact-modal" tabindex="-1" role="dialog" aria-labelledby="contact-modal-title" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-scrollable" role="document">
-            <div class="modal-content" style="border-radius:0;border:1px solid #e8e5e5;">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content" style="border-radius:unset;border:1px solid #e8e5e5;">
                 <div class="modal-header">
                     <h3 class="modal-title" id="contact-modal-title">
                         <img src="~/Content/icons/088-user.png" height="30" width="30" class="rounded" style="display:inline-block;" />  <span style="">New Contact</span>
@@ -21,13 +21,168 @@
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-12">
-                            <span>form will go here</span>
+                            <!--contact form-->
+                            <form enctype="multipart/form-data" name="newContactForm" id="newContactForm" style="padding:2%;">
+                                <div class="row" style="padding:3%; border-bottom:1px solid #ff2d6d; border-radius:2%;">
+                                    <div class="col-12">
+                                        <h4 class="text-muted" style="font-family:'Comic Sans MS';font-weight:bold;">Personal information</h4>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="row" style="margin-top:5%;">
+                                            <div class="col-12">
+                                                <!--contact names-->
+                                                <div class="form-row">
+                                                    <div class="form-group col-md-6">
+                                                        <label for="contactFirstName" class="text-muted" style="font-weight:bold;">First Name</label>
+                                                        <input type="text" class="form-control" id="contactFirstName" name="contactFirstName" style="border-radius:1px; margin-left:auto; margin-right:auto;" placeholder="First Name">
+                                                    </div>
+                                                    <div class="form-group col-md-6">
+                                                        <label for="contactLastName" class="text-muted" style="font-weight:bold;">Last Name</label>
+                                                        <input type="text" class="form-control" id="contactLastName" name="contactLastName" style="border-radius:1px; margin-left:auto; margin-right:auto; " placeholder="Last Name">
+                                                    </div>
+                                                </div>
+
+                                                <!--contact id and status and gender-->
+                                                <div class="form-row">
+                                                    <div class="form-group col-md-4">
+                                                        <label for="contactIdNumber" class="text-muted" style="font-weight:bold;">Id Number</label>
+                                                        <input type="text" class="form-control" id="contactIdNumber" name="contactIdNumber" style="border-radius:1px; margin-left:auto; margin-right:auto;" placeholder="Id number">
+                                                    </div>
+                                                    <div class="form-group col-md-4">
+                                                        <label for="contactStatus" class="text-muted" style="font-weight:bold;">Status</label>
+                                                        <select class="form-control" id="contactStatus" name="contactStatus" aria-describedby="contStatus" style="border-radius:1px; margin-left:auto; margin-right:auto; font-weight:bold;">
+                                                            <option value="">Select Contact Status</option>
+                                                            <option value="enabled">Enabled</option>
+                                                            <option value="disabled">Disabled</option>
+                                                        </select>
+                                                        <small id="contStatus" class="form-text text-muted">A contact will be shown according to the status choosen</small>
+                                                    </div>
+                                                    <div class="form-group col-md-4">
+                                                        <label for="contactGender" class="text-muted" style="font-weight:bold;">Gender</label>
+                                                        <select class="form-control" id="contactGender" name="contactGender" aria-describedby="contStatus" style="border-radius:1px; margin-left:auto; margin-right:auto; font-weight:bold;">
+                                                            <option value="">Select gender</option>
+                                                            <option value="male">Male</option>
+                                                            <option value="female">Female</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <!--phone-->
+                                                <div class="form-group">
+                                                    <label for="contactPhone" class="text-muted" style="font-weight:bold;">Phone</label>
+                                                    <input type="text" class="form-control" id="contactPhone" name="contactPhone" style="border-radius:1px; margin-left:auto; margin-right:auto;" placeholder="enter phone">
+                                                </div>
+
+                                                <!--email-->
+                                                <div class="form-group">
+                                                    <label for="contactEmail" class="text-muted" style="font-weight:bold;">Email</label>
+                                                    <input type="email" class="form-control" id="contactEmail" name="contactEmail" style="border-radius:1px; margin-left:auto; margin-right:auto;" placeholder="enter email">
+                                                </div>
+                                            </div>
+
+                                            <!--avatar-->
+                                            <div class="text-center" style="border:1px solid #d5d5d5; background-color:#fff; margin-top:5%; padding:1%;">
+                                                <div style="color:#306ffd;border-bottom:1px solid #d1d5da;padding:2%; font-weight:bold;" class="text-justify">
+                                                    <img src="~/Content/icons/012-user.png" height="50" width="50" class="rounded" style="display:inline-block;" />  Choose Image for the user
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <div class="form-group text-justify">
+                                                            <label for="contactImage" class="col-form-label">select image</label>
+                                                            <input type="file" id="contactImage" name="contactImage" class="form-control-file change_image_article" aria-labelledby="select_image_help">
+                                                            <small id="select_image_help" class="form-text text-muted">Choose image to be associated with this contact</small>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-12">
+                                                        <div style="border:1px solid #d1d5da; margin-top:1%; padding:1%;">
+                                                            <div class="text-center potrait-image image_preview_article">
+                                                                Preview image here
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!--address information-->
+                                <div class="row" style="margin-top:4%;  border-top:1px solid #ff2d6d; padding:3%;  border-radius:2%;">
+                                    <div class="col-12">
+                                        <h4 class="text-muted" style="font-family:'Comic Sans MS';font-weight:bold;">Personal information</h4>
+                                    </div>
+                                    <div class="col-12">
+                                        <!--addresss number and address street name-->
+                                        <div class="form-row">
+                                            <div class="form-group col-md-6">
+                                                <label for="addressNumber" class="text-muted" style="font-weight:bold;">Street Number</label>
+                                                <input type="text" class="form-control" id="addressNumber" name="addressNumber" style="border-radius:1px; margin-left:auto; margin-right:auto;" placeholder="enter street number">
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label for="addressName" class="text-muted" style="font-weight:bold;">Street name</label>
+                                                <input type="text" class="form-control" id="addressName" name="addressName" style="border-radius:1px; margin-left:auto; margin-right:auto; " placeholder="enter street name">
+                                            </div>
+                                        </div>
+
+                                        <!--country, province, and city-->
+                                        <div class="form-row">
+                                            <!--country-->
+                                            <div class="form-group col-md-4">
+                                                <label for="contactCountry" class="text-muted" style="font-weight:bold;">Select country</label>
+                                                <select class="form-control" id="contactCountry" name="contactCountry" aria-describedby="contC" style="border-radius:1px; margin-left:auto; margin-right:auto; font-weight:bold;">
+                                                    <option value="">Select Country</option>
+                                                </select>
+                                                <small id="contC" class="form-text text-muted">Select a Country for this user</small>
+                                            </div>
+                                            <!--province-->
+                                            <div class="form-group col-md-4">
+                                                <label for="contactProv" class="text-muted" style="font-weight:bold;">Select Province</label>
+                                                <select class="form-control" id="contactProv" name="contactProv" aria-describedby="contP" style="border-radius:1px; margin-left:auto; margin-right:auto; font-weight:bold;">
+                                                    <option value="">Select Province</option>
+                                                </select>
+                                                <small id="contP" class="form-text text-muted">Select a province</small>
+                                            </div>
+                                            <!--city-->
+                                            <div class="form-group col-md-4">
+                                                <label for="contactCiti" class="text-muted" style="font-weight:bold;">Select City</label>
+                                                <select class="form-control" id="contactCiti" name="contactCiti" aria-describedby="contCi" style="border-radius:1px; margin-left:auto; margin-right:auto; font-weight:bold;">
+                                                    <option value="">Select City</option>
+                                                </select>
+                                                <small id="contCi" class="form-text text-muted">Select a city</small>
+                                            </div>
+                                        </div>
+
+                                        <!--suburb and postal code-->
+                                        <div class="form-row">
+                                            <div class="form-group col-md-6">
+                                                <label for="addressSuburb" class="text-muted" style="font-weight:bold;">Enter Suburb</label>
+                                                <input type="text" class="form-control" id="addressSuburb" name="addressSuburb" style="border-radius:1px; margin-left:auto; margin-right:auto;" placeholder="enter suburb">
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label for="addressPostalCode" class="text-muted" style="font-weight:bold;">Postal code</label>
+                                                <input type="text" class="form-control" id="addressPostalCode" name="addressPostalCode" style="border-radius:1px; margin-left:auto; margin-right:auto; " placeholder="enter postal code">
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!--submit button-->
+                                <input type="submit" value="Add new contact to the list" class="btn btn-primary" style="border-radius:1px; margin-left:auto; margin-right:auto; font-weight:bold;">
+                            </form>
+                            <div class="row" style="margin-top:5%;">
+                                <div class="col-11">
+                                    <div id="contactError" class="hideError">
+                                       Make sure all fields are entered, user image is optional
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer">
+                @*<div class="modal-footer">
                     @Html.ActionLink("Go to login page", "index", "home", new { @class = "btn btn_primary radio-login-btn" })
-                </div>
+                </div>*@
             </div>
         </div>
     </div>
@@ -48,7 +203,7 @@
         </nav>
         <div class="tab-content" id="nav-tabContent" style="padding:2%;">
             <div class="tab-pane fade show active" id="nav-list" role="tabpanel" aria-labelledby="nav-home-tab">
-                <button class="btn btn-primary" style="border-radius:1px; margin-left:auto; margin-right:auto; font-weight:bold;" data-toggle="modal" data-target="#new-contact-modal">add new contact</button>
+                <button id="conNew" class="btn btn-primary" style="border-radius:1px; margin-left:auto; margin-right:auto; font-weight:bold;" data-toggle="modal" data-target="#new-contact-modal">add new contact</button>
             </div>
             <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">...</div>
             <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">...</div>

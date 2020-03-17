@@ -2182,6 +2182,7 @@
     <Compile Include="Models\adminModel.cs" />
     <Compile Include="Models\CountryAdd.cs" />
     <Compile Include="Models\EncryptionVerifiers.cs" />
+    <Compile Include="Models\NewContact.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

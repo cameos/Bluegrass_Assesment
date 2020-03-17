@@ -172,6 +172,10 @@ $(document).ready(function () {
     $(document).on('change', '#adminCoSelect', function (e) {
         e.preventDefault();
 
+        var target = $("#adminPrSelect");
+        target.empty().html();
+
+
         $.ajax({
             method: "POST",
             url: "https://localhost:44331/admin/provinces",
@@ -182,11 +186,11 @@ $(document).ready(function () {
             cache: false,
             success: function (provinces) {
                 console.log("Select provinces:"+provinces);
-                var ps = '';
+                var ps = '<option value="">Select Province</option>';
                 $.each(provinces, function (key, value) {
                     ps += '<option value="' + value.ProvinceId + '">' + value.ProvinceName + '</option>';
                 });
-                var target = $("#adminPrSelect");
+                
                 target.append(ps);
             }
         });
@@ -219,6 +223,98 @@ $(document).ready(function () {
         });
     });
 
+    $(document).on("change", ".change_image_article", function (e) {
+
+
+        for (var i = 0; i < e.originalEvent.srcElement.files.length; i++) {
+
+            var file = e.originalEvent.srcElement.files[i];
+
+            var reader = new FileReader();
+            reader.onloadend = function () {
+                // $('#img-inside-small').attr('src', reader.result);
+                $('.image_preview_article').html('<img src="' + reader.result + '" id="img-inside-small" class="news-back-imge"/>');
+            }
+            reader.readAsDataURL(file);
+        }
+    });
+
+    $(document).on('click', '#conNew', function (e) {
+        e.preventDefault();
+
+        $.ajax({
+            method: "GET",
+            url: "https://localhost:44331/admin/countries",
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            cache: false,
+            success: function (countries) {
+                console.log(countries);
+                var cs = '';
+                $.each(countries, function (key, value) {
+                    cs += '<option value="' + value.CountryId + '">' + value.CountryName + '</option>';
+                });
+                var target = $("#contactCountry");
+                target.append(cs);
+            }
+        });
+    });
+
+    $(document).on('change', '#contactCountry', function (e) {
+        e.preventDefault();
+
+        var target = $("#contactProv");
+        target.empty().html();
+
+
+        $.ajax({
+            method: "POST",
+            url: "https://localhost:44331/admin/provinces",
+            dataType: "json",
+            data: JSON.stringify({ CountryId: $(this).val() }),
+            contentType: "application/json; charset=utf-8",
+            processData: false,
+            cache: false,
+            success: function (provinces) {
+                console.log("Select provinces:" + provinces);
+                var ps = '<option value="">Select Province</option>';
+                $.each(provinces, function (key, value) {
+                    ps += '<option value="' + value.ProvinceId + '">' + value.ProvinceName + '</option>';
+                });
+
+                target.append(ps);
+            }
+        });
+
+    });
+
+
+    $(document).on('submit', '#newContactForm', function (e) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+
+        var form = new FormData(document.getElementById("newContactForm"));
+        $.ajax({
+            method: "POST",
+            url: "https://localhost:44331/admin/contact",
+            dataType: "json",
+            data: form,
+            contentType: false,
+            processData: false,
+            cache: false,
+            success: function (error_message) {
+                if (typeof error_message == 'string' || error_message instanceof String) {
+                    if (error_message.indexOf("error") !== -1) {
+                        $("#contactError").removeClass("hideError").addClass("showError");
+                    }
+                    else {
+                        window.location.href = "https://localhost:44331" + error_message;
+                    }
+                }
+            }
+        });
+
+    });
 
 
 

@@ -253,6 +253,10 @@ namespace UI.Controllers
         {
             List<Province> provinces = new List<Province>();
             var id = Guid.Parse(CountryId);
+            if(CountryId == null)
+            {
+                return Json(provinces, "application/json; charset=utf-8", Encoding.UTF8, JsonRequestBehavior.AllowGet);
+            }
 
             using (var api = new HttpClient())
             {
@@ -342,7 +346,22 @@ namespace UI.Controllers
             }
         }
 
+        [Route("contact")]
+        [HttpPost]
+        public ActionResult add_contact(NewContact contact)
+        {
+            var error_message = new object();
+            if(string.IsNullOrWhiteSpace(contact.contactFirstName)|| string.IsNullOrWhiteSpace(contact.contactLastName) || string.IsNullOrWhiteSpace(contact.contactIdNumber) || string.IsNullOrWhiteSpace(contact.contactGender) || string.IsNullOrWhiteSpace(contact.contactEmail) || string.IsNullOrWhiteSpace(contact.contactStatus) || string.IsNullOrWhiteSpace(contact.contactPhone) || string.IsNullOrWhiteSpace(contact.addressNumber) || string.IsNullOrWhiteSpace(contact.addressName) || string.IsNullOrWhiteSpace(contact.addressSuburb) || string.IsNullOrWhiteSpace(contact.addressPostalCode) || string.IsNullOrWhiteSpace(contact.contactCountry) || string.IsNullOrWhiteSpace(contact.contactProv) || string.IsNullOrWhiteSpace(contact.contactCiti))
+            {
+                error_message = "error, please enter all fields";
+                return Json(error_message, "application/json; charset=utf-8", Encoding.UTF8, JsonRequestBehavior.DenyGet);
+            }
 
+
+
+
+            return View();
+        }
 
 
     }
