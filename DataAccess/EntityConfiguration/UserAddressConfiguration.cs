@@ -20,7 +20,7 @@ namespace DataAccess.EntityConfiguration
 
 
             this.HasRequired<User>(c => c.User).WithMany(c => c.UserAddresses).HasForeignKey<Guid>(c => c.UserId).WillCascadeOnDelete(true);
-            this.HasRequired<Address>(c => c.Address).WithMany(c => c.UserAddresses).HasForeignKey<Guid>(c => c.AddressId).WillCascadeOnDelete(false);
+            this.HasRequired<Address>(c => c.Address).WithMany(c => c.UserAddresses).HasForeignKey<Guid>(c => c.AddressId).WillCascadeOnDelete(true);
         }
     }
 }

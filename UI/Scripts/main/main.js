@@ -365,17 +365,16 @@ $(document).ready(function () {
 
     });
     
-    $(document).on('submit', '#contactDelete', function (e) {
+    $(document).on('submit', '.contactDelete', function (e) {
         e.preventDefault();
         e.stopImmediatePropagation();
+        var formId = $(this).attr("id");
+        console.log("id" + formId);
+        var form = new FormData(document.getElementById(formId));
 
-        
-
-
-        var form = new FormData(document.getElementById("newContactForm"));
         $.ajax({
             method: "POST",
-            url: "https://localhost:44331/admin/contact",
+            url: "https://localhost:44331/admin/remove",
             dataType: "json",
             data: form,
             contentType: false,
@@ -384,7 +383,7 @@ $(document).ready(function () {
             success: function (error_message) {
                 if (typeof error_message == 'string' || error_message instanceof String) {
                     if (error_message.indexOf("error") !== -1) {
-                        $("#contactError").removeClass("hideError").addClass("showError");
+                        return;
                     }
                     else {
                         window.location.href = "https://localhost:44331" + error_message;
@@ -394,6 +393,8 @@ $(document).ready(function () {
         });
 
     });
+
+
 
 
 });

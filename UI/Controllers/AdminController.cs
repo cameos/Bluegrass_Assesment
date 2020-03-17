@@ -585,7 +585,7 @@ namespace UI.Controllers
                 var post = api.PostAsJsonAsync<Guid>("remove/id", id);
                 post.Wait();
                 var result = post.Result;
-                if (result.StatusCode == HttpStatusCode.Created)
+                if (result.StatusCode == HttpStatusCode.OK)
                 {
                     var s = result.Content.ReadAsAsync<bool>();
                     s.Wait();
