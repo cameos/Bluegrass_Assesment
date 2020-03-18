@@ -174,6 +174,9 @@ $(document).ready(function () {
     $(document).on('click', '#nav-tab a[href="#nav-city"]', function (e) {
         e.preventDefault();
 
+        var target = $("#adminCoSelect");
+        target.empty().html();
+
         $.ajax({
             method: "GET",
             url: "https://localhost:44331/admin/countries",
@@ -182,11 +185,11 @@ $(document).ready(function () {
             cache: false,
             success: function (countries) {
                 console.log(countries);
-                var cs = '';
+                var cs = '<option value="">Select Country</option>';;
                 $.each(countries, function (key, value) {
                     cs += '<option value="' + value.CountryId + '">' + value.CountryName + '</option>';
                 });
-                var target = $("#adminCoSelect");
+                
                 target.append(cs);
             }
         });
@@ -394,7 +397,85 @@ $(document).ready(function () {
 
     });
 
+    $(document).on('click', '.fullContactInfo', function (e) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+
+        
 
 
+        var UserId = $(this).attr("id");
+        console.log("clicked" + UserId);
+        $.ajax({
+            method: "POST",
+            url: "https://localhost:44331/admin/find/user",
+            data: JSON.stringify({ userId: UserId }),
+            contentType: "application/json; charset=utf-8",
+            cache: false,
+            success: function (error_message) {
+                console.log("success" + error_message);
+            }
+        });
 
+    });
+    $(document).on("submit", "#contactUpdate", function (e) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+
+        console.log("inside");
+
+        var form = new FormData(document.getElementById("contactUpdate"));
+        $.ajax({
+            method: "POST",
+            url: "https://localhost:44331/admin/show/user",
+            dataType: "json",
+            data: form,
+            contentType: false,
+            processData: false,
+            cache: false,
+            success: function (error_message) {
+                if (typeof error_message == 'string' || error_message instanceof String) {
+                    if (error_message.indexOf("error") !== -1) {
+                        $("#updateClickError").removeClass("hideError").addClass("showError");
+                    }
+                   
+                } else {
+                    console.log("to be updte user" + error_message);
+                    $("#updateContactHiddenField").val(error_message.UserId);
+                    $("#updateContactFirst").val(error_message.FirstName);
+                    $("#updateContactLast").val(error_message.LastName);
+                    $("#updateContactIDnumber").val(error_message.ID);
+                    $("#updateContactPhone").val(error_message.Phone);
+                    $("#updateContactEmail").val(error_message.Email);
+
+                    $("#update-contact-modal").modal({ keyboard: false, backdrop: 'static' });
+                }
+            }
+        });
+    });
+    $(document).on("submit", "#updateContactForm", function (e) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        var form = new FormData(document.getElementById("updateContactForm"));
+        $.ajax({
+            method: "POST",
+            url: "https://localhost:44331/admin/contact/update",
+            dataType: "json",
+            data: form,
+            contentType: false,
+            processData: false,
+            cache: false,
+            success: function (error_message) {
+                if (typeof error_message == 'string' || error_message instanceof String) {
+                    if (error_message.indexOf("error") !== -1) {
+                        $("#updateConError").removeClass("hideError").addClass("showError");
+                    }
+                    else {
+                        window.location.href = "https://localhost:44331" + error_message;
+                    }
+                }
+            }
+        });
+
+    });
 });

@@ -101,8 +101,7 @@ namespace Blue_API.Controllers
                 message = Request.CreateResponse(HttpStatusCode.NotFound, flag);
                 message.Headers.Date = DateTime.Now;
             }
-            else if
-                (flag)
+            else if(flag)
             {
                 message = Request.CreateResponse(HttpStatusCode.OK, flag);
                 message.Headers.Date = DateTime.Now; return message;
@@ -144,13 +143,13 @@ namespace Blue_API.Controllers
 
         }
 
-        [Route("show")]
+        [Route("show/id")]
         [HttpPost]
         public HttpResponseMessage full_info([FromBody]Guid id)
         {
             HttpResponseMessage message = null;
             var error_message = string.Empty;
-             
+            User user = new User();
 
             if (id == null)
             {
@@ -160,14 +159,14 @@ namespace Blue_API.Controllers
                 return message;
             }
 
-            User one = _usr.show_by_id(id);
-            if(one == null)
+            user = _usr.show_by_id(id);
+            if(user == null)
             {
-                message = Request.CreateResponse(HttpStatusCode.NotFound, one);
+                message = Request.CreateResponse(HttpStatusCode.NotFound, user);
                 message.Headers.Date = DateTime.Now;
-            }else if(one != null)
+            }else if(user != null)
             {
-                message = Request.CreateResponse(HttpStatusCode.OK, one);
+                message = Request.CreateResponse(HttpStatusCode.OK, user);
                 message.Headers.Date = DateTime.Now;
             }
             else

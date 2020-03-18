@@ -1,0 +1,208 @@
+﻿@model DataAccess.Entities.User
+@{
+    ViewBag.Title = "get_user";
+}
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="container">
+    <div class="row">
+
+
+
+        <!--error modal (for all error this will be called-->
+        <div class="modal fade" id="update-contact-modal" tabindex="-1" role="dialog" aria-labelledby="update-contact-modal-title" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                <div class="modal-content" style="border-radius:unset;border:1px solid #e8e5e5;">
+                    <div class="modal-header">
+                        <h3 class="modal-title" id="update-contact-modal-title">
+                            <img src="~/Content/icons/020-tree structure.png" height="30" width="30" class="rounded" style="display:inline-block;" />  <span style="">update this contact</span>
+                        </h3>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-12">
+                                <!--contact form-->
+                                <form enctype="multipart/form-data" name="updateContactForm" id="updateContactForm" style="padding:2%;">
+                                    <input type="hidden" id="updateContactHiddenField" name="updateContactHiddenField" />
+                                    <div class="row" style="padding:3%;">
+                                        <div class="col-12">
+                                            <img src="~/Content/icons/038-contact book.png" height="30" width="30" class="rounded" style="display:inline-block;" /><span class="h4 text-muted" style="font-family:'Comic Sans MS';font-weight:bold;">  Personal information</span>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="row" style="margin-top:5%;">
+                                                <div class="col-12">
+                                                    <!--contact names-->
+                                                    <div class="form-row">
+                                                        <div class="form-group col-md-6">
+                                                            <label for="updateContactFirst" class="text-muted" style="font-weight:bold;">First Name</label>
+                                                            <input type="text" class="form-control" id="updateContactFirst" name="updateContactFirst" style="border-radius:1px; margin-left:auto; margin-right:auto;" placeholder="First Name">
+                                                        </div>
+                                                        <div class="form-group col-md-6">
+                                                            <label for="updateContactLast" class="text-muted" style="font-weight:bold;">Last Name</label>
+                                                            <input type="text" class="form-control" id="updateContactLast" name="updateContactLast" style="border-radius:1px; margin-left:auto; margin-right:auto; " placeholder="Last Name">
+                                                        </div>
+                                                    </div>
+
+                                                    <!--contact id and status and gender-->
+                                                    <div class="form-row">
+                                                        <div class="form-group col-md-4">
+                                                            <label for="updateContactIDnumber" class="text-muted" style="font-weight:bold;">Id Number</label>
+                                                            <input type="text" class="form-control" id="updateContactIDnumber" name="updateContactIDnumber" style="border-radius:1px; margin-left:auto; margin-right:auto;" placeholder="Id number">
+                                                        </div>
+                                                        <div class="form-group col-md-4">
+                                                            <label for="updateContactStatus" class="text-muted" style="font-weight:bold;">Status</label>
+                                                            <select class="form-control" id="updateContactStatus" name="updateContactStatus" aria-describedby="contStatus" style="border-radius:1px; margin-left:auto; margin-right:auto; font-weight:bold;">
+                                                                <option value="">Select Contact Status</option>
+                                                                <option value="enabled">Enabled</option>
+                                                                <option value="disabled">Disabled</option>
+                                                            </select>
+                                                            <small id="contStatus" class="form-text text-muted">A contact will be shown according to the status choosen</small>
+                                                        </div>
+                                                        <div class="form-group col-md-4">
+                                                            <label for="updateContactGender" class="text-muted" style="font-weight:bold;">Gender</label>
+                                                            <select class="form-control" id="updateContactGender" name="updateContactGender" aria-describedby="contStatus" style="border-radius:1px; margin-left:auto; margin-right:auto; font-weight:bold;">
+                                                                <option value="">Select gender</option>
+                                                                <option value="male">Male</option>
+                                                                <option value="female">Female</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+                                                    <!--phone-->
+                                                    <div class="form-group">
+                                                        <label for="updateContactPhone" class="text-muted" style="font-weight:bold;">Phone</label>
+                                                        <input type="text" class="form-control" id="updateContactPhone" name="updateContactPhone" style="border-radius:1px; margin-left:auto; margin-right:auto;" placeholder="enter phone">
+                                                    </div>
+
+                                                    <!--email-->
+                                                    <div class="form-group">
+                                                        <label for="updateContactEmail" class="text-muted" style="font-weight:bold;">Email</label>
+                                                        <input type="email" class="form-control" id="updateContactEmail" name="updateContactEmail" style="border-radius:1px; margin-left:auto; margin-right:auto;" placeholder="enter email">
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <!--submit button-->
+                                    <input type="submit" value="update contact" class="btn btn-primary" style="border-radius:1px; margin-left:auto; margin-right:auto; font-weight:bold;">
+                                </form>
+                                <div class="row" style="margin-top:5%;">
+                                    <div class="col-11">
+                                        <div id="updateConError" class="hideError">
+                                            Make sure all fields are entered, user image is optional
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    @*<div class="modal-footer">
+                            @Html.ActionLink("Go to login page", "index", "home", new { @class = "btn btn_primary radio-login-btn" })
+                        </div>*@
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+        <div class="col-12">
+            <h4 class="text-center">contact full information</h4>
+            <div class="row">
+                <div class="col-4">
+                    @if (Model.Avatar != null)
+                    {
+                        <img class="img-fluid" height="100" width="100" src="@Url.Action("file", "admin", new { userId = Model.UserId })" style="border-radius:50%;" />
+                        <form enctype="multipart/form-data" id="contactUpdate" name="contactUpdate">
+                            <input type="hidden" value="@Model.UserId" id="contactUpdateHidden" name="contactUpdateHidden" />
+                            <input type="submit" value="update this contact" class="btn btn-primary" style="margin-top:5%; width:100%;border-radius:1px; margin-left:auto; margin-right:auto; font-weight:bold;">
+                        </form>
+                        <div class="row" style="margin-top:5%;">
+                            <div class="col-11">
+                                <div id="updateError" class="hideError">
+                                    Make sure all fields are entered, user image is optional
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <img src="~/Content/icons/088-user.png" height="100" width="100" style="border-radius:50%;margin-left:auto; margin-right:auto; max-width: 100%;max-height: 100%;" />
+                        <form enctype="multipart/form-data" id="contactUpdate" name="contactUpdate">
+                            <input type="hidden" value="@Model.UserId" id="contactUpdateHidden" name="contactUpdateHidden" />
+                            <input type="submit" value="update this contact" class="btn btn-primary" style="margin-top:5%; width:100%;border-radius:1px; margin-left:auto; margin-right:auto; font-weight:bold;">
+                        </form>
+                        <div class="row" style="margin-top:5%;">
+                            <div class="col-11">
+                                <div id="updateClickError" class="hideError">
+                                    Something went wrong
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                </div>
+                <div class="col-8">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="text-muted" style="font-family:'Comic Sans MS'; font-weight:bold;font-size:1.5em;margin-top:10%;">Personal information</div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="" style="font-family:'Comic Sans MS'; font-weight:bold;font-size:1.0em;margin-top:10%; color:#ff006e;">
+                                        @Model.FirstName  @Model.LastName
+                                    </div>
+                                    <table style="margin-top:5%;" class="table table-borderless table-hover">
+
+                                        <tbody>
+                                            <tr>
+                                                <td style="font-size:0.8em; font-weight:bold;">Phone</td>
+                                                <td>@Model.Phone</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="font-size:0.8em; font-weight:bold;">Email</td>
+                                                <td>@Model.Email</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="font-size:0.8em; font-weight:bold;">Id</td>
+                                                <td>@Model.ID</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="font-size:0.8em; font-weight:bold;">Gender</td>
+                                                <td>@Model.Gender</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="font-size:0.8em; font-weight:bold;">Status</td>
+                                                <td>@Model.Status</td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2">
+                                                    @Html.ActionLink("Home page", "home", "admin", new { @class = "btn btn-primary w-100" })
+                                                </td>
+
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

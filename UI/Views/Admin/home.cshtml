@@ -233,7 +233,7 @@
 
                 <div class="row" style="margin-top:10%; margin-left:auto; margin-right:auto;">
                     <div class="col-12">
-                        <div class="h5 text-muted">List of contacts</div>
+                        <div class="h3 text-muted text-center">List of contacts</div>
                         <div class="row">
                             <div class="col-12">
                                 <div id="insert_list">
@@ -241,7 +241,7 @@
                                     {
                                         <div class="row">
                                             <div class="col-12 text-center">
-                                                <img src="~/Content/images/emptyquarter.png" class="img-fluid" />
+                                                <img src="~/Content/images/emptyquarter.png" class="img-fluid" style="border-radius:50%;" />
                                                 <div class="text-center text-muted h5" style="margin-top:5%;">
                                                     Looks like a dessert in here people add users
                                                 </div>
@@ -266,32 +266,28 @@
 
                                                 @foreach (var m in Model)
                                                 {
-                                                <tr>
-                                                    <td>
-                                                        @*@if (m.Avatar != null)
-                                                        {
-                                                            <img class="img-fluid" height="50" width="50" src="@Url.Action("file", "admin", new { userId = m.UserId })" style="display:inline-block;" />
-                                                        }*@
-                                                        @m.FirstName @m.LastName
-                                                    </td>
-                                                    <td>@m.Email</td>
-                                                    <td>@m.Phone</td>
-                                                    <td>@m.Status</td>
-                                                    <td>@m.ID</td>
-                                                    <td>@m.Gender</td>
-                                                    <td>
-                                                        <form enctype="multipart/form-data" name="contactUpdate" id="contactUpdate">
-                                                            <input type="hidden" value="@m.UserId" id="contactUpdateHidden" name="contactUpdateHidden" />
-                                                            <input type="submit" value="update"  class="btn btn-primary" style="border-radius:1px; margin-left:auto; margin-right:auto; font-weight:bold;">
-                                                        </form>
-                                                    </td>
-                                                    <td>
-                                                        <form enctype="multipart/form-data" id="@m.UserId" name="contactDelete" class="contactDelete">
-                                                            <input type="hidden" value="@m.UserId" id="contactDeleteHidden" name="contactDeleteHidden" />
-                                                            <input type="submit" value="delete" class="btn btn-primary" style="border-radius:1px; margin-left:auto; margin-right:auto; font-weight:bold;">
-                                                        </form>
-                                                    </td>
-                                                </tr>
+                                                    <tr>
+                                                        <td>
+                                                            @*@if (m.Avatar != null)
+                                                                {
+                                                                    <img class="img-fluid" height="50" width="50" src="@Url.Action("file", "admin", new { userId = m.UserId })" style="display:inline-block;" />
+                                                                }*@
+                                                            @Html.ActionLink(@m.FirstName+" "+ @m.LastName, "find/user", new { userID = m.UserId })
+                                                            @*<a id="@m.UserId" class="fullContactInfo" href="#" style="color:#ff2d6d; text-decoration:none; font-weight:bold;">@m.FirstName @m.LastName</a>*@
+                                                        </td>
+                                                        <td>@m.Email</td>
+                                                        <td>@m.Phone</td>
+                                                        <td>@m.Status</td>
+                                                        <td>@m.ID</td>
+                                                        <td>@m.Gender</td>
+
+                                                        <td>
+                                                            <form enctype="multipart/form-data" id="@m.UserId" name="contactDelete" class="contactDelete">
+                                                                <input type="hidden" value="@m.UserId" id="contactDeleteHidden" name="contactDeleteHidden" />
+                                                                <input type="submit" value="delete" class="btn btn-primary" style="border-radius:1px; margin-left:auto; margin-right:auto; font-weight:bold;">
+                                                            </form>
+                                                        </td>
+                                                    </tr>
                                                 }
                                             </tbody>
                                         </table>

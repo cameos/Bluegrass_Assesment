@@ -305,14 +305,22 @@ namespace Abstraction.Concrete
                 {
                     try
                     {
+
+                        if (_context.Database.Connection.State == ConnectionState.Closed || _context.Database.Connection.State == ConnectionState.Broken)
+                            _context.Database.Connection.Open();
+
                         user = (from u in _context.User
                                    where (u.UserId == id)
                                    select u).FirstOrDefault<User>();
+                        _context.SaveChanges();
                         if (user == null)
+                        {
+                            _transaction.Rollback();
                             return user;
+                        }
                         else
                         {
-                            _context.SaveChanges();
+                           
                             _transaction.Commit();
                         }
                     }
@@ -337,6 +345,10 @@ namespace Abstraction.Concrete
                 {
                     try
                     {
+
+                        if (_context.Database.Connection.State == ConnectionState.Closed || _context.Database.Connection.State == ConnectionState.Broken)
+                            _context.Database.Connection.Open();
+
                         _context.Entry<User>(user).State = EntityState.Modified;
                         _context.SaveChanges();
                         _transaction.Commit();
@@ -351,5 +363,8 @@ namespace Abstraction.Concrete
             }
             return flag;
         }
+
+
+
     }
 }

@@ -2183,6 +2183,7 @@
     <Compile Include="Models\adminModel.cs" />
     <Compile Include="Models\ContactDelete.cs" />
     <Compile Include="Models\ContactUpdate.cs" />
+    <Compile Include="Models\ContactUpdateFinal.cs" />
     <Compile Include="Models\CountryAdd.cs" />
     <Compile Include="Models\EncryptionVerifiers.cs" />
     <Compile Include="Models\NewContact.cs" />
@@ -2200,6 +2201,8 @@
     <Content Include="Views\Login\register.cshtml" />
     <Content Include="Views\Login\adminHome.cshtml" />
     <Content Include="Views\Admin\home.cshtml" />
+    <Content Include="Views\Admin\get_user.cshtml" />
+    <Content Include="Views\Admin\ShowUser.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

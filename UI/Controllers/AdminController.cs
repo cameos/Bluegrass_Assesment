@@ -8,6 +8,7 @@ using System.Text;
 using UI.Models;
 using System.Net;
 using System.Net.Http;
+using System.Net.Mail;
 using System.Net.Http.Formatting;
 using System.Net.Http.Headers;
 
@@ -275,7 +276,7 @@ namespace UI.Controllers
         {
             List<Province> provinces = new List<Province>();
             var id = Guid.Parse(CountryId);
-            if(CountryId == null)
+            if (CountryId == null)
             {
                 return Json(provinces, "application/json; charset=utf-8", Encoding.UTF8, JsonRequestBehavior.AllowGet);
             }
@@ -311,7 +312,7 @@ namespace UI.Controllers
         {
 
             var error_message = new object();
-            if(string.IsNullOrWhiteSpace(AddCity.adminCoSelect) || string.IsNullOrWhiteSpace(AddCity.adminPrSelect) || string.IsNullOrWhiteSpace(AddCity.adminCity))
+            if (string.IsNullOrWhiteSpace(AddCity.adminCoSelect) || string.IsNullOrWhiteSpace(AddCity.adminPrSelect) || string.IsNullOrWhiteSpace(AddCity.adminCity))
             {
                 error_message = "error, bad request please check inputs";
                 return Json(error_message, "application/json; charset=utf-8", Encoding.UTF8, JsonRequestBehavior.DenyGet);
@@ -409,7 +410,7 @@ namespace UI.Controllers
         public ActionResult add_contact(NewContact contact)
         {
             var error_message = new object();
-            if(string.IsNullOrWhiteSpace(contact.contactFirstName)|| string.IsNullOrWhiteSpace(contact.contactLastName) || string.IsNullOrWhiteSpace(contact.contactIdNumber) || string.IsNullOrWhiteSpace(contact.contactGender) || string.IsNullOrWhiteSpace(contact.contactEmail) || string.IsNullOrWhiteSpace(contact.contactStatus) || string.IsNullOrWhiteSpace(contact.contactPhone) || string.IsNullOrWhiteSpace(contact.addressNumber) || string.IsNullOrWhiteSpace(contact.addressName) || string.IsNullOrWhiteSpace(contact.addressSuburb) || string.IsNullOrWhiteSpace(contact.addressPostalCode) || string.IsNullOrWhiteSpace(contact.contactCountry) || string.IsNullOrWhiteSpace(contact.contactProv) || string.IsNullOrWhiteSpace(contact.contactCiti))
+            if (string.IsNullOrWhiteSpace(contact.contactFirstName) || string.IsNullOrWhiteSpace(contact.contactLastName) || string.IsNullOrWhiteSpace(contact.contactIdNumber) || string.IsNullOrWhiteSpace(contact.contactGender) || string.IsNullOrWhiteSpace(contact.contactEmail) || string.IsNullOrWhiteSpace(contact.contactStatus) || string.IsNullOrWhiteSpace(contact.contactPhone) || string.IsNullOrWhiteSpace(contact.addressNumber) || string.IsNullOrWhiteSpace(contact.addressName) || string.IsNullOrWhiteSpace(contact.addressSuburb) || string.IsNullOrWhiteSpace(contact.addressPostalCode) || string.IsNullOrWhiteSpace(contact.contactCountry) || string.IsNullOrWhiteSpace(contact.contactProv) || string.IsNullOrWhiteSpace(contact.contactCiti))
             {
                 error_message = "error, please enter all fields";
                 return Json(error_message, "application/json; charset=utf-8", Encoding.UTF8, JsonRequestBehavior.DenyGet);
@@ -493,6 +494,34 @@ namespace UI.Controllers
             }
             else
             {
+
+                //message to be sent to the email
+                var email_message = "<br/><img src='https://cdn.onlinewebfonts.com/svg/img_508672.png' height='30' width='30' class='rounded' style='display: inline-block;'/> <span style='font-weight:bold;font-size:1.5em;'>Contact Added successfully with following fields</span><br/>Name: " + user.FirstName + " " + user.LastName;
+                email_message += "<br/>Phone: " + user.Phone;
+                email_message += "<br/>Email: " + user.Email;
+                email_message += "<br/>Gender: " + user.Gender;
+                email_message += "<br/>Status: " + user.Status;
+
+
+                //construct mailmessage
+                MailMessage message = new MailMessage("magine20@gmail.com", "magine20@gmail.com", "New contact added", email_message);
+                message.IsBodyHtml = true;
+
+
+                NetworkCredential credential = new NetworkCredential("magine20", "587hazel");
+                SmtpClient client = new SmtpClient();
+                client.Host = "smtp.gmail.com";
+                client.Port = 587;
+                client.EnableSsl = true;
+                client.DeliveryMethod = SmtpDeliveryMethod.Network;
+                client.UseDefaultCredentials = false;
+                client.Credentials = credential;
+
+
+                //send email
+                client.Send(message);
+
+
                 error_message = Url.Action("home", "admin");
                 return Json(error_message, "application/json; charset=utf-8", Encoding.UTF8, JsonRequestBehavior.DenyGet);
             }
@@ -547,7 +576,7 @@ namespace UI.Controllers
                 {
                     var s = result.Content.ReadAsAsync<List<User>>();
                     s.Wait();
-                   users = s.Result;
+                    users = s.Result;
                 }
             }
 
@@ -615,7 +644,172 @@ namespace UI.Controllers
                 return Json(error_message, "application/json; charset=utf-8", Encoding.UTF8, JsonRequestBehavior.DenyGet);
             }
 
-           
+
+        }
+
+        [Route("find/user")]
+        [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
+        public ActionResult get_user(Guid userID)
+        {
+
+            User user = new User();
+
+            using (var api = new HttpClient())
+            {
+                api.BaseAddress = new Uri("https://localhost:44343/api/user/");
+                api.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                var get_user = api.PostAsJsonAsync<Guid>("show/id", userID);
+                get_user.Wait();
+                var result = get_user.Result;
+                if (result.StatusCode == HttpStatusCode.OK)
+                {
+                    var s = result.Content.ReadAsAsync<User>();
+                    s.Wait();
+                    user = s.Result;
+                }
+                else if (result.StatusCode == HttpStatusCode.NotFound)
+                {
+                    var s = result.Content.ReadAsAsync<User>();
+                    s.Wait();
+                    user = s.Result;
+                }
+            }
+            return View(user);
+
+        }
+
+        [Route("show/user")]
+        [HttpPost]
+        public ActionResult ShowUser(ContactUpdate update)
+        {
+            User user = new User();
+            var error_message = new object();
+            if (string.IsNullOrWhiteSpace(update.contactUpdateHidden))
+            {
+                error_message = "error, could not update click";
+                return Json(error_message, "application/json; charset=utf-8", Encoding.UTF8, JsonRequestBehavior.DenyGet);
+            }
+
+            var id = Guid.Parse(update.contactUpdateHidden);
+
+            using (var api = new HttpClient())
+            {
+                api.BaseAddress = new Uri("https://localhost:44343/api/user/");
+                api.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                var get_user = api.PostAsJsonAsync<Guid>("show/id", id);
+                get_user.Wait();
+                var result = get_user.Result;
+                if (result.StatusCode == HttpStatusCode.OK)
+                {
+                    var s = result.Content.ReadAsAsync<User>();
+                    s.Wait();
+                    user = s.Result;
+                }
+                else if (result.StatusCode == HttpStatusCode.NotFound)
+                {
+                    var s = result.Content.ReadAsAsync<User>();
+                    s.Wait();
+                    user = s.Result;
+                }
+            }
+
+            error_message = user;
+
+            return Json(error_message, "application/json; charset=utf-8", Encoding.UTF8, JsonRequestBehavior.DenyGet);
+        }
+
+        [Route("contact/update")]
+        [HttpPost]
+        public ActionResult updateContact(ContactUpdateFinal update)
+        {
+            var error_message = new object();
+            if (string.IsNullOrWhiteSpace(update.updateContactFirst) || string.IsNullOrWhiteSpace(update.updateContactLast) || string.IsNullOrWhiteSpace(update.updateContactIDnumber) || string.IsNullOrWhiteSpace(update.updateContactGender) || string.IsNullOrWhiteSpace(update.updateContactEmail) || string.IsNullOrWhiteSpace(update.updateContactStatus) || string.IsNullOrWhiteSpace(update.updateContactPhone) || string.IsNullOrWhiteSpace(update.updateContactHiddenField))
+            {
+                error_message = "error, please enter all fields";
+                return Json(error_message, "application/json; charset=utf-8", Encoding.UTF8, JsonRequestBehavior.DenyGet);
+            }
+            var id = Guid.Parse(update.updateContactHiddenField);
+            User user = new User
+            {
+                UserId = id,
+                Email = update.updateContactEmail,
+                FirstName = update.updateContactFirst,
+                Gender = update.updateContactGender,
+                ID = update.updateContactGender,
+                LastName = update.updateContactLast,
+                Phone = update.updateContactPhone,
+                Status = update.updateContactStatus,
+
+            };
+
+            bool flag = false;
+            using (var api = new HttpClient())
+            {
+                api.BaseAddress = new Uri("https://localhost:44343/api/user/");
+                api.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                var post = api.PutAsJsonAsync<User>("update", user);
+                post.Wait();
+                var result = post.Result;
+                if (result.StatusCode == HttpStatusCode.OK)
+                {
+                    var s = result.Content.ReadAsAsync<bool>();
+                    s.Wait();
+                    flag = s.Result;
+                }
+                else if (result.StatusCode == HttpStatusCode.NotFound)
+                {
+                    var s = result.Content.ReadAsAsync<bool>();
+                    s.Wait();
+                    flag = s.Result;
+                }
+                else
+                {
+                    error_message = "error, internal server error please try again later";
+                    return Json(error_message, "application/json; charset=utf-8", Encoding.UTF8, JsonRequestBehavior.DenyGet);
+                }
+            }
+
+            if (!flag)
+            {
+                error_message = "error, internal server error please try again later";
+                return Json(error_message, "application/json; charset=utf-8", Encoding.UTF8, JsonRequestBehavior.DenyGet);
+            }
+            else
+            {
+
+                //message to be sent to the email
+                var email_message = "<br/><img src='https://cdn.onlinewebfonts.com/svg/img_508672.png' height='30' width='30' class='rounded' style='display: inline-block;'/> <span style='font-weight:bold;font-size:1.5em;'>Contact updated successfully with following fields</span><br/>Name: " + user.FirstName + " " + user.LastName;
+                email_message += "<br/>Phone: " + user.Phone;
+                email_message += "<br/>Email: " + user.Email;
+                email_message += "<br/>Gender: " + user.Gender;
+                email_message += "<br/>Status: " + user.Status;
+                
+
+
+                //construct mailmessage
+                MailMessage message = new MailMessage("magine20@gmail.com", "magine20@gmail.com", "Contact Update Successfully", email_message);
+                message.IsBodyHtml = true;
+
+
+                NetworkCredential credential = new NetworkCredential("magine20", "587hazel");
+                SmtpClient client = new SmtpClient();
+                client.Host = "smtp.gmail.com";
+                client.Port = 587;
+                client.EnableSsl = true;
+                client.DeliveryMethod = SmtpDeliveryMethod.Network;
+                client.UseDefaultCredentials = false;
+                client.Credentials = credential;
+
+
+                //send email
+                client.Send(message);
+
+                error_message = Url.Action("home", "admin");
+                return Json(error_message, "application/json; charset=utf-8", Encoding.UTF8, JsonRequestBehavior.DenyGet);
+            }
         }
 
 
