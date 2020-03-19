@@ -1,6 +1,6 @@
 ﻿var $ = jQuery.noConflict();
 $(document).ready(function () {
-
+    
 
     $(document).on("load", "#insert_list", function (e) {
         e.preventDefault();
@@ -189,7 +189,7 @@ $(document).ready(function () {
                 $.each(countries, function (key, value) {
                     cs += '<option value="' + value.CountryId + '">' + value.CountryName + '</option>';
                 });
-                
+
                 target.append(cs);
             }
         });
@@ -211,12 +211,12 @@ $(document).ready(function () {
             processData: false,
             cache: false,
             success: function (provinces) {
-                console.log("Select provinces:"+provinces);
+                console.log("Select provinces:" + provinces);
                 var ps = '<option value="">Select Province</option>';
                 $.each(provinces, function (key, value) {
                     ps += '<option value="' + value.ProvinceId + '">' + value.ProvinceName + '</option>';
                 });
-                
+
                 target.append(ps);
             }
         });
@@ -329,7 +329,7 @@ $(document).ready(function () {
             processData: false,
             cache: false,
             success: function (cities) {
-                
+
                 var ps = '<option value="">Select City</option>';
                 $.each(cities, function (key, value) {
                     ps += '<option value="' + value.CityId + '">' + value.CityName + '</option>';
@@ -367,7 +367,7 @@ $(document).ready(function () {
         });
 
     });
-    
+
     $(document).on('submit', '.contactDelete', function (e) {
         e.preventDefault();
         e.stopImmediatePropagation();
@@ -401,7 +401,7 @@ $(document).ready(function () {
         e.preventDefault();
         e.stopImmediatePropagation();
 
-        
+
 
 
         var UserId = $(this).attr("id");
@@ -438,7 +438,7 @@ $(document).ready(function () {
                     if (error_message.indexOf("error") !== -1) {
                         $("#updateClickError").removeClass("hideError").addClass("showError");
                     }
-                   
+
                 } else {
                     console.log("to be updte user" + error_message);
                     $("#updateContactHiddenField").val(error_message.UserId);
@@ -478,4 +478,63 @@ $(document).ready(function () {
         });
 
     });
+    
+
+    $(document).on("keyup", "#contactSearchFirst", function (e) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        console.log($(this).val());
+        if ($(this).val() === "") {
+            $(".suggestion-search").hide();
+        }
+
+        $.ajax({
+            method: "POST",
+            url: "https://localhost:44331/contact/predictive/first",
+            dataType: "json",
+            data: JSON.stringify({ first: $(this).val() }),
+            contentType: "application/json; charset=utf-8",
+            processData: false,
+            cache: false,
+            success: function (users) {
+                $("#suggestion-content-name").show();
+                
+                
+                var target = $("#suggestion-content-name");
+                target.empty().html();
+
+                var cont = '<ul class="search-list">';
+                $.each(users, function (key, value) {
+                    cont += "<li class='userValues' id=" + value.UserId+"'>" + value.FirstName + "</li>";                   
+                });
+                cont += "</ul>";
+                target.append(cont);
+            }
+        });
+
+    });
+    $(document).on("click", ".userValues", function (e) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+
+        var id = $(this).attr("id");
+
+        console.log(id);
+
+        $.ajax({
+            method: "POST",
+            url: "https://localhost:44331/contact/get/user",
+            dataType: "json",
+            data: JSON.stringify({ UserId: id }),
+            contentType: false,
+            processData: false,
+            cache: false,
+            success: function (user) {
+
+                console.log("this is user: " + user);
+                $("#suggestion-content-name").css("display", "none");
+            }
+        });
+    });
+
 });

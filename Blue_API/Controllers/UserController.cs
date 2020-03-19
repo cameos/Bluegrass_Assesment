@@ -190,9 +190,8 @@ namespace Blue_API.Controllers
             var error_message = string.Empty;
 
             if(string.IsNullOrWhiteSpace(name))
-            {
-                error_message = "error, bad request sent";
-                message = Request.CreateResponse(HttpStatusCode.BadRequest, error_message);
+            {                
+                message = Request.CreateResponse(HttpStatusCode.NotFound, users);
                 message.Headers.Date = DateTime.Now;
                 return message;
             }

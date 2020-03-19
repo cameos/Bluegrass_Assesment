@@ -18,5 +18,6 @@ namespace Abstraction.Abstract
         User show_by_id(Guid id);
         List<User> search_first(string name);
         List<User> search_surname(string surname);
+       
     }
 }

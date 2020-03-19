@@ -206,6 +206,10 @@ namespace Abstraction.Concrete
                 {
                     try
                     {
+                        if (_context.Database.Connection.State == ConnectionState.Closed || _context.Database.Connection.State == ConnectionState.Broken)
+                            _context.Database.Connection.Open();
+
+
                         users = (from u in _context.User
                                  where (u.FirstName.Contains(name))
                                  select u).ToList<User>();
@@ -241,6 +245,9 @@ namespace Abstraction.Concrete
                 {
                     try
                     {
+                        if (_context.Database.Connection.State == ConnectionState.Closed || _context.Database.Connection.State == ConnectionState.Broken)
+                            _context.Database.Connection.Open();
+
                         users = (from u in _context.User
                                  where (u.LastName.Contains(surname))
                                  select u).ToList<User>();
