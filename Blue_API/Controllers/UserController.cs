@@ -101,7 +101,7 @@ namespace Blue_API.Controllers
                 message = Request.CreateResponse(HttpStatusCode.NotFound, flag);
                 message.Headers.Date = DateTime.Now;
             }
-            else if(flag)
+            else if (flag)
             {
                 message = Request.CreateResponse(HttpStatusCode.OK, flag);
                 message.Headers.Date = DateTime.Now; return message;
@@ -160,11 +160,12 @@ namespace Blue_API.Controllers
             }
 
             user = _usr.show_by_id(id);
-            if(user == null)
+            if (user == null)
             {
                 message = Request.CreateResponse(HttpStatusCode.NotFound, user);
                 message.Headers.Date = DateTime.Now;
-            }else if(user != null)
+            }
+            else if (user != null)
             {
                 message = Request.CreateResponse(HttpStatusCode.OK, user);
                 message.Headers.Date = DateTime.Now;
@@ -183,25 +184,26 @@ namespace Blue_API.Controllers
 
         [Route("search/name")]
         [HttpPost]
-        public HttpResponseMessage search_name([FromBody] string name)
+        public HttpResponseMessage search_name(PredictiveFilter filter)
         {
             List<User> users = new List<User>();
             HttpResponseMessage message = null;
             var error_message = string.Empty;
 
-            if(string.IsNullOrWhiteSpace(name))
-            {                
+            if (string.IsNullOrWhiteSpace(filter.First))
+            {
                 message = Request.CreateResponse(HttpStatusCode.NotFound, users);
                 message.Headers.Date = DateTime.Now;
                 return message;
             }
 
-            users = _usr.search_first(name);
-            if(users.Count() == 0)
+            users = _usr.search_first(filter);
+            if (users.Count() == 0)
             {
                 message = Request.CreateResponse(HttpStatusCode.NotFound, users);
                 message.Headers.Date = DateTime.Now;
-            }else if(users.Count() > 0)
+            }
+            else if (users.Count() > 0)
             {
                 message = Request.CreateResponse(HttpStatusCode.OK, users);
                 message.Headers.Date = DateTime.Now;
@@ -233,11 +235,12 @@ namespace Blue_API.Controllers
             }
 
             users = _usr.search_surname(surname);
-            if(users.Count() == 0)
+            if (users.Count() == 0)
             {
                 message = Request.CreateResponse(HttpStatusCode.NotFound, users);
                 message.Headers.Date = DateTime.Now;
-            }else if(users.Count() > 0)
+            }
+            else if (users.Count() > 0)
             {
                 message = Request.CreateResponse(HttpStatusCode.OK, users);
                 message.Headers.Date = DateTime.Now;
@@ -258,7 +261,7 @@ namespace Blue_API.Controllers
             var error_message = string.Empty;
             HttpResponseMessage message = null;
 
-            if(id== null)
+            if (id == null)
             {
                 error_message = "error, bad request could not bee processed further";
                 message = Request.CreateResponse(HttpStatusCode.BadRequest, error_message);
@@ -287,6 +290,39 @@ namespace Blue_API.Controllers
             return message;
 
         }
+
+        [Route("contact/page")]
+        [HttpGet]
+        public HttpResponseMessage contact_page()
+        {
+            HttpResponseMessage message = null;
+            UserCities userCities = new UserCities();
+            var error_message = string.Empty;
+
+            userCities = _usr.contact_home();
+
+            if (userCities == null)
+            {
+                message = Request.CreateResponse(HttpStatusCode.BadRequest, userCities);
+                message.Headers.Date = DateTime.Now;
+            }
+            else if (userCities != null)
+            {
+                message = Request.CreateResponse(HttpStatusCode.OK, userCities);
+                message.Headers.Date = DateTime.Now;
+            }
+            else
+            {
+                error_message = "error, internal server error could not be processed further";
+                message = Request.CreateResponse(HttpStatusCode.InternalServerError, error_message);
+                message.Headers.Date = DateTime.Now;
+                return message;
+            }
+            return message;
+        }
+
+
+
 
     }
 }

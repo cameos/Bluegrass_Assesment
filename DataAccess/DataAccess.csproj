@@ -54,9 +54,11 @@
     <Compile Include="Entities\City.cs" />
     <Compile Include="Entities\ContactInformation.cs" />
     <Compile Include="Entities\Country.cs" />
+    <Compile Include="Entities\PredictiveFilter.cs" />
     <Compile Include="Entities\Province.cs" />
     <Compile Include="Entities\User.cs" />
     <Compile Include="Entities\UserAddress.cs" />
+    <Compile Include="Entities\UserCities.cs" />
     <Compile Include="EntityConfiguration\AddressConfiguration.cs" />
     <Compile Include="EntityConfiguration\AdminConfiguration.cs" />
     <Compile Include="EntityConfiguration\CityConfiguration.cs" />

@@ -1,4 +1,4 @@
-﻿
+﻿@model DataAccess.Entities.UserCities
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -14,6 +14,39 @@
                 <div class="col-12" style="border-bottom:1px solid #ff006e; padding:2%;">
                     <div class="text-justify h5" style="font-family:'Comic Sans MS';font-weight:bold;">Search user</div>
                     <form enctype="multipart/form-data" name="contactUserFormSearch" id="contactUserFormSearch">
+                        <input type="hidden" id="contactUserHiddenSearch" name="contactUserHiddenSearch" />
+                        <div class="form-row">
+                            <span style="margin-right:2%; font-weight:bold; font-size:1.2em;">Filters: </span>
+                            <div class="form-group col-md-3">
+                                <label for="searchCountryFilter" class="text-muted" style="font-weight:bold;">Choose country</label>
+                                <select class="form-control" id="searchCountryFilter" name="searchCountryFilter" aria-describedby="couFilter" style="border-radius:1px; margin-left:auto; margin-right:auto; font-weight:bold;">
+                                    <option value="">Select country</option>
+                                    @if (Model.Countries.Count() > 0)
+                                    {
+                                        foreach (var m in Model.Countries)
+                                        {
+                                            <option value="@m.CountryId">@m.CountryName</option>
+                                        }
+                                    }
+                                </select>
+                                <small id="contStatus" class="form-text text-muted">Filter by country</small>
+                            </div>
+                            <div class="form-group col-md-3">
+                                <label for="searchProvinceFilter" class="text-muted" style="font-weight:bold;">Choose province</label>
+                                <select class="form-control" id="searchProvinceFilter" name="searchProvinceFilter" aria-describedby="proFilter" style="border-radius:1px; margin-left:auto; margin-right:auto; font-weight:bold;">
+                                    <option value="">Select province</option>
+
+                                </select>
+                                <small id="proFilter" class="form-text text-muted">Filter by province</small>
+                            </div>
+                            <div class="form-group col-md-3">
+                                <label for="searchCityFilter" class="text-muted" style="font-weight:bold;">Choose city</label>
+                                <select class="form-control" id="searchCityFilter" name="searchCityFilter" aria-describedby="contStatus" style="border-radius:1px; margin-left:auto; margin-right:auto; font-weight:bold;">
+                                    <option value="">Select city</option>
+
+                                </select>
+                            </div>
+                        </div>
                         <div class="form-row">
                             <div class="form-group col-md-6">
                                 <!--predictive first-->
@@ -29,7 +62,7 @@
                             </div>
                         </div>
 
-                        <span style="margin-right:10%; font-weight:bold; font-size:1.2em;">Filters: </span>
+                        @*<span style="margin-right:10%; font-weight:bold; font-size:1.2em;">Filters: </span>
                         <div class="form-group" style="display:inline-block">
                             <div class="form-check form-check-inline">
                                 <label class="form-check-label check-container" for="filterCountry" style="margin-right:5%;">
@@ -52,7 +85,7 @@
                                     <span class="checkmark"></span>
                                 </label>
                             </div>
-                        </div>
+                        </div>*@
                     </form>
                 </div>
             </div>

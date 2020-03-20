@@ -2182,6 +2182,7 @@
     <Compile Include="Models\AdminLogin.cs" />
     <Compile Include="Models\adminModel.cs" />
     <Compile Include="Models\ContactDelete.cs" />
+    <Compile Include="Models\ContactFilter.cs" />
     <Compile Include="Models\ContactUpdate.cs" />
     <Compile Include="Models\ContactUpdateFinal.cs" />
     <Compile Include="Models\CountryAdd.cs" />

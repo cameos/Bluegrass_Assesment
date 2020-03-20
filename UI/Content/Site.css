@@ -105,7 +105,7 @@ html, body {
     z-index: 100;
 }
 #suggestion-content-name {
-    display: none;
+    /*display: none;*/
     position: absolute;
     background-color: #fff;
     top:0;
@@ -138,8 +138,9 @@ html, body {
             background: #ece3d2;
             cursor: pointer;
         }
-
-
+.show-predictive {
+    display: block;
+}
 
 .news-back-imge {
     height: 500px;

@@ -1,6 +1,8 @@
 ﻿var $ = jQuery.noConflict();
 $(document).ready(function () {
-    
+    $("#suggestion-content-name").hide();
+
+
 
     $(document).on("load", "#insert_list", function (e) {
         e.preventDefault();
@@ -23,8 +25,6 @@ $(document).ready(function () {
         });
 
     });
-
-
     function check_admin_registration() {
         if ($("#adminName").length === 0 || $("#adminName").val() === "") {
             return;
@@ -40,7 +40,6 @@ $(document).ready(function () {
             return;
         }
     }
-
     $(document).on("submit", "#adminRegister", function (e) {
         e.preventDefault();
         e.stopImmediatePropagation();
@@ -67,7 +66,6 @@ $(document).ready(function () {
             }
         });
     });
-
     $(document).on("submit", "#adlogin", function (e) {
         e.preventDefault();
         e.stopImmediatePropagation();
@@ -123,7 +121,6 @@ $(document).ready(function () {
             }
         });
     });
-
     $(document).on('click', '#nav-tab a[href="#nav-province"]', function (e) {
         e.preventDefault();
 
@@ -144,7 +141,6 @@ $(document).ready(function () {
             }
         });
     });
-
     $(document).on("submit", "#formProvince", function (e) {
         e.preventDefault();
         e.stopImmediatePropagation();
@@ -170,7 +166,6 @@ $(document).ready(function () {
             }
         });
     });
-
     $(document).on('click', '#nav-tab a[href="#nav-city"]', function (e) {
         e.preventDefault();
 
@@ -194,7 +189,6 @@ $(document).ready(function () {
             }
         });
     });
-
     $(document).on('change', '#adminCoSelect', function (e) {
         e.preventDefault();
 
@@ -222,7 +216,6 @@ $(document).ready(function () {
         });
 
     });
-
     $(document).on("submit", "#formCity", function (e) {
         e.preventDefault();
         e.stopImmediatePropagation();
@@ -248,7 +241,6 @@ $(document).ready(function () {
             }
         });
     });
-
     $(document).on("change", ".change_image_article", function (e) {
 
 
@@ -264,7 +256,6 @@ $(document).ready(function () {
             reader.readAsDataURL(file);
         }
     });
-
     $(document).on('click', '#conNew', function (e) {
         e.preventDefault();
 
@@ -285,7 +276,6 @@ $(document).ready(function () {
             }
         });
     });
-
     $(document).on('change', '#contactCountry', function (e) {
         e.preventDefault();
 
@@ -340,7 +330,6 @@ $(document).ready(function () {
         });
 
     });
-
     $(document).on('submit', '#newContactForm', function (e) {
         e.preventDefault();
         e.stopImmediatePropagation();
@@ -367,7 +356,6 @@ $(document).ready(function () {
         });
 
     });
-
     $(document).on('submit', '.contactDelete', function (e) {
         e.preventDefault();
         e.stopImmediatePropagation();
@@ -396,7 +384,6 @@ $(document).ready(function () {
         });
 
     });
-
     $(document).on('click', '.fullContactInfo', function (e) {
         e.preventDefault();
         e.stopImmediatePropagation();
@@ -479,33 +466,32 @@ $(document).ready(function () {
 
     });
     
-
     $(document).on("keyup", "#contactSearchFirst", function (e) {
         e.preventDefault();
         e.stopImmediatePropagation();
-        console.log($(this).val());
-        if ($(this).val() === "") {
-            $(".suggestion-search").hide();
-        }
-
+        var filt = {
+            First: $("#contactSearchFirst").val(),
+            CountryId: $("#searchCountryFilter").val(),
+            ProvinceId: $("#searchProvinceFilter").val(),
+            CityId: $("#searchCityFilter").val()
+        };
         $.ajax({
             method: "POST",
             url: "https://localhost:44331/contact/predictive/first",
             dataType: "json",
-            data: JSON.stringify({ first: $(this).val() }),
+            data: JSON.stringify(filt),
             contentType: "application/json; charset=utf-8",
             processData: false,
             cache: false,
             success: function (users) {
                 $("#suggestion-content-name").show();
-                
-                
+                              
                 var target = $("#suggestion-content-name");
                 target.empty().html();
 
                 var cont = '<ul class="search-list">';
                 $.each(users, function (key, value) {
-                    cont += "<li class='userValues' id=" + value.UserId+"'>" + value.FirstName + "</li>";                   
+                    cont += "<li class='userValues' id='" + value.UserId+"'>" + value.FirstName + "</li>";                   
                 });
                 cont += "</ul>";
                 target.append(cont);
@@ -526,15 +512,75 @@ $(document).ready(function () {
             url: "https://localhost:44331/contact/get/user",
             dataType: "json",
             data: JSON.stringify({ UserId: id }),
-            contentType: false,
+            contentType: "application/json; charset=utf-8",
             processData: false,
             cache: false,
             success: function (user) {
-
-                console.log("this is user: " + user);
-                $("#suggestion-content-name").css("display", "none");
+                if (user !== null) {
+                    $("#contactUserHiddenSearch").val(user.UserId);
+                    $("#contactSearchFirst").val(user.FirstName);
+                    $("#contactSearchLast").val(user.LastName);
+                    $("#suggestion-content-name").hide();
+                }
+               
             }
         });
     });
+    $(document).on('change', '#searchCountryFilter', function (e) {
+        e.preventDefault();
+
+        var target = $("#searchProvinceFilter");
+        target.empty().html();
+
+        $.ajax({
+            method: "POST",
+            url: "https://localhost:44331/contact/filter/provinces",
+            dataType: "json",
+            data: JSON.stringify({ CountryId: $(this).val() }),
+            contentType: "application/json; charset=utf-8",
+            processData: false,
+            cache: false,
+            success: function (provinces) {
+                console.log("Select provinces:" + provinces);
+                var ps = '<option value="">Select Province</option>';
+                $.each(provinces, function (key, value) {
+                    ps += '<option value="' + value.ProvinceId + '">' + value.ProvinceName + '</option>';
+                });
+
+                target.append(ps);
+            }
+        });
+
+    });
+    $(document).on('change', '#searchProvinceFilter', function (e) {
+        e.preventDefault();
+
+        var target = $("#searchCityFilter");
+        target.empty().html();
+
+        $.ajax({
+            method: "POST",
+            url: "https://localhost:44331/contact/filter/cities",
+            dataType: "json",
+            data: JSON.stringify({ ProvinceId: $(this).val() }),
+            contentType: "application/json; charset=utf-8",
+            processData: false,
+            cache: false,
+            success: function (cities) {
+
+                var ps = '<option value="">Select City</option>';
+                $.each(cities, function (key, value) {
+                    ps += '<option value="' + value.CityId + '">' + value.CityName + '</option>';
+                });
+
+                target.append(ps);
+            }
+        });
+
+    });
+
+
+
+
 
 });

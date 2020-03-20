@@ -16,8 +16,9 @@ namespace Abstraction.Abstract
         List<User> all();
         User show(User user);
         User show_by_id(Guid id);
-        List<User> search_first(string name);
+        List<User> search_first(PredictiveFilter filter);
         List<User> search_surname(string surname);
-       
+        UserCities contact_home();
+
     }
 }
