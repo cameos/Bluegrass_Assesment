@@ -1,0 +1,134 @@
+﻿@model DataAccess.Entities.FullUserInformation
+@{
+    ViewBag.Title = "contact_profile";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="col-12">
+    <h4 class="text-center">contact full information</h4>
+    <div class="row">
+        <div class="col-4">
+            @if (Model.User.Avatar != null)
+            {
+                <img class="img-fluid" height="100" width="100" src="@Url.Action("file", "admin", new { userId = Model.User.UserId })" style="border-radius:50%;" />
+                <form enctype="multipart/form-data" id="contactUpdate" name="contactUpdate">
+                    <input type="hidden" value="@Model.User.UserId" id="contactUpdateHidden" name="contactUpdateHidden" />
+                    <input type="submit" value="update this contact" class="btn btn-primary" style="margin-top:5%; width:100%;border-radius:1px; margin-left:auto; margin-right:auto; font-weight:bold;">
+                </form>
+                <div class="row" style="margin-top:5%;">
+                    <div class="col-11">
+                        <div id="updateError" class="hideError">
+                            Make sure all fields are entered, user image is optional
+                        </div>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <img src="~/Content/icons/088-user.png" height="100" width="100" style="border-radius:50%;margin-left:auto; margin-right:auto; max-width: 100%;max-height: 100%;" />
+
+            }
+
+        </div>
+        <div class="col-8">
+            <div class="row">
+                <div class="col-12">
+                    <div class="text-muted" style="font-family:'Comic Sans MS'; font-weight:bold;font-size:1.5em;margin-top:10%;">Personal information</div>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="" style="font-family:'Comic Sans MS'; font-weight:bold;font-size:1.0em;margin-top:10%; color:#ff006e;">
+                                @Model.User.FirstName  @Model.User.LastName
+                            </div>
+                            <table style="margin-top:5%;" class="table table-borderless table-hover">
+
+                                <tbody>
+                                    <tr>
+                                        <td style="font-size:0.8em; font-weight:bold;">Phone</td>
+                                        <td>@Model.User.Phone</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-size:0.8em; font-weight:bold;">Email</td>
+                                        <td>@Model.User.Email</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-size:0.8em; font-weight:bold;">Id</td>
+                                        <td>@Model.User.ID</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-size:0.8em; font-weight:bold;">Gender</td>
+                                        <td>@Model.User.Gender</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-size:0.8em; font-weight:bold;">Status</td>
+                                        <td>@Model.User.Status</td>
+                                    </tr>
+                                   
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+
+                    <div class="text-muted" style="font-family:'Comic Sans MS'; font-weight:bold;font-size:1.5em;margin-top:10%;">Address information</div>
+                    <div class="row">
+                        <div class="col-12">
+                            <table style="margin-top:5%;" class="table table-borderless table-hover">
+
+                                <tbody>
+                                    <tr>
+                                        <td style="font-size:0.8em; font-weight:bold;">Street number</td>
+                                        <td>@Model.Address.AddressNumber</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-size:0.8em; font-weight:bold;">Street name</td>
+                                        <td>@Model.Address.StreetName</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-size:0.8em; font-weight:bold;">Suburb</td>
+                                        <td>@Model.Address.Surburb</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-size:0.8em; font-weight:bold;">Postal Code</td>
+                                        <td>@Model.Address.PostalCode</td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="text-muted" style="font-family:'Comic Sans MS'; font-weight:bold;font-size:1.5em;margin-top:10%;">Demographic information</div>
+                    <div class="row">
+                        <div class="col-12">
+                            <table style="margin-top:5%;" class="table table-borderless table-hover">
+
+                                <tbody>
+                                    <tr>
+                                        <td style="font-size:0.8em; font-weight:bold;">Country</td>
+                                        <td>@Model.Country.CountryName</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-size:0.8em; font-weight:bold;">Province</td>
+                                        <td>@Model.Province.ProvinceName</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-size:0.8em; font-weight:bold;">City</td>
+                                        <td>@Model.Address.City.CityName</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">
+                                            @Html.ActionLink("Home page", "home", "contact", new { @class = "btn btn-primary w-100" })
+                                        </td>
+
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

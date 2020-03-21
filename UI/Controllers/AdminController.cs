@@ -496,7 +496,7 @@ namespace UI.Controllers
             {
 
                 //message to be sent to the email
-                var email_message = "<br/><img src='https://cdn.onlinewebfonts.com/svg/img_508672.png' height='30' width='30' class='rounded' style='display: inline-block;'/> <span style='font-weight:bold;font-size:1.5em;'>Contact Added successfully with following fields</span><br/>Name: " + user.FirstName + " " + user.LastName;
+                var email_message = "<br/><img src='https://cdn.onlinewebfonts.com/svg/img_508672.png' height='30' width='30' class='rounded' style='display: inline-block;'/> <span style='font-weight:bold;font-size:1.5em;'>Contact Added successfully with following fields</span><br/><br/>Name: " + user.FirstName + " " + user.LastName;
                 email_message += "<br/>Phone: " + user.Phone;
                 email_message += "<br/>Email: " + user.Email;
                 email_message += "<br/>Gender: " + user.Gender;
@@ -504,17 +504,18 @@ namespace UI.Controllers
 
 
                 //construct mailmessage
-                MailMessage message = new MailMessage("magine20@gmail.com", "magine20@gmail.com", "New contact added", email_message);
+                MailMessage message = new MailMessage("magine20@gmail.com", "b_qunta@yahoo.com", "New contact added", email_message);
                 message.IsBodyHtml = true;
-
-
+                
+                
                 NetworkCredential credential = new NetworkCredential("magine20", "587hazel");
                 SmtpClient client = new SmtpClient();
-                client.Host = "smtp.gmail.com";
-                client.Port = 587;
-                client.EnableSsl = true;
-                client.DeliveryMethod = SmtpDeliveryMethod.Network;
                 client.UseDefaultCredentials = false;
+                client.Host = "smtp.gmail.com";
+                client.Port = 587;               
+                client.EnableSsl = true;
+                client.DeliveryMethod = SmtpDeliveryMethod.Network;                
+                client.ServicePoint.MaxIdleTime = 2;
                 client.Credentials = credential;
 
 
@@ -781,7 +782,7 @@ namespace UI.Controllers
             {
 
                 //message to be sent to the email
-                var email_message = "<br/><img src='https://cdn.onlinewebfonts.com/svg/img_508672.png' height='30' width='30' class='rounded' style='display: inline-block;'/> <span style='font-weight:bold;font-size:1.5em;'>Contact updated successfully with following fields</span><br/>Name: " + user.FirstName + " " + user.LastName;
+                var email_message = "<br/><img src='https://cdn.onlinewebfonts.com/svg/img_508672.png' height='30' width='30' class='rounded' style='display: inline-block;'/> <span style='font-weight:bold;font-size:1.5em;'>Contact updated successfully with following fields</span><br/><br/>Name: " + user.FirstName + " " + user.LastName;
                 email_message += "<br/>Phone: " + user.Phone;
                 email_message += "<br/>Email: " + user.Email;
                 email_message += "<br/>Gender: " + user.Gender;
@@ -790,7 +791,7 @@ namespace UI.Controllers
 
 
                 //construct mailmessage
-                MailMessage message = new MailMessage("magine20@gmail.com", "magine20@gmail.com", "Contact Update Successfully", email_message);
+                MailMessage message = new MailMessage("magine20@gmail.com", "b_qunta@yahoo.com", "Contact updated", email_message);
                 message.IsBodyHtml = true;
 
 

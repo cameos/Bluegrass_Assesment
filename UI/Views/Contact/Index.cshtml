@@ -13,10 +13,14 @@
             <div class="row">
                 <div class="col-12" style="border-bottom:1px solid #ff006e; padding:2%;">
                     <div class="text-justify h5" style="font-family:'Comic Sans MS';font-weight:bold;">Search user</div>
-                    <form enctype="multipart/form-data" name="contactUserFormSearch" id="contactUserFormSearch">
+                    <!--contact search form-->
+                    <form name="contactUserFormSearch" id="contactUserFormSearch">
+                        <!--search hidden value-->
                         <input type="hidden" id="contactUserHiddenSearch" name="contactUserHiddenSearch" />
+                        <!--search filters-->
                         <div class="form-row">
                             <span style="margin-right:2%; font-weight:bold; font-size:1.2em;">Filters: </span>
+                            <!--first filter-->
                             <div class="form-group col-md-3">
                                 <label for="searchCountryFilter" class="text-muted" style="font-weight:bold;">Choose country</label>
                                 <select class="form-control" id="searchCountryFilter" name="searchCountryFilter" aria-describedby="couFilter" style="border-radius:1px; margin-left:auto; margin-right:auto; font-weight:bold;">
@@ -31,6 +35,7 @@
                                 </select>
                                 <small id="contStatus" class="form-text text-muted">Filter by country</small>
                             </div>
+                            <!--second filter-->
                             <div class="form-group col-md-3">
                                 <label for="searchProvinceFilter" class="text-muted" style="font-weight:bold;">Choose province</label>
                                 <select class="form-control" id="searchProvinceFilter" name="searchProvinceFilter" aria-describedby="proFilter" style="border-radius:1px; margin-left:auto; margin-right:auto; font-weight:bold;">
@@ -39,6 +44,7 @@
                                 </select>
                                 <small id="proFilter" class="form-text text-muted">Filter by province</small>
                             </div>
+                            <!--third filter-->
                             <div class="form-group col-md-3">
                                 <label for="searchCityFilter" class="text-muted" style="font-weight:bold;">Choose city</label>
                                 <select class="form-control" id="searchCityFilter" name="searchCityFilter" aria-describedby="contStatus" style="border-radius:1px; margin-left:auto; margin-right:auto; font-weight:bold;">
@@ -47,6 +53,7 @@
                                 </select>
                             </div>
                         </div>
+                        <!--search input text-->
                         <div class="form-row">
                             <div class="form-group col-md-6">
                                 <!--predictive first-->
@@ -63,30 +70,103 @@
                         </div>
 
                         @*<span style="margin-right:10%; font-weight:bold; font-size:1.2em;">Filters: </span>
-                        <div class="form-group" style="display:inline-block">
-                            <div class="form-check form-check-inline">
-                                <label class="form-check-label check-container" for="filterCountry" style="margin-right:5%;">
-                                    Country
-                                    <input class="form-check-input" type="checkbox" id="filterCountry" name="filterCountry" checked="checked" value="option1">
-                                    <span class="checkmark"></span>
-                                </label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <label class="form-check-label check-container" for="filterCity" style="margin-right:5%;font-size:1.2em;">
-                                    City
-                                    <input class="form-check-input" type="checkbox" id="filterCity" name="filterCity" value="option2">
-                                    <span class="checkmark"></span>
-                                </label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <label class="form-check-label check-container" for="filterProvince" style="margin-right:5%;font-size:1.2em;">
-                                    Province
-                                    <input class="form-check-input" type="checkbox" id="filterProvince" name="filterProvince" value="option3">
-                                    <span class="checkmark"></span>
-                                </label>
-                            </div>
-                        </div>*@
+                            <div class="form-group" style="display:inline-block">
+                                <div class="form-check form-check-inline">
+                                    <label class="form-check-label check-container" for="filterCountry" style="margin-right:5%;">
+                                        Country
+                                        <input class="form-check-input" type="checkbox" id="filterCountry" name="filterCountry" checked="checked" value="option1">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <label class="form-check-label check-container" for="filterCity" style="margin-right:5%;font-size:1.2em;">
+                                        City
+                                        <input class="form-check-input" type="checkbox" id="filterCity" name="filterCity" value="option2">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <label class="form-check-label check-container" for="filterProvince" style="margin-right:5%;font-size:1.2em;">
+                                        Province
+                                        <input class="form-check-input" type="checkbox" id="filterProvince" name="filterProvince" value="option3">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                            </div>*@
+                        <input type="submit" value="Search user" class="btn btn-primary" style="border-radius:1px; margin-left:auto; margin-right:auto; font-weight:bold;">
                     </form>
+                    <!--error for user search-->
+                    <div class="row" style="margin-top:2%;">
+                        <div class="col-11">
+                            <div id="loginError" class="hideError">
+                                Please register or enter valid admin details
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--show all users and found user here-->
+                <div class="col-12" style="border-bottom:1px solid #ff006e; padding:2%;">
+                    <div class="row" style="margin-top:5%; margin-left:auto; margin-right:auto;">
+                        <div class="col-12">
+                            <div class="h3 text-muted text-center">List of contacts <span id="found_in"></span></div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div id="insert_list_found">
+                                        @if (Model.Users.Count() == 0)
+                                        {
+                                            <div class="row">
+                                                <div class="col-12 text-center">
+                                                    <img src="~/Content/images/emptyquarter.png" class="img-fluid" style="border-radius:50%;" />
+                                                    <div class="text-center text-muted h5" style="margin-top:5%;">
+                                                        Looks like a dessert in here people add users
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <table class="table table-borderless table-hover">
+                                                <thead>
+                                                    <tr>
+
+                                                        <th scope="col">full name information</th>
+                                                        <th scope="col">email</th>
+                                                        <th scope="col">phone</th>
+                                                        <th scope="col">Status</th>
+                                                        <th scope="col">ID</th>
+                                                        <th scope="col">Gender</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+
+                                                    @foreach (var m in Model.Users)
+                                                    {
+                                                        <tr>
+                                                            <td>
+                                                                @*@if (m.Avatar != null)
+                                                                    {
+                                                                        <img class="img-fluid" height="50" width="50" src="@Url.Action("file", "admin", new { userId = m.UserId })" style="display:inline-block;" />
+                                                                    }*@
+                                                                @Html.ActionLink(@m.FirstName + " " + @m.LastName, "profile/normal", new { contactId = m.UserId })
+                                                                @*<a id="@m.UserId" class="fullContactInfo" href="#" style="color:#ff2d6d; text-decoration:none; font-weight:bold;">@m.FirstName @m.LastName</a>*@
+                                                            </td>
+                                                            <td>@m.Email</td>
+                                                            <td>@m.Phone</td>
+                                                            <td>@m.Status</td>
+                                                            <td>@m.ID</td>
+                                                            <td>@m.Gender</td>
+                                                        </tr>
+                                                    }
+                                                </tbody>
+                                            </table>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>

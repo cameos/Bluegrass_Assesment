@@ -579,7 +579,82 @@ $(document).ready(function () {
 
     });
 
+    $(document).on("submit", "#contactUserFormSearch", function (e) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
 
+        //var form = new FormData(document.getElementById("contactUserFormSearch"));
+        var filterFound = {
+            contactUserHiddenSearch: $("#contactUserHiddenSearch").val(),
+            contactSearchFirst: $("#contactSearchFirst").val(),
+            contactSearchLast: $("#contactSearchLast").val()
+        };
+        $.ajax({
+            method: "POST",
+            url: "https://localhost:44331/contact/information/user",
+            dataType: "json",
+            data: JSON.stringify(filterFound),
+            contentType: "application/json; charset=utf-8",
+            processData: false,
+            cache: false,
+            success: function (user) {
+                console.log("this is my user: " + user.FirstName);
+                var target = $("#insert_list_found");
+                target.empty().html();
+
+                var target2 = $("#found_in");
+                target2.empty().html();
+
+                var found = '<table class="table table-borderless table-hover">';
+                found += '<thead>';
+                found += '<tr>';
+                found += '<th scope="col">full name information</th>';
+                found += '<th scope="col">email</th>';
+                found += '<th scope="col">phone</th>';
+                found += '<th scope="col">Status</th>';
+                found += '<th scope="col">ID</th>';
+                found += '<th scope="col">Gender</th>';
+                found += '</tr>';
+                found += '</thead>';
+
+                found += '<tbody>';
+                found += '<tr>';
+
+                found += '<td>';
+                found += '<a href="https://localhost:44331/contact/profile/ajax?contactId=' + user.UserId+'" style="text-decoration:none;">' + user.FirstName + ' ' + user.LastName + '</a>';
+                found += '</td>';
+
+                found += '<td>';
+                found += user.Email;
+                found += '</td>';
+
+                found += '<td>';
+                found += user.Phone;
+                found += '</td>';
+
+
+                found += '<td>';
+                found += user.Status;
+                found += '</td>';
+
+                found += '<td>';
+                found += user.ID;
+                found += '</td>';
+
+                found += '<td>';
+                found += user.Gender;
+                found += '</td>';
+
+                found += '</tr>';
+
+                found += '</tbody>';
+                found += '</table>';
+
+                target.append(found);
+                target2.append(' Name found: '+user.FirstName + ' ' + user.LastName);
+            }
+        });
+    });
 
 
 

@@ -19,6 +19,7 @@ namespace Abstraction.Abstract
         List<User> search_first(PredictiveFilter filter);
         List<User> search_surname(string surname);
         UserCities contact_home();
+        FullUserInformation full_info(Guid id);
 
     }
 }

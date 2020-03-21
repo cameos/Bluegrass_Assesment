@@ -88,6 +88,70 @@ namespace Abstraction.Concrete
             return userCities;
         }
 
+        public FullUserInformation full_info(Guid id)
+        {
+            FullUserInformation fullUserInformation = new FullUserInformation();
+            if (id == null || id == Guid.Empty)
+                return fullUserInformation;
+            using(_context = new BlueContext())
+            {
+                using(var _transaction = _context.Database.BeginTransaction(IsolationLevel.Serializable))
+                {
+                    try
+                    {
+                        if (_context.Database.Connection.State == ConnectionState.Closed || _context.Database.Connection.State == ConnectionState.Broken)
+                            _context.Database.Connection.Open();
+
+                        var user = (from u in _context.User
+                                    where (u.UserId == id)
+                                    select u).SingleOrDefault<User>();
+                        _context.SaveChanges();
+
+                        var userAddress = (from us in _context.UserAddress
+                                           where (us.UserId == user.UserId)
+                                           select us).SingleOrDefault<UserAddress>();
+                        _context.SaveChanges();
+
+                        var address = (from a in _context.Address
+                                       where (a.AddressId == userAddress.AddressId)
+                                       select a).SingleOrDefault<Address>();
+                        _context.SaveChanges();
+
+                        var country = (from c in _context.Country
+                                       where (c.CountryId == address.CountryId)
+                                       select c).SingleOrDefault<Country>();
+                        _context.SaveChanges();
+
+                        var province = (from p in _context.Province
+                                        where (p.ProvinceId == address.ProvinceId)
+                                        select p).SingleOrDefault<Province>();
+                        _context.SaveChanges();
+
+                        var city = (from ci in _context.City
+                                    where (ci.CityId == address.CityId)
+                                    select ci).SingleOrDefault<City>();
+                        _context.SaveChanges();
+
+                        fullUserInformation.User = user;
+                        fullUserInformation.Address = address;
+                        fullUserInformation.Country = country;
+                        fullUserInformation.Province = province;
+                        fullUserInformation.City = city;
+
+                        _transaction.Commit();
+
+
+                    }
+                    catch(Exception e)
+                    {
+                        _transaction.Rollback();
+                        throw new Exception(e.Message);
+                    }
+                }
+            }
+            return fullUserInformation;
+        }
+
         public bool insert(User user, Address address)
         {
             bool flag = false;
@@ -253,8 +317,89 @@ namespace Abstraction.Concrete
 
 
                         List<Address> addresses = new List<Address>();
-                        if (filter.CountryId != null)
+                        if (filter.CountryId != Guid.Empty && filter.ProvinceId != Guid.Empty && filter.CityId != Guid.Empty)
                         {
+                            addresses.Clear();
+                            var ad1 = (from a in _context.Address
+                                       where (a.CountryId == filter.CountryId && a.ProvinceId == filter.ProvinceId && a.CityId == filter.CityId)
+                                       select a).ToList<Address>();
+                            if (ad1.Count() != 0)
+                            {
+                                addresses.AddRange(ad1);
+                            }
+
+
+                            List<UserAddress> userAddresses = new List<UserAddress>();
+                            if (addresses.Count() > 0)
+                            {
+                                userAddresses.Clear();
+                                foreach (var a in addresses)
+                                {
+                                    var ads = (from ad in _context.UserAddress
+                                               where (ad.AddressId == a.AddressId)
+                                               select ad).SingleOrDefault<UserAddress>();
+                                    userAddresses.Add(ads);
+                                }
+                            }
+
+                            if (userAddresses.Count() > 0)
+                            {
+                                users.Clear();
+                                foreach (var ds in userAddresses)
+                                {
+                                    var user = (from u in _context.User
+                                                where (u.UserId == ds.UserId && u.FirstName.Contains(filter.First))
+                                                select u).SingleOrDefault<User>();
+                                    users.Add(user);
+                                }
+                                _context.SaveChanges();
+                            }
+
+
+                        }
+                        else if (filter.CountryId != Guid.Empty && filter.ProvinceId != Guid.Empty && filter.CityId == Guid.Empty)
+                        {
+                            addresses.Clear();
+                            var ad1 = (from a in _context.Address
+                                       where (a.CountryId == filter.CountryId && a.ProvinceId == filter.ProvinceId)
+                                       select a).ToList<Address>();
+                            if (ad1.Count() != 0)
+                            {
+                                addresses.AddRange(ad1);
+                            }
+
+                            List<UserAddress> userAddresses = new List<UserAddress>();
+                            if (addresses.Count() > 0)
+                            {
+                                userAddresses.Clear();
+                                foreach (var a in addresses)
+                                {
+                                    var ads = (from ad in _context.UserAddress
+                                               where (ad.AddressId == a.AddressId)
+                                               select ad).SingleOrDefault<UserAddress>();
+                                    userAddresses.Add(ads);
+                                }
+                            }
+
+                            if (userAddresses.Count() > 0)
+                            {
+                                users.Clear();
+                                foreach (var ds in userAddresses)
+                                {
+                                    var user = (from u in _context.User
+                                                where (u.UserId == ds.UserId && u.FirstName.Contains(filter.First))
+                                                select u).SingleOrDefault<User>();
+                                    users.Add(user);
+                                }
+                                _context.SaveChanges();
+                            }
+
+
+
+                        }
+                        else if (filter.CountryId != Guid.Empty && filter.ProvinceId == Guid.Empty && filter.CityId == Guid.Empty)
+                        {
+                            addresses.Clear();
                             var ad1 = (from a in _context.Address
                                        where (a.CountryId == filter.CountryId)
                                        select a).ToList<Address>();
@@ -262,99 +407,186 @@ namespace Abstraction.Concrete
                             {
                                 addresses.AddRange(ad1);
                             }
-                        }
 
-
-                        if (filter.ProvinceId != null && filter.CountryId != null)
-                        {
-
-
-                            var ad2 = (from a in _context.Address
-                                       where (a.ProvinceId == filter.ProvinceId && a.CountryId == filter.CountryId)
-                                       select a).ToList<Address>();
-                            if (ad2.Count() != 0)
+                            List<UserAddress> userAddresses = new List<UserAddress>();
+                            if (addresses.Count() > 0)
                             {
-                                addresses.Clear();
-                                addresses.AddRange(ad2);
+                                userAddresses.Clear();
+                                foreach (var a in addresses)
+                                {
+                                    var ads = (from ad in _context.UserAddress
+                                               where (ad.AddressId == a.AddressId)
+                                               select ad).SingleOrDefault<UserAddress>();
+                                    userAddresses.Add(ads);
+                                }
                             }
-                        }
-                        else if (filter.ProvinceId != null && filter.CountryId == null)
-                        {
-                            var ad2 = (from a in _context.Address
-                                       where (a.ProvinceId == filter.ProvinceId)
-                                       select a).ToList<Address>();
-                            if (ad2.Count() != 0)
+
+                            if (userAddresses.Count() > 0)
                             {
-                                addresses.Clear();
-                                addresses.AddRange(ad2);
+                                users.Clear();
+                                foreach (var ds in userAddresses)
+                                {
+                                    var user = (from u in _context.User
+                                                where (u.UserId == ds.UserId && u.FirstName.Contains(filter.First))
+                                                select u).SingleOrDefault<User>();
+                                    users.Add(user);
+                                }
+                                _context.SaveChanges();
                             }
+
+
                         }
-
-
-
-                        if (filter.CityId != null && filter.ProvinceId != null && filter.CountryId != null)
+                        else if (filter.CountryId == Guid.Empty && filter.ProvinceId != Guid.Empty && filter.CityId != Guid.Empty)
                         {
-                            var ad3 = (from a in _context.Address
-                                       where (a.ProvinceId == filter.ProvinceId && a.CountryId == filter.CountryId && a.CityId == filter.CityId)
-                                       select a).ToList<Address>();
-                            if (ad3.Count() != 0)
-                            {
-                                addresses.Clear();
-                                addresses.AddRange(ad3);
-                            }
-                        }
-                        else if (filter.CityId != null && filter.ProvinceId != null && filter.CountryId == null)
-                        {
-                            var ad3 = (from a in _context.Address
+                            addresses.Clear();
+                            var ad1 = (from a in _context.Address
                                        where (a.ProvinceId == filter.ProvinceId && a.CityId == filter.CityId)
                                        select a).ToList<Address>();
-                            if (ad3.Count() != 0)
+                            if (ad1.Count() != 0)
                             {
-                                addresses.Clear();
-                                addresses.AddRange(ad3);
+                                addresses.AddRange(ad1);
                             }
+
+                            List<UserAddress> userAddresses = new List<UserAddress>();
+                            if (addresses.Count() > 0)
+                            {
+                                userAddresses.Clear();
+                                foreach (var a in addresses)
+                                {
+                                    var ads = (from ad in _context.UserAddress
+                                               where (ad.AddressId == a.AddressId)
+                                               select ad).SingleOrDefault<UserAddress>();
+                                    userAddresses.Add(ads);
+                                }
+                            }
+
+                            if (userAddresses.Count() > 0)
+                            {
+                                users.Clear();
+                                foreach (var ds in userAddresses)
+                                {
+                                    var user = (from u in _context.User
+                                                where (u.UserId == ds.UserId && u.FirstName.Contains(filter.First))
+                                                select u).SingleOrDefault<User>();
+                                    users.Add(user);
+                                }
+                                _context.SaveChanges();
+                            }
+
+
+
                         }
-                        else if (filter.CityId != null && filter.ProvinceId == null && filter.CountryId == null)
+                        else if (filter.CountryId != Guid.Empty && filter.ProvinceId == Guid.Empty && filter.CityId != Guid.Empty)
                         {
-                            var ad3 = (from a in _context.Address
+                            addresses.Clear();
+                            var ad1 = (from a in _context.Address
+                                       where (a.CountryId == filter.CountryId && a.CityId == filter.CityId)
+                                       select a).ToList<Address>();
+                            if (ad1.Count() != 0)
+                            {
+                                addresses.AddRange(ad1);
+                            }
+
+
+                            List<UserAddress> userAddresses = new List<UserAddress>();
+                            if (addresses.Count() > 0)
+                            {
+                                userAddresses.Clear();
+                                foreach (var a in addresses)
+                                {
+                                    var ads = (from ad in _context.UserAddress
+                                               where (ad.AddressId == a.AddressId)
+                                               select ad).SingleOrDefault<UserAddress>();
+                                    userAddresses.Add(ads);
+                                }
+                            }
+
+                            if (userAddresses.Count() > 0)
+                            {
+                                users.Clear();
+                                foreach (var ds in userAddresses)
+                                {
+                                    var user = (from u in _context.User
+                                                where (u.UserId == ds.UserId && u.FirstName.Contains(filter.First))
+                                                select u).SingleOrDefault<User>();
+                                    users.Add(user);
+                                }
+                                _context.SaveChanges();
+                            }
+
+
+                        }
+                        else if (filter.CountryId == Guid.Empty && filter.ProvinceId == Guid.Empty && filter.CityId != Guid.Empty)
+                        {
+                            addresses.Clear();
+                            var ad1 = (from a in _context.Address
                                        where (a.CityId == filter.CityId)
                                        select a).ToList<Address>();
-                            if (ad3.Count() != 0)
+                            if (ad1.Count() != 0)
                             {
-                                addresses.Clear();
-                                addresses.AddRange(ad3);
+                                addresses.AddRange(ad1);
+                            }
+                            List<UserAddress> userAddresses = new List<UserAddress>();
+                            if (addresses.Count() > 0)
+                            {
+                                userAddresses.Clear();
+                                foreach (var a in addresses)
+                                {
+                                    var ads = (from ad in _context.UserAddress
+                                               where (ad.AddressId == a.AddressId)
+                                               select ad).SingleOrDefault<UserAddress>();
+                                    userAddresses.Add(ads);
+                                }
+                            }
+
+                            if (userAddresses.Count() > 0)
+                            {
+                                users.Clear();
+                                foreach (var ds in userAddresses)
+                                {
+                                    var user = (from u in _context.User
+                                                where (u.UserId == ds.UserId && u.FirstName.Contains(filter.First))
+                                                select u).SingleOrDefault<User>();
+                                    users.Add(user);
+                                }
+                                _context.SaveChanges();
                             }
                         }
-
-
-
-
-                        List<UserAddress> userAddresses = new List<UserAddress>();
-                        if(addresses.Count() > 0)
+                        else if (filter.CountryId == Guid.Empty && filter.ProvinceId != Guid.Empty && filter.CityId == Guid.Empty)
                         {
-                            userAddresses.Clear();
-                            foreach (var a in addresses)
+                            addresses.Clear();
+                            var ad1 = (from a in _context.Address
+                                       where (a.CityId == filter.CityId)
+                                       select a).ToList<Address>();
+                            if (ad1.Count() != 0)
                             {
-                                var ads = (from ad in _context.UserAddress
-                                           where (ad.AddressId == a.AddressId)
-                                           select ad).SingleOrDefault<UserAddress>();
-                                userAddresses.Add(ads);
+                                addresses.AddRange(ad1);
                             }
-                        }
-
-
-                       
-                        if (userAddresses.Count() > 0)
-                        {
-                            users.Clear();
-                            foreach (var ds in userAddresses)
+                            List<UserAddress> userAddresses = new List<UserAddress>();
+                            if (addresses.Count() > 0)
                             {
-                                var user = (from u in _context.User
-                                            where (u.UserId == ds.UserId && u.FirstName.Contains(filter.First))
-                                            select u).SingleOrDefault<User>();
-                                users.Add(user);
+                                userAddresses.Clear();
+                                foreach (var a in addresses)
+                                {
+                                    var ads = (from ad in _context.UserAddress
+                                               where (ad.AddressId == a.AddressId)
+                                               select ad).SingleOrDefault<UserAddress>();
+                                    userAddresses.Add(ads);
+                                }
                             }
-                            _context.SaveChanges();
+
+                            if (userAddresses.Count() > 0)
+                            {
+                                users.Clear();
+                                foreach (var ds in userAddresses)
+                                {
+                                    var user = (from u in _context.User
+                                                where (u.UserId == ds.UserId && u.FirstName.Contains(filter.First))
+                                                select u).SingleOrDefault<User>();
+                                    users.Add(user);
+                                }
+                                _context.SaveChanges();
+                            }
                         }
                         else
                         {

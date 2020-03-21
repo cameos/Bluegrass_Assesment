@@ -321,7 +321,42 @@ namespace Blue_API.Controllers
             return message;
         }
 
+        [Route("user/information")]
+        [HttpPost]
+        public HttpResponseMessage full_information([FromBody]Guid id)
+        {
+            HttpResponseMessage message = null;
+            var error_message = string.Empty;
+            FullUserInformation fullUserInformation = new FullUserInformation();
 
+            if (id == null || id== Guid.Empty)
+            {
+                error_message = "error, could not be processed further bad request";
+                message = Request.CreateResponse(HttpStatusCode.BadRequest, error_message);
+                message.Headers.Date = DateTime.Now;
+                return message;
+            }
+
+            fullUserInformation = _usr.full_info(id);
+            if (fullUserInformation.User == null)
+            {
+                message = Request.CreateResponse(HttpStatusCode.NotFound, fullUserInformation);
+                message.Headers.Date = DateTime.Now;
+            }
+            else if (fullUserInformation.User != null)
+            {
+                message = Request.CreateResponse(HttpStatusCode.OK, fullUserInformation);
+                message.Headers.Date = DateTime.Now;
+            }
+            else
+            {
+                error_message = "error, internal server error could not be processed further";
+                message = Request.CreateResponse(HttpStatusCode.InternalServerError, error_message);
+                message.Headers.Date = DateTime.Now;
+                return message;
+            }
+            return message;
+        }
 
 
     }

@@ -46,12 +46,75 @@ namespace UI.Controllers
             return View(userCities);
         }
 
+
+        [Route("profile/ajax")]
+        [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
+        public ActionResult contact_profile(string contactId)
+        {
+            FullUserInformation fullUserInformation = new FullUserInformation();
+            var userID = Guid.Parse(contactId);
+            using (var api = new HttpClient())
+            {
+                api.BaseAddress = new Uri("https://localhost:44343/api/user/");
+                api.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                var get_user = api.PostAsJsonAsync<Guid>("user/information", userID);
+                get_user.Wait();
+                var result = get_user.Result;
+                if (result.StatusCode == HttpStatusCode.OK)
+                {
+                    var s = result.Content.ReadAsAsync<FullUserInformation>();
+                    s.Wait();
+                    fullUserInformation = s.Result;
+                }
+                else if (result.StatusCode == HttpStatusCode.NotFound)
+                {
+                    var s = result.Content.ReadAsAsync<FullUserInformation>();
+                    s.Wait();
+                    fullUserInformation = s.Result;
+                }
+            }
+            return View(fullUserInformation);
+        }
+
+        [Route("profile/normal")]
+        [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
+        public ActionResult contact_profile_normal(Guid contactId)
+        {
+            FullUserInformation fullUserInformation = new FullUserInformation();
+            
+            using (var api = new HttpClient())
+            {
+                api.BaseAddress = new Uri("https://localhost:44343/api/user/");
+                api.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                var get_user = api.PostAsJsonAsync<Guid>("user/information", contactId);
+                get_user.Wait();
+                var result = get_user.Result;
+                if (result.StatusCode == HttpStatusCode.OK)
+                {
+                    var s = result.Content.ReadAsAsync<FullUserInformation>();
+                    s.Wait();
+                    fullUserInformation = s.Result;
+                }
+                else if (result.StatusCode == HttpStatusCode.NotFound)
+                {
+                    var s = result.Content.ReadAsAsync<FullUserInformation>();
+                    s.Wait();
+                    fullUserInformation = s.Result;
+                }
+            }
+            return View("contact_profile", fullUserInformation);
+        }
+
+
+
         [Route("predictive/first")]
         [HttpPost]
         public ActionResult PredictiveFirst(ContactFilter filt)
-      {
+        {
             List<User> users = new List<User>();
-            if(!string.IsNullOrWhiteSpace(filt.First))
+            if (!string.IsNullOrWhiteSpace(filt.First))
             {
                 PredictiveFilter filter = new PredictiveFilter
                 {
@@ -62,24 +125,24 @@ namespace UI.Controllers
                     var couId = Guid.Parse(filt.CountryId);
                     filter.CountryId = couId;
                 }
-                if(filt.ProvinceId != null)
+                if (filt.ProvinceId != null)
                 {
                     var prId = Guid.Parse(filt.ProvinceId);
                     filter.ProvinceId = prId;
                 }
-                if(filt.CityId != null)
+                if (filt.CityId != null)
                 {
                     var ciId = Guid.Parse(filt.CityId);
                     filter.CityId = ciId;
                 }
-                
+
 
                 using (var api = new HttpClient())
                 {
                     api.BaseAddress = new Uri("https://localhost:44343/api/user/");
                     api.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-                    var get_user = api.PostAsJsonAsync<PredictiveFilter>("search/name",filter);
+                    var get_user = api.PostAsJsonAsync<PredictiveFilter>("search/name", filter);
                     get_user.Wait();
                     var result = get_user.Result;
                     if (result.StatusCode == HttpStatusCode.OK)
@@ -204,6 +267,38 @@ namespace UI.Controllers
             return Json(cities, "application/json; charset=utf-8", Encoding.UTF8, JsonRequestBehavior.AllowGet);
         }
 
+        [Route("information/user")]
+        [HttpPost]
+        public ActionResult get_full_user(ContactFilterFound filterFound)
+        {
+            User user = new User();
+            if (!string.IsNullOrWhiteSpace(filterFound.contactUserHiddenSearch))
+            {
+                var id = Guid.Parse(filterFound.contactUserHiddenSearch);
+                using (var api = new HttpClient())
+                {
+                    api.BaseAddress = new Uri("https://localhost:44343/api/user/");
+                    api.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                    var get_user = api.PostAsJsonAsync<Guid>("show/id", id);
+                    get_user.Wait();
+                    var result = get_user.Result;
+                    if (result.StatusCode == HttpStatusCode.OK)
+                    {
+                        var s = result.Content.ReadAsAsync<User>();
+                        s.Wait();
+                        user = s.Result;
+                    }
+                    else if (result.StatusCode == HttpStatusCode.NotFound)
+                    {
+                        var s = result.Content.ReadAsAsync<User>();
+                        s.Wait();
+                        user = s.Result;
+                    }
+                }
+            }
+            return Json(user, "application/json; charset=utf-8", Encoding.UTF8, JsonRequestBehavior.DenyGet);
+        }
 
     }
 }
