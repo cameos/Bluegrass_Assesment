@@ -503,7 +503,7 @@ namespace UI.Controllers
 
 
                 //construct mailmessage
-                MailMessage message = new MailMessage("bqunta79@gmail.com", "magine20@gmail.com", "New contact added", email_message);
+                MailMessage message = new MailMessage("bqunta79@gmail.com", "mark@bluegrassdigital.com", "New contact added", email_message);
                 message.IsBodyHtml = true;
 
 
@@ -817,7 +817,7 @@ namespace UI.Controllers
 
 
                 //construct mailmessage
-                MailMessage message = new MailMessage("bqunta79@gmail.com", "magine20@gmail.com", "Contact updated", email_message);
+                MailMessage message = new MailMessage("bqunta79@gmail.com", "mark@bluegrassdigital.com", "Contact updated", email_message);
                 message.IsBodyHtml = true;
 
 
