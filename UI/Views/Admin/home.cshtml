@@ -86,14 +86,14 @@
                                                     <img src="~/Content/icons/012-user.png" height="50" width="50" class="rounded" style="display:inline-block;" />  Choose Image for the user
                                                 </div>
                                                 <div class="row">
-                                                    <div class="col-sm-12">
+                                                    <div class="col-sm-6">
                                                         <div class="form-group text-justify">
                                                             <label for="contactImage" class="col-form-label">select image</label>
                                                             <input type="file" id="contactImage" name="contactImage" class="form-control-file change_image_article" aria-labelledby="select_image_help">
                                                             <small id="select_image_help" class="form-text text-muted">Choose image to be associated with this contact</small>
                                                         </div>
                                                     </div>
-                                                    <div class="col-sm-12">
+                                                    <div class="col-sm-6">
                                                         <div style="border:1px solid #d1d5da; margin-top:1%; padding:1%;">
                                                             <div class="text-center potrait-image image_preview_article">
                                                                 Preview image here
@@ -169,6 +169,7 @@
 
                                 <!--submit button-->
                                 <input type="submit" value="Add new contact to the list" class="btn btn-primary" style="border-radius:1px; margin-left:auto; margin-right:auto; font-weight:bold;">
+                                @Html.ActionLink("Dismiss","home", "admin", new { @class="btn btn-primary", @style="border-radius:1px; margin-left:auto; margin-right:auto; font-weight:bold;background-color:#ff2d6d; border:1px solid #ff2d6d;"})
                             </form>
                             <div class="row" style="margin-top:5%;">
                                 <div class="col-11">
@@ -188,24 +189,24 @@
     </div>
 
     <!--Success modal (for all sucess this will be called-->
-    <div class="modal fade" id="new-contact-modal" tabindex="-1" role="dialog" aria-labelledby="contact-modal-title" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal fade" id="success-contact-modal" tabindex="-1" role="dialog" aria-labelledby="success-contact-modal-title" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable" role="document">
             <div class="modal-content" style="border-radius:unset;border:1px solid #e8e5e5;">
                 <div class="modal-header">
-                    <h3 class="modal-title" id="contact-modal-title">
-                        <img src="~/Content/icons/088-user.png" height="30" width="30" class="rounded" style="display:inline-block;" />  <span style="">Sent Successfully</span>
+                    <h3 class="modal-title" id="success-contact-modal-title">
+                        <img src="~/Content/icons/088-user.png" height="30" width="30" class="rounded" style="display:inline-block;" /> <span id="title-back" style=""></span>
                     </h3>
                 </div>
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-12">
-                            <img src="~/Content/icons/088-user.png" height="30" width="30" class="rounded" style="display:inline-block;" />  <span style="">Sent Successfully</span>
+                            <img src="~/Content/icons/063-heart.png" height="30" width="30" class="rounded" style="display:inline-block;" />  <span id="body-back" style=""></span>
                         </div>
                     </div>
                 </div>
-                @*<div class="modal-footer">
-                        @Html.ActionLink("Go to login page", "index", "home", new { @class = "btn btn_primary radio-login-btn" })
-                    </div>*@
+                <div class="modal-footer">
+                    @Html.ActionLink("Home", "home", "admin", new { @class = "btn btn-primary" })
+                </div>
             </div>
         </div>
     </div>
@@ -218,7 +219,7 @@
                 <a class="nav-item nav-link active" id="nav-contactlist" data-toggle="tab" href="#nav-list" role="tab" aria-controls="nav-list" aria-selected="true" style="color:#ff2d6d;font-size:0.8em; font-weight:bold;">Contact list</a>
                 <!--disabled-->
                 @*<a class="nav-item nav-link" id="nav-disabled" data-toggle="tab" href="#nav-list-disabled" role="tab" aria-controls="nav-list-disabled" aria-selected="false" style="color:#ff2d6d;font-size:0.8em; font-weight:bold;">Disabled contacts</a>
-                <a class="nav-item nav-link" id="nav-request-disabled" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false" style="color:#ff2d6d;font-size:0.8em; font-weight:bold;">Request to be disabled</a>*@
+                    <a class="nav-item nav-link" id="nav-request-disabled" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false" style="color:#ff2d6d;font-size:0.8em; font-weight:bold;">Request to be disabled</a>*@
                 <!--country tab-->
                 <a class="nav-item nav-link" id="nav-country-manage" data-toggle="tab" href="#nav-country" role="tab" aria-controls="nav-country" aria-selected="false" style="color:#ff2d6d;font-size:0.8em; font-weight:bold;">Country management</a>
                 <!--province tab-->
@@ -268,11 +269,16 @@
                                                 {
                                                     <tr>
                                                         <td>
-                                                            @*@if (m.Avatar != null)
-                                                                {
-                                                                    <img class="img-fluid" height="50" width="50" src="@Url.Action("file", "admin", new { userId = m.UserId })" style="display:inline-block;" />
-                                                                }*@
-                                                            @Html.ActionLink(@m.FirstName+" "+ @m.LastName, "find/user", new { userID = m.UserId })
+                                                            @if (m.Avatar != null)
+                                                            {
+                                                                var img = Convert.ToBase64String(m.Avatar);
+                                                                <img class="img-fluid" height="50" width="50" src="data:image/@m.MimeType;base64,@img" style="display:inline-block;border-radius:50%;" />
+                                                            }
+                                                            else
+                                                            {
+                                                                <img class="img-fluid" height="50" width="50" src="~/Content/icons/070-time management.png" style="display:inline-block;border-radius:50%;" />
+                                                            }
+                                                            @Html.ActionLink(@m.FirstName + " " + @m.LastName, "find/user", new { userID = m.UserId })
                                                             @*<a id="@m.UserId" class="fullContactInfo" href="#" style="color:#ff2d6d; text-decoration:none; font-weight:bold;">@m.FirstName @m.LastName</a>*@
                                                         </td>
                                                         <td>@m.Email</td>
@@ -301,8 +307,8 @@
             </div>
             @*<div class="tab-pane fade" id="nav-list-disabled" role="tabpanel" aria-labelledby="nav-disabled">
 
-            </div>
-            <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">...</div>*@
+                </div>
+                <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">...</div>*@
             <!--add country-->
             <div class="tab-pane fade" id="nav-country" role="tabpanel" aria-labelledby="nav-country-manage">
                 <h4>Country management</h4>

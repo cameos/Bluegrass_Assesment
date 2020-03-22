@@ -2181,6 +2181,7 @@
     <Compile Include="Models\AddProvince.cs" />
     <Compile Include="Models\AdminLogin.cs" />
     <Compile Include="Models\adminModel.cs" />
+    <Compile Include="Models\AdminSession.cs" />
     <Compile Include="Models\ContactDelete.cs" />
     <Compile Include="Models\ContactFilter.cs" />
     <Compile Include="Models\ContactFilterFound.cs" />
@@ -2203,7 +2204,6 @@
     <Content Include="Views\Login\adminHome.cshtml" />
     <Content Include="Views\Admin\home.cshtml" />
     <Content Include="Views\Admin\get_user.cshtml" />
-    <Content Include="Views\Admin\ShowUser.cshtml" />
     <Content Include="Views\Contact\Index.cshtml" />
     <Content Include="Views\Contact\contact_profile.cshtml" />
     <None Include="Web.Debug.config">

@@ -19,6 +19,129 @@
 </head>
 <body>
     <div class="container-fluid">
+        <!--instructions-->
+        <div class="row">
+
+            <!--Success modal (for all sucess this will be called-->
+            <div class="modal fade" id="instructions-modal" tabindex="-1" role="dialog" aria-labelledby="instructions-modal-title" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+                    <div class="modal-content" style="border-radius:unset;border:1px solid #e8e5e5;">
+                        <div class="modal-header">
+                            <h3 class="modal-title" id="instructions-modal-title">
+                                <img src="~/Content/icons/104-loupe.png" height="30" width="30" class="rounded" style="display:inline-block;" /> <span class="text-center h4 text-muted">Instructions</span>
+                            </h3>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-12">                               
+                                    <div class="text-justify">
+                                       <ul style="list-style:decimal">
+                                           <li>
+                                               First things first, the project is 4 parts projects (The UI and WebAPI need to run separately).
+                                               Create new solution project for UI and Run it separately but first build everything.
+                                               First run WebAPI separately so that it can be accesible to the UI and then Run UI.
+                                               <ul>
+                                                   <li>
+                                                       DataAccess - Backend
+                                                       <ul>
+                                                           <li>Entities</li>
+                                                           <li>Entities configuration</li>
+                                                           <li>Migrations</li>
+                                                           <li>DB Context</li>
+                                                       </ul>
+                                                   </li>
+                                                   <li>
+                                                       Abstractions
+                                                       <ul>
+                                                           <li>Abstracts</li>
+                                                           <li>Concrete</li>
+                                                       </ul>
+                                                   </li>
+                                                   <li>
+                                                       WebApi
+                                                       <ul>
+                                                           <li>Dependency injection(custom - ninject)</li>
+                                                       </ul>
+                                                   </li>
+                                                   <li>
+                                                       UI
+                                                   </li>
+                                               </ul>
+                                           </li>
+                                           <li>
+                                               This App runs on .NET Platform, it does not use .NET CORE or .NET MVC CORE, Here it uses .NET MVC or rather ASP.NET MVC for the front end and talks with the WebAPI
+                                           </li>
+                                           <li>
+                                               Then we have WebAPI that acts as the middle layer, anything that needs to be written to the database or any data from the database must be requetsed via WebAPI.
+                                           </li>
+                                           <li>If the WebAPI is not running, then it means the app will not work, the admin will not be able to login and interact with the system, the user will not be able to see contacts and interacts with them</li>
+                                           <li>
+                                               The WebAPI is restFul and is the glue that keeps everything together
+                                           </li>
+                                           <li>
+                                               The WebAPI get information from abstraction injected into each controller, they don't know where the infomation is comimng from and that is the beauty of dependeny injection
+                                           </li>
+                                           <li>
+                                               In the back end the system is using entityframework code first(entity framework version 6.2)
+                                           </li>
+                                           <li>
+                                               Technologies used
+                                               <ul>
+                                                   <li>
+                                                       .NET
+                                                   </li>
+                                                   <li>
+                                                       .NET ASP.NET MVC
+                                                   </li>
+                                                   <li>
+                                                       JQuery
+                                                   </li>
+                                                   <li>
+                                                       Bootstrap 4
+                                                   </li>
+                                                   <li>
+                                                       CSS
+                                                   </li>
+                                                   <li> HTML - HTML5</li>
+                                                   <li>
+                                                       Dependency injection(Ninject)
+                                                   </li>
+                                                   <li>
+                                                       WebAPI (.NET)
+                                                   </li>
+                                                   <li>
+                                                       EntityFramework (version 6.2)
+                                                       <ul>
+                                                           <li>
+                                                               We use this version for easier of automatic migrations
+                                                           </li>
+                                                       </ul>
+                                                   </li>
+                                               </ul>
+                                           </li>
+                                       </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            @Html.ActionLink("Home", "Login", "login", new { @class = "btn btn-primary" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-12">
+                
+                <div class="text-center" style="width:70%;margin-top:2%; margin-left:auto; margin-right:auto;padding:2%;border:1px solid #ff006e;">
+                    <img class="mx-auto d-block" height="50" width="50" src="~/Content/icons/058-growth.png" style="display:block;border-radius:50%;" />
+                    Please follow these instructions for the app to run smoothly<br />
+                    It is outmost importance to read these instruction and should anything happen please do not hesitate to logout and click the button below
+                    <button class="btn btn-primary" style="margin-top:2%; margin-left:auto; margin-right:auto; font-weight:bold;display:block;" data-toggle="modal" data-target="#instructions-modal">Click for instuctions</button>
+                </div>
+            </div>
+        </div>
         <div class="row">
             <div class="col-12">
                 <div class="login-container">

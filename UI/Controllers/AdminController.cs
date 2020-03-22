@@ -404,7 +404,6 @@ namespace UI.Controllers
             return Json(cities, "application/json; charset=utf-8", Encoding.UTF8, JsonRequestBehavior.AllowGet);
         }
 
-
         [Route("contact")]
         [HttpPost]
         public ActionResult add_contact(NewContact contact)
@@ -504,17 +503,17 @@ namespace UI.Controllers
 
 
                 //construct mailmessage
-                MailMessage message = new MailMessage("magine20@gmail.com", "b_qunta@yahoo.com", "New contact added", email_message);
+                MailMessage message = new MailMessage("bqunta79@gmail.com", "magine20@gmail.com", "New contact added", email_message);
                 message.IsBodyHtml = true;
-                
-                
-                NetworkCredential credential = new NetworkCredential("magine20", "587hazel");
+
+
+                NetworkCredential credential = new NetworkCredential("bqunta79", "14022020");
                 SmtpClient client = new SmtpClient();
                 client.UseDefaultCredentials = false;
                 client.Host = "smtp.gmail.com";
-                client.Port = 587;               
+                client.Port = 587;
                 client.EnableSsl = true;
-                client.DeliveryMethod = SmtpDeliveryMethod.Network;                
+                client.DeliveryMethod = SmtpDeliveryMethod.Network;
                 client.ServicePoint.MaxIdleTime = 2;
                 client.Credentials = credential;
 
@@ -732,6 +731,31 @@ namespace UI.Controllers
                 return Json(error_message, "application/json; charset=utf-8", Encoding.UTF8, JsonRequestBehavior.DenyGet);
             }
             var id = Guid.Parse(update.updateContactHiddenField);
+
+            User temp = new User();
+            using (var api = new HttpClient())
+            {
+                api.BaseAddress = new Uri("https://localhost:44343/api/user/");
+                api.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                var get_user = api.PostAsJsonAsync<Guid>("show/id", id);
+                get_user.Wait();
+                var result = get_user.Result;
+                if (result.StatusCode == HttpStatusCode.OK)
+                {
+                    var s = result.Content.ReadAsAsync<User>();
+                    s.Wait();
+                    temp = s.Result;
+                }
+                else if (result.StatusCode == HttpStatusCode.NotFound)
+                {
+                    var s = result.Content.ReadAsAsync<User>();
+                    s.Wait();
+                    temp = s.Result;
+                }
+            }
+
+
             User user = new User
             {
                 UserId = id,
@@ -742,6 +766,8 @@ namespace UI.Controllers
                 LastName = update.updateContactLast,
                 Phone = update.updateContactPhone,
                 Status = update.updateContactStatus,
+                Avatar = temp.Avatar,
+                MimeType = temp.MimeType,
 
             };
 
@@ -787,15 +813,15 @@ namespace UI.Controllers
                 email_message += "<br/>Email: " + user.Email;
                 email_message += "<br/>Gender: " + user.Gender;
                 email_message += "<br/>Status: " + user.Status;
-                
+
 
 
                 //construct mailmessage
-                MailMessage message = new MailMessage("magine20@gmail.com", "b_qunta@yahoo.com", "Contact updated", email_message);
+                MailMessage message = new MailMessage("bqunta79@gmail.com", "magine20@gmail.com", "Contact updated", email_message);
                 message.IsBodyHtml = true;
 
 
-                NetworkCredential credential = new NetworkCredential("magine20", "587hazel");
+                NetworkCredential credential = new NetworkCredential("bqunta79", "14022020");
                 SmtpClient client = new SmtpClient();
                 client.Host = "smtp.gmail.com";
                 client.Port = 587;

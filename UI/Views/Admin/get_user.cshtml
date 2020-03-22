@@ -116,7 +116,28 @@
             </div>
         </div>
 
-
+        <!--Success modal (for all sucess this will be called-->
+        <div class="modal fade" id="success-update-contact-modal" tabindex="-1" role="dialog" aria-labelledby="success-update-contact-modal-title" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-scrollable" role="document">
+                <div class="modal-content" style="border-radius:unset;border:1px solid #e8e5e5;">
+                    <div class="modal-header">
+                        <h3 class="modal-title" id="success-update-contact-modal-title">
+                            <img src="~/Content/icons/088-user.png" height="30" width="30" class="rounded" style="display:inline-block;" /> <span id="title-back-update" style=""></span>
+                        </h3>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-12">
+                                <img src="~/Content/icons/081-checked.png" height="30" width="30" class="rounded" style="display:inline-block;" />  <span id="body-back-update" style=""></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        @Html.ActionLink("Home", "home", "admin", new { @class = "btn btn-primary" })
+                    </div>
+                </div>
+            </div>
+        </div>
 
 
 
@@ -126,7 +147,8 @@
                 <div class="col-4">
                     @if (Model.Avatar != null)
                     {
-                        <img class="img-fluid" height="100" width="100" src="@Url.Action("file", "admin", new { userId = Model.UserId })" style="border-radius:50%;" />
+                        var img = Convert.ToBase64String(Model.Avatar);
+                        <img class="mx-auto d-block" height="250" width="250" src="data:image/@Model.MimeType;base64,@img" style="border-radius:50%; display:inline-block; margin-left:auto; margin-right:auto;" />
                         <form enctype="multipart/form-data" id="contactUpdate" name="contactUpdate">
                             <input type="hidden" value="@Model.UserId" id="contactUpdateHidden" name="contactUpdateHidden" />
                             <input type="submit" value="update this contact" class="btn btn-primary" style="margin-top:5%; width:100%;border-radius:1px; margin-left:auto; margin-right:auto; font-weight:bold;">
@@ -141,7 +163,7 @@
                     }
                     else
                     {
-                        <img src="~/Content/icons/088-user.png" height="100" width="100" style="border-radius:50%;margin-left:auto; margin-right:auto; max-width: 100%;max-height: 100%;" />
+                        <img class="mx-auto d-block" height="250" width="250" src="~/Content/icons/038-contact book.png" style="border-radius:50%; display:inline-block; margin-left:auto; margin-right:auto;" />
                         <form enctype="multipart/form-data" id="contactUpdate" name="contactUpdate">
                             <input type="hidden" value="@Model.UserId" id="contactUpdateHidden" name="contactUpdateHidden" />
                             <input type="submit" value="update this contact" class="btn btn-primary" style="margin-top:5%; width:100%;border-radius:1px; margin-left:auto; margin-right:auto; font-weight:bold;">

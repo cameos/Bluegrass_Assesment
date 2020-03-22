@@ -144,10 +144,15 @@
                                                     {
                                                         <tr>
                                                             <td>
-                                                                @*@if (m.Avatar != null)
-                                                                    {
-                                                                        <img class="img-fluid" height="50" width="50" src="@Url.Action("file", "admin", new { userId = m.UserId })" style="display:inline-block;" />
-                                                                    }*@
+                                                                @if (m.Avatar != null)
+                                                                {
+                                                                    var img = Convert.ToBase64String(m.Avatar);
+                                                                    <img class="img-fluid" height="50" width="50" src="data:image/@m.MimeType;base64,@img" style="display:inline-block;border-radius:50%;" />
+                                                                }
+                                                                else
+                                                                {
+                                                                    <img class="img-fluid" height="50" width="50" src="~/Content/icons/070-time management.png" style="display:inline-block;border-radius:50%;" />
+                                                                }
                                                                 @Html.ActionLink(@m.FirstName + " " + @m.LastName, "profile/normal", new { contactId = m.UserId })
                                                                 @*<a id="@m.UserId" class="fullContactInfo" href="#" style="color:#ff2d6d; text-decoration:none; font-weight:bold;">@m.FirstName @m.LastName</a>*@
                                                             </td>
@@ -161,6 +166,9 @@
                                                 </tbody>
                                             </table>
                                         }
+                                    </div>
+                                    <div class="text-center">
+                                        @Html.ActionLink("refresh home", "home", "contact", null, new { @class = "btn btn-primary justify-content-center w-100", @style = "margin-top:35%; border-radius:1px; margin-left:auto; margin-right:auto; font-weight:bold;", @id = "" })
                                     </div>
                                 </div>
                             </div>

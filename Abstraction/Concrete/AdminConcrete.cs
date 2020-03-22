@@ -23,10 +23,13 @@ namespace Abstraction.Concrete
             {
                 using(var _transaction = _context.Database.BeginTransaction(IsolationLevel.Serializable))
                 {
-                    if (_context.Database.Connection.State == ConnectionState.Closed || _context.Database.Connection.State == ConnectionState.Broken)
-                        _context.Database.Connection.Open();
+                    
                     try
                     {
+
+                        if (_context.Database.Connection.State == ConnectionState.Closed || _context.Database.Connection.State == ConnectionState.Broken)
+                            _context.Database.Connection.Open();
+
                         admins = (from a in _context.Admin
                                   select a).ToList<Admin>();
                         _context.SaveChanges();
@@ -47,7 +50,7 @@ namespace Abstraction.Concrete
                     }
                 }
             }
-            _context.Database.Connection.Close();
+            
             return admins;
         }
 
@@ -117,7 +120,7 @@ namespace Abstraction.Concrete
                     }
                 }
             }
-            _context.Database.Connection.Close();
+            
             return admin;
         }
 
@@ -184,7 +187,7 @@ namespace Abstraction.Concrete
                     }
                 }
             }
-            _context.Database.Connection.Close();
+           
             return flag;
         }
     }

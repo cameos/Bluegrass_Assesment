@@ -38,7 +38,6 @@ namespace UI.Controllers
             return View();
         }
 
-
         [Route("new")]
         [HttpPost]
         public ActionResult register_new(adminModel adminModel)
@@ -48,6 +47,34 @@ namespace UI.Controllers
             if(string.IsNullOrWhiteSpace(adminModel.adminName) || string.IsNullOrWhiteSpace(adminModel.adminLastName) || string.IsNullOrWhiteSpace(adminModel.adminPassword) || string.IsNullOrWhiteSpace(adminModel.adminEmail))
             {
                 error_message = "error, something went wrong with the request";
+                return Json(error_message, "application/json; charset=utf-8", Encoding.UTF8, JsonRequestBehavior.DenyGet);
+            }
+            List<Admin> admins = new List<Admin>();
+            using (var api = new HttpClient())
+            {
+                api.BaseAddress = new Uri("https://localhost:44343/api/admin/");
+                api.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                var get_admin = api.GetAsync("all");
+                get_admin.Wait();
+                var result = get_admin.Result;
+                if (result.StatusCode == HttpStatusCode.OK)
+                {
+                    var s = result.Content.ReadAsAsync<List<Admin>>();
+                    s.Wait();
+                    admins = s.Result;
+                }
+                else if (result.StatusCode == HttpStatusCode.NotFound)
+                {
+                    var s = result.Content.ReadAsAsync<List<Admin>>();
+                    s.Wait();
+                    admins = s.Result;
+                }
+            }
+
+            if(admins.Count() > 0)
+            {
+                error_message = "error, admin exists";
                 return Json(error_message, "application/json; charset=utf-8", Encoding.UTF8, JsonRequestBehavior.DenyGet);
             }
 
@@ -157,6 +184,11 @@ namespace UI.Controllers
             if(pass == admin.Password)
             {
                 FormsAuthentication.SetAuthCookie(admin.Email, false);
+                AdminSession session = new AdminSession
+                {
+                    sessionId = admin.AdminId
+                };
+                Session["adSession"] = session;
                 error_message = Url.Action("home", "admin");
                 return Json(error_message, "application/json; charset=utf-8", Encoding.UTF8, JsonRequestBehavior.DenyGet);
             }
@@ -167,6 +199,15 @@ namespace UI.Controllers
             }
 
             
+        }
+
+        [Route("signout")]
+        [HttpGet]
+        public ActionResult signOut()
+        {
+            Session.Remove("adSession");
+            FormsAuthentication.SignOut();
+            return RedirectToActionPermanent("Login", "login");
         }
     }
 }

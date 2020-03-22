@@ -115,7 +115,16 @@ $(document).ready(function () {
                         $("#countryError").removeClass("hideError").addClass("showError");
                     }
                     else {
-                        window.location.href = "https://localhost:44331" + error_message;
+                        var target_head = $("#title-back");
+                        var target_body = $("#body-back");
+                        target_head.empty().html();
+                        target_body.empty().html();
+
+                        target_head.append(" Added succesfully");
+                        target_body.append(" Country added succesfully");
+                        
+                        $("#success-contact-modal").modal({ keyboard: false, backdrop: 'static' });
+                        //window.location.href = "https://localhost:44331" + error_message;
                     }
                 }
             }
@@ -123,6 +132,9 @@ $(document).ready(function () {
     });
     $(document).on('click', '#nav-tab a[href="#nav-province"]', function (e) {
         e.preventDefault();
+        var target = ("#adminCSelect");
+        target.empty().html();
+
 
         $.ajax({
             method: "GET",
@@ -136,7 +148,7 @@ $(document).ready(function () {
                 $.each(countries, function (key, value) {
                     cs += '<option value="' + value.CountryId + '">' + value.CountryName + '</option>';
                 });
-                var target = $("#adminCSelect");
+                
                 target.append(cs);
             }
         });
@@ -160,7 +172,16 @@ $(document).ready(function () {
                         $("#provinceError").removeClass("hideError").addClass("showError");
                     }
                     else {
-                        window.location.href = "https://localhost:44331" + error_message;
+                        var target_head = $("#title-back");
+                        var target_body = $("#body-back");
+                        target_head.empty().html();
+                        target_body.empty().html();
+
+                        target_head.append(" Added succesfully");
+                        target_body.append(" Province added succesfully");
+
+                        $("#success-contact-modal").modal({ keyboard: false, backdrop: 'static' });
+                        //window.location.href = "https://localhost:44331" + error_message;
                     }
                 }
             }
@@ -180,7 +201,7 @@ $(document).ready(function () {
             cache: false,
             success: function (countries) {
                 console.log(countries);
-                var cs = '<option value="">Select Country</option>';;
+                
                 $.each(countries, function (key, value) {
                     cs += '<option value="' + value.CountryId + '">' + value.CountryName + '</option>';
                 });
@@ -206,7 +227,7 @@ $(document).ready(function () {
             cache: false,
             success: function (provinces) {
                 console.log("Select provinces:" + provinces);
-                var ps = '<option value="">Select Province</option>';
+                
                 $.each(provinces, function (key, value) {
                     ps += '<option value="' + value.ProvinceId + '">' + value.ProvinceName + '</option>';
                 });
@@ -235,7 +256,16 @@ $(document).ready(function () {
                         $("#cityError").removeClass("hideError").addClass("showError");
                     }
                     else {
-                        window.location.href = "https://localhost:44331" + error_message;
+                        var target_head = $("#title-back");
+                        var target_body = $("#body-back");
+                        target_head.empty().html();
+                        target_body.empty().html();
+
+                        target_head.append(" Added succesfully");
+                        target_body.append(" City added succesfully");
+
+                        $("#success-contact-modal").modal({ keyboard: false, backdrop: 'static' });
+                        //window.location.href = "https://localhost:44331" + error_message;
                     }
                 }
             }
@@ -293,7 +323,7 @@ $(document).ready(function () {
             cache: false,
             success: function (provinces) {
                 console.log("Select provinces:" + provinces);
-                var ps = '<option value="">Select Province</option>';
+                
                 $.each(provinces, function (key, value) {
                     ps += '<option value="' + value.ProvinceId + '">' + value.ProvinceName + '</option>';
                 });
@@ -320,7 +350,7 @@ $(document).ready(function () {
             cache: false,
             success: function (cities) {
 
-                var ps = '<option value="">Select City</option>';
+                
                 $.each(cities, function (key, value) {
                     ps += '<option value="' + value.CityId + '">' + value.CityName + '</option>';
                 });
@@ -349,7 +379,18 @@ $(document).ready(function () {
                         $("#contactError").removeClass("hideError").addClass("showError");
                     }
                     else {
-                        window.location.href = "https://localhost:44331" + error_message;
+                        $("#new-contact-modal").modal("hide");
+
+                        var target_head = $("#title-back");
+                        var target_body = $("#body-back");
+                        target_head.empty().html();
+                        target_body.empty().html();
+
+                        target_head.append(" Added succesfully");
+                        target_body.append(" Contact added succesfully");
+
+                        $("#success-contact-modal").modal({ keyboard: false, backdrop: 'static' });
+                        //window.location.href = "https://localhost:44331" + error_message;
                     }
                 }
             }
@@ -377,7 +418,16 @@ $(document).ready(function () {
                         return;
                     }
                     else {
-                        window.location.href = "https://localhost:44331" + error_message;
+                        var target_head = $("#title-back");
+                        var target_body = $("#body-back");
+                        target_head.empty().html();
+                        target_body.empty().html();
+
+                        target_head.append(" Added succesfully");
+                        target_body.append(" Contact deleted succesfully");
+
+                        $("#success-contact-modal").modal({ keyboard: false, backdrop: 'static' });
+                        //window.location.href = "https://localhost:44331" + error_message;
                     }
                 }
             }
@@ -458,7 +508,19 @@ $(document).ready(function () {
                         $("#updateConError").removeClass("hideError").addClass("showError");
                     }
                     else {
-                        window.location.href = "https://localhost:44331" + error_message;
+
+                        $("#update-contact-modal").modal("hide");
+
+                        var target_head = $("#title-back-update");
+                        var target_body = $("#body-back-update");
+                        target_head.empty().html();
+                        target_body.empty().html();
+
+                        target_head.append(" Update success");
+                        target_body.append(" Updated added succesfully");
+
+                        $("#success-update-contact-modal").modal({ keyboard: false, backdrop: 'static' });
+                        //window.location.href = "https://localhost:44331" + error_message;
                     }
                 }
             }
@@ -542,7 +604,7 @@ $(document).ready(function () {
             cache: false,
             success: function (provinces) {
                 console.log("Select provinces:" + provinces);
-                var ps = '<option value="">Select Province</option>';
+                
                 $.each(provinces, function (key, value) {
                     ps += '<option value="' + value.ProvinceId + '">' + value.ProvinceName + '</option>';
                 });
@@ -568,7 +630,7 @@ $(document).ready(function () {
             cache: false,
             success: function (cities) {
 
-                var ps = '<option value="">Select City</option>';
+                
                 $.each(cities, function (key, value) {
                     ps += '<option value="' + value.CityId + '">' + value.CityName + '</option>';
                 });
