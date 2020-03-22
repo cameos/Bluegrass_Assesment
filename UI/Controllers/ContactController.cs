@@ -114,6 +114,8 @@ namespace UI.Controllers
         public ActionResult PredictiveFirst(ContactFilter filt)
         {
             List<User> users = new List<User>();
+            JsonResult json = new JsonResult();
+            
             if (!string.IsNullOrWhiteSpace(filt.First))
             {
                 PredictiveFilter filter = new PredictiveFilter
@@ -159,8 +161,14 @@ namespace UI.Controllers
                     }
                 }
             }
-
-            return Json(users, "application/json; charset=utf-8", Encoding.UTF8, JsonRequestBehavior.DenyGet);
+            json.Data = users;
+            json.MaxJsonLength = int.MaxValue;
+            json.JsonRequestBehavior = JsonRequestBehavior.DenyGet;
+            json.ContentType = "application/json; charset=utf-8";
+            json.ContentEncoding = Encoding.UTF8;
+            return json;
+            //json.
+            //return Json(users, "application/json; charset=utf-8", Encoding.UTF8, JsonRequestBehavior.DenyGet);
         }
 
         [Route("get/user")]
@@ -168,6 +176,7 @@ namespace UI.Controllers
         public ActionResult getUser(string UserId)
         {
             User user = new User();
+            JsonResult json = new JsonResult();
             if (!string.IsNullOrWhiteSpace(UserId))
             {
                 var id = Guid.Parse(UserId);
@@ -193,7 +202,12 @@ namespace UI.Controllers
                     }
                 }
             }
-            return Json(user, "application/json; charset=utf-8", Encoding.UTF8, JsonRequestBehavior.DenyGet);
+            json.Data = user;
+            json.MaxJsonLength = int.MaxValue;
+            json.JsonRequestBehavior = JsonRequestBehavior.DenyGet;
+            json.ContentType = "application/json; charset=utf-8";
+            json.ContentEncoding = Encoding.UTF8;
+            return json;
         }
 
         [Route("filter/provinces")]
@@ -272,6 +286,7 @@ namespace UI.Controllers
         public ActionResult get_full_user(ContactFilterFound filterFound)
         {
             User user = new User();
+            JsonResult json = new JsonResult();
             if (!string.IsNullOrWhiteSpace(filterFound.contactUserHiddenSearch))
             {
                 var id = Guid.Parse(filterFound.contactUserHiddenSearch);
@@ -297,7 +312,12 @@ namespace UI.Controllers
                     }
                 }
             }
-            return Json(user, "application/json; charset=utf-8", Encoding.UTF8, JsonRequestBehavior.DenyGet);
+            json.Data = user;
+            json.MaxJsonLength = int.MaxValue;
+            json.JsonRequestBehavior = JsonRequestBehavior.DenyGet;
+            json.ContentType = "application/json; charset=utf-8";
+            json.ContentEncoding = Encoding.UTF8;
+            return json;
         }
 
     }

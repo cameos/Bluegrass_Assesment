@@ -132,8 +132,7 @@ $(document).ready(function () {
     });
     $(document).on('click', '#nav-tab a[href="#nav-province"]', function (e) {
         e.preventDefault();
-        var target = ("#adminCSelect");
-        target.empty().html();
+        
 
 
         $.ajax({
@@ -144,6 +143,8 @@ $(document).ready(function () {
             cache: false,
             success: function (countries) {
                 console.log(countries);
+                var target = $("#adminCSelect");
+                target.empty().html();
                 var cs = '';
                 $.each(countries, function (key, value) {
                     cs += '<option value="' + value.CountryId + '">' + value.CountryName + '</option>';
@@ -201,7 +202,7 @@ $(document).ready(function () {
             cache: false,
             success: function (countries) {
                 console.log(countries);
-                
+                var cs = '';
                 $.each(countries, function (key, value) {
                     cs += '<option value="' + value.CountryId + '">' + value.CountryName + '</option>';
                 });
@@ -227,7 +228,7 @@ $(document).ready(function () {
             cache: false,
             success: function (provinces) {
                 console.log("Select provinces:" + provinces);
-                
+                var ps = '';
                 $.each(provinces, function (key, value) {
                     ps += '<option value="' + value.ProvinceId + '">' + value.ProvinceName + '</option>';
                 });
@@ -323,7 +324,7 @@ $(document).ready(function () {
             cache: false,
             success: function (provinces) {
                 console.log("Select provinces:" + provinces);
-                
+                var ps = '';
                 $.each(provinces, function (key, value) {
                     ps += '<option value="' + value.ProvinceId + '">' + value.ProvinceName + '</option>';
                 });
@@ -350,7 +351,7 @@ $(document).ready(function () {
             cache: false,
             success: function (cities) {
 
-                
+                var ps = '';
                 $.each(cities, function (key, value) {
                     ps += '<option value="' + value.CityId + '">' + value.CityName + '</option>';
                 });
@@ -604,7 +605,7 @@ $(document).ready(function () {
             cache: false,
             success: function (provinces) {
                 console.log("Select provinces:" + provinces);
-                
+                var ps = '';
                 $.each(provinces, function (key, value) {
                     ps += '<option value="' + value.ProvinceId + '">' + value.ProvinceName + '</option>';
                 });
@@ -630,7 +631,7 @@ $(document).ready(function () {
             cache: false,
             success: function (cities) {
 
-                
+                var ps = '';
                 $.each(cities, function (key, value) {
                     ps += '<option value="' + value.CityId + '">' + value.CityName + '</option>';
                 });

@@ -12,17 +12,7 @@
             {
                 var img = Convert.ToBase64String(Model.User.Avatar);
                 <img class="mx-auto d-block" height="250" width="250" src="data:image/@Model.User.MimeType;base64,@img" style="border-radius:50%; display:inline-block; margin-left:auto; margin-right:auto;" />
-                <form enctype="multipart/form-data" id="contactUpdate" name="contactUpdate">
-                    <input type="hidden" value="@Model.User.UserId" id="contactUpdateHidden" name="contactUpdateHidden" />
-                    <input type="submit" value="update this contact" class="btn btn-primary" style="margin-top:5%; width:100%;border-radius:1px; margin-left:auto; margin-right:auto; font-weight:bold;">
-                </form>
-                <div class="row" style="margin-top:5%;">
-                    <div class="col-11">
-                        <div id="updateError" class="hideError">
-                            Make sure all fields are entered, user image is optional
-                        </div>
-                    </div>
-                </div>
+                
             }
             else
             {
