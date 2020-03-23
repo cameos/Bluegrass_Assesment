@@ -685,6 +685,7 @@ namespace UI.Controllers
         {
             User user = new User();
             var error_message = new object();
+            JsonResult json = new JsonResult();
             if (string.IsNullOrWhiteSpace(update.contactUpdateHidden))
             {
                 error_message = "error, could not update click";
@@ -716,8 +717,12 @@ namespace UI.Controllers
             }
 
             error_message = user;
-
-            return Json(error_message, "application/json; charset=utf-8", Encoding.UTF8, JsonRequestBehavior.DenyGet);
+            json.Data = error_message;
+            json.ContentEncoding = Encoding.UTF8;
+            json.ContentType = "application/json; charset=utf-8";
+            json.MaxJsonLength = int.MaxValue;
+            return json;
+           
         }
 
         [Route("contact/update")]
