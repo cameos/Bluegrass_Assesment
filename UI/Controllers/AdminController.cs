@@ -507,7 +507,7 @@ namespace UI.Controllers
                 message.IsBodyHtml = true;
 
 
-                NetworkCredential credential = new NetworkCredential("bqunta79", "14022020");
+                NetworkCredential credential = new NetworkCredential("bqunta79", "delete+92");
                 SmtpClient client = new SmtpClient();
                 client.UseDefaultCredentials = false;
                 client.Host = "smtp.gmail.com";
@@ -826,7 +826,7 @@ namespace UI.Controllers
                 message.IsBodyHtml = true;
 
 
-                NetworkCredential credential = new NetworkCredential("bqunta79", "14022020");
+                NetworkCredential credential = new NetworkCredential("bqunta79", "delete+92");
                 SmtpClient client = new SmtpClient();
                 client.Host = "smtp.gmail.com";
                 client.Port = 587;
